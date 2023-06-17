@@ -9,6 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
+    "dev": "SET NODE_ENV=dev && npm run start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -22,6 +23,7 @@
   "dependencies": {
     "@golevelup/ts-jest": "^0.3.7",
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^10.1.0",
     "@nestjs/platform-express": "^9.0.0",
