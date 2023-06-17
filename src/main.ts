@@ -14,7 +14,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/swagger/api', app, document);
+  SwaggerModule.setup('/api/swagger', app, document);
 
   await app.listen(3000);
   console.log(`8Tech-auth is running on: ${await app.getUrl()}`);
