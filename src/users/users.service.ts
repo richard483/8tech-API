@@ -1,4 +1,6 @@
+import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
+import { Role } from '../auth/roles/role.enum';
 
 export type User = any;
 
@@ -6,18 +8,26 @@ export type User = any;
 export class UsersService {
   private readonly users = [
     {
-      userId: 1,
-      username: 'John',
+      id: faker.datatype.uuid(),
+      userName: 'John',
       password: 'changeme',
+      role: Role.Admin,
     },
     {
-      userId: 2,
-      username: 'Maria',
+      userId: faker.datatype.uuid(),
+      userName: 'Maria',
       password: 'guess',
+      role: Role.User,
     },
   ];
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+  // async findOne(userName: string): Promise<User | undefined> {
+  //   return this.users.find((user) => user.userName === userName);
+  // }
+
+  async findOne(user: any): Promise<User | undefined> {
+    return this.users.find(
+      (u) => u.userName === user.userName && u.password === user.password,
+    );
   }
 }
