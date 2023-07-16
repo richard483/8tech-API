@@ -1,13 +1,13 @@
 import { Role } from '../roles/role.enum';
 
-type User = {
+export interface IUser {
   id: string;
-  username: string;
-  password: string;
-  role: Role;
-};
+  userName: string;
+  email: string;
+  roles: Role[];
+}
 
 export interface IAuthenticate {
-  readonly user: User;
-  readonly token: string;
+  user: IUser;
+  token: string;
 }

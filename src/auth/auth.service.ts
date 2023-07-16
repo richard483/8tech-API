@@ -22,9 +22,11 @@ export class AuthService {
   }
 
   async login(authenitcateDto: AuthenticateDto) {
-    const user = await this.validateUser(authenitcateDto);
+    const user: IAuthenticate = await this.validateUser(authenitcateDto);
+    user.token = this.jwtService.sign(user);
     return {
-      access_token: this.jwtService.sign(user),
+      // access_token: this.jwtService.sign(user),
+      user,
     };
   }
 }
