@@ -25,7 +25,6 @@ export class AuthService {
     const user: IAuthenticate = await this.validateUser(authenitcateDto);
     user.token = this.jwtService.sign(user);
     return {
-      // access_token: this.jwtService.sign(user),
       user,
     };
   }
