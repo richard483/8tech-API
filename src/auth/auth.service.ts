@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { AuthenticateDto } from './dto/authenticate.dto';
-import { IAuthenticate } from './interface/user.interface';
+import { IAuthenticate } from './interface/authenticate.interface';
 
 @Injectable()
 export class AuthService {
@@ -17,15 +17,15 @@ export class AuthService {
       throw new UnauthorizedException('INVALID_CREDENTIALS');
     }
 
+    // remove password from user object
     const { password, ...result } = user;
-    return result;
+    const res = { user: result };
+    return res;
   }
 
-  async login(authenitcateDto: AuthenticateDto) {
-    const user: IAuthenticate = await this.validateUser(authenitcateDto);
+  async login(authenitcateDto: AuthenticateDto): Promise<IAuthenticate> {
+    const user = await this.validateUser(authenitcateDto);
     user.token = this.jwtService.sign(user);
-    return {
-      user,
-    };
+    return user;
   }
 }

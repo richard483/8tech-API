@@ -21,16 +21,6 @@ import { RoleGuard } from './roles/role.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('authenticate')
-  async authenticate(@Res() res, @Body() authenticateDto: AuthenticateDto) {
-    try {
-      const response = await this.authService.validateUser(authenticateDto);
-      return res.status(HttpStatus.OK).json({ response });
-    } catch (error) {
-      return res.status(error.status).json({ error: error.message });
-    }
-  }
-
   @Post('login')
   async signIn(@Res() res, @Body() authenticateDto: AuthenticateDto) {
     try {
