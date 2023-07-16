@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { IUser } from './interface/user.interface';
 
@@ -15,8 +15,8 @@ export class UsersService {
 
   async create(user: any): Promise<IUser> {
     const existingUser = await this.userRepository.findOneByEmail(user.email);
-    if (existingUser) {
-      throw new Error('EMAIL_ALREADY_USED');
+    if (existingUser !== null) {
+      throw new HttpException('EMAIL_ALREADY_USED', HttpStatus.BAD_REQUEST);
     }
     return this.userRepository.create(user);
   }
