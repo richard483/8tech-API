@@ -25,7 +25,7 @@ export class AuthController {
   async signIn(@Res() res, @Body() authenticateDto: AuthenticateDto) {
     try {
       const response = await this.authService.login(authenticateDto);
-      return res.status(HttpStatus.OK).json({ response });
+      return res.status(HttpStatus.OK).json({ ...response });
     } catch (error) {
       return res.status(error.status).json({ error: error.message });
     }
