@@ -31,16 +31,10 @@ export class AuthController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
-
-  @Roles(Role.ADMIN)
+  @Roles(Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @Get('profileAdmin')
-  getAdminProfile(@Request() req) {
+  @Get('info')
+  async getProfileInfo(@Request() req) {
     return req.user;
   }
 }
