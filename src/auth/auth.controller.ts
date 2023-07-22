@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
 import { Roles } from './roles/role.decorator';
 import { Role } from './roles/role.enum';
 import { AuthenticateDto } from './dto/authenticate.dto';
@@ -31,6 +31,7 @@ export class AuthController {
     }
   }
 
+  @ApiBearerAuth()
   @Roles(Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('info')

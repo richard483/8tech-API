@@ -11,6 +11,7 @@ async function bootstrap() {
     .setTitle('8Tech-auth')
     .setDescription('This is auth service for 8Tech app')
     .setVersion(version)
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
