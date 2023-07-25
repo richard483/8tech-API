@@ -6,7 +6,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UserCreateDto } from './dto/user-create.dto';
 import { Roles } from '../auth/roles/role.decorator';
@@ -31,6 +31,7 @@ export class UserController {
   //   }
   // }
 
+  @ApiBearerAuth()
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create')
