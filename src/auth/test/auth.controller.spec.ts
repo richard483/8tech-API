@@ -27,6 +27,10 @@ describe('AuthController', () => {
     authService = module.get(AuthService);
   });
 
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
@@ -52,13 +56,19 @@ describe('AuthController', () => {
       json: jsonSpy,
     };
 
-    jest.spyOn(authService, 'login').mockResolvedValue(mockResponse);
+    const loginSpy = jest
+      .spyOn(authService, 'login')
+      .mockResolvedValue(mockResponse);
 
     const response = await controller.signIn(mockRes, null);
 
     expect(response).toEqual(mockResponse);
     expect(statusSpy).toBeCalledWith(HttpStatus.OK);
     expect(jsonSpy).toBeCalledWith(mockResponse);
+    expect(loginSpy).toBeCalledTimes(1);
+    statusSpy.mockRestore();
+    jsonSpy.mockRestore();
+    loginSpy.mockRestore();
   });
 
   it('login error', async () => {
@@ -75,7 +85,9 @@ describe('AuthController', () => {
       json: jsonSpy,
     };
 
-    jest.spyOn(authService, 'login').mockRejectedValue(mockResponse);
+    const loginSpy = jest
+      .spyOn(authService, 'login')
+      .mockRejectedValue(mockResponse);
 
     const response = await controller.signIn(mockRes, null);
 
@@ -84,6 +96,10 @@ describe('AuthController', () => {
     expect(jsonSpy).toBeCalledWith({
       error: mockResponse.message,
     });
+    expect(loginSpy).toBeCalledTimes(1);
+    statusSpy.mockRestore();
+    jsonSpy.mockRestore();
+    loginSpy.mockRestore();
   });
 
   it('getProfileInfo', async () => {
