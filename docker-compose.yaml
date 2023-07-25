@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres
+    container_name: auth-8t
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
