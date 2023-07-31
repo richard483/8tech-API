@@ -18,6 +18,8 @@ async function bootstrap() {
   SwaggerModule.setup('/api/swagger', app, document);
 
   await app.listen(3000);
-  console.log(`8Tech-auth is running on: ${await app.getUrl()}`);
+  console.log(
+    `8Tech-auth swagg is running on: ${await app.getUrl()}/api/swagger`,
+  );
 }
 bootstrap();
