@@ -7,10 +7,22 @@ import { env } from 'process';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        JwtStrategy.extractJwtFromCookie,
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ]),
       ignoreExpiration: false,
       secretOrKey: env.JWT_SECRET,
     });
+  }
+
+  private static extractJwtFromCookie(req) {
+    let token = null;
+    req.headers.cookie.split(';').forEach((element) => {
+      element = element.split('=');
+      element[0].trim() === 'EToken' ? (token = element[1].trim()) : null;
+    });
+    return token;
   }
 
   validate(payload: any) {

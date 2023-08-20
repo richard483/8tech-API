@@ -13,6 +13,10 @@ export class UsersService {
     );
   }
 
+  async findOneByEmail(email: string): Promise<IUser | null> {
+    return this.userRepository.findOneByEmail(email);
+  }
+
   async create(user: any): Promise<IUser> {
     const existingUser = await this.userRepository.findOneByEmail(user.email);
     if (existingUser !== null) {
