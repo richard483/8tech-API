@@ -191,4 +191,10 @@ describe('AuthController', () => {
     jsonSpy.mockRestore();
     loginSpy.mockRestore();
   });
+
+  it('google placeholder', async () => {
+    const response = await controller.googleAuth();
+
+    expect(response).toBeUndefined();
+  });
 });
