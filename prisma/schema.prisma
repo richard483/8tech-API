@@ -13,13 +13,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  userName  String?
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  roles     Role[]
+  id               String   @id @default(uuid())
+  email            String   @unique
+  userName         String?
+  password         String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  roles            Role[]   @default([USER])
+  hasGoogleAccount Boolean  @default(false)
 }
 
 enum Role {

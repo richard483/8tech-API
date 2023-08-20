@@ -50,6 +50,7 @@ describe('AuthController', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       roles: ['MEMBER'],
+      hasGoogleAccount: false,
     };
 
     const createSpy = jest

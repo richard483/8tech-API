@@ -107,4 +107,17 @@ describe('UsersService', () => {
     findOneSpy.mockRestore();
     createSpy.mockRestore();
   });
+
+  it('findOnebyEmail success', async () => {
+    const findOneSpy = jest
+      .spyOn(reposiotry, 'findOneByEmail')
+      .mockResolvedValue(userMock);
+
+    const res = await service.findOneByEmail('email@email.com');
+
+    expect(res).toEqual(userMock);
+    expect(findOneSpy).toBeCalledTimes(1);
+
+    findOneSpy.mockRestore();
+  });
 });

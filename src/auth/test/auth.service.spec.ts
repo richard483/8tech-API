@@ -5,6 +5,9 @@ import { AuthService } from '../auth.service';
 import { UsersService } from '../../users/users.service';
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { IGoogleUser } from '../interface/authenticate.interface';
+import { mock } from 'node:test';
+import { Role } from '../roles/role.enum';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -12,6 +15,7 @@ describe('AuthService', () => {
   let jwtService: JwtService;
 
   let mockAuthenticateDto: any;
+  let googleUserData: IGoogleUser;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -31,10 +35,19 @@ describe('AuthService', () => {
         email: 'email@email.com',
         createdAt: new Date(),
         updatedAt: new Date(),
-        roles: ['MEMBER'],
+        roles: ['USER'],
         password: 'password',
+        hasGoogleAccount: false,
       },
       token: null,
+    };
+
+    googleUserData = {
+      email: 'email@email.com',
+      firstName: 'firstName',
+      lastName: 'lastName',
+      picture: 'picture',
+      _accessToken: 'accessToken',
     };
   });
 
@@ -85,18 +98,26 @@ describe('AuthService', () => {
       password: 'password',
     };
 
+    const cookieSpy = jest.fn();
+
+    const resMock = {
+      cookie: cookieSpy,
+    };
+
     const validateUserSpy = jest
       .spyOn(service, 'validateUser')
       .mockResolvedValue(mockAuthenticateDto);
 
     const signSpy = jest.spyOn(jwtService, 'sign').mockReturnValue('token');
 
-    const res = await service.login(authenticateDto);
+    const res = await service.login(authenticateDto, resMock);
 
     expect(signSpy).toBeCalledTimes(1);
     expect(signSpy).toBeCalledWith(mockAuthenticateDto);
     expect(validateUserSpy).toBeCalledTimes(1);
     expect(validateUserSpy).toBeCalledWith(authenticateDto);
+    expect(cookieSpy).toBeCalledTimes(1);
+    expect(cookieSpy).toBeCalledWith('EToken', 'token');
 
     mockAuthenticateDto.token = 'token';
 
@@ -104,5 +125,97 @@ describe('AuthService', () => {
 
     validateUserSpy.mockRestore();
     signSpy.mockRestore();
+    cookieSpy.mockRestore();
+  });
+
+  it('googleLogin success', async () => {
+    const req = {
+      user: {
+        ...googleUserData,
+      },
+    };
+
+    const findOneByEmailSpy = jest
+      .spyOn(userService, 'findOneByEmail')
+      .mockResolvedValue(mockAuthenticateDto.user);
+
+    const signSpy = jest.spyOn(jwtService, 'sign').mockReturnValue('token');
+    const cookieSpy = jest.fn();
+
+    const res = {
+      cookie: cookieSpy,
+    };
+
+    const response = await service.googleLogin(req, res);
+
+    expect(findOneByEmailSpy).toBeCalledWith(googleUserData.email);
+    expect(cookieSpy).toBeCalledTimes(1);
+    expect(cookieSpy).toBeCalledWith('EToken', 'token');
+    expect(signSpy).toBeCalledTimes(1);
+
+    mockAuthenticateDto.token = 'token';
+
+    expect(response).toEqual(mockAuthenticateDto);
+
+    signSpy.mockRestore();
+    findOneByEmailSpy.mockRestore();
+  });
+
+  it('googleLogin invalid google account', async () => {
+    const req = {
+      user: undefined,
+    };
+    const res = {};
+
+    try {
+      await service.googleLogin(req, res);
+    } catch (e) {
+      expect(e).toBeInstanceOf(UnauthorizedException);
+      expect(e.message).toBe('INVALID_CREDENTIALS');
+    }
+  });
+
+  it('googleLogin register with google account success', async () => {
+    const req = {
+      user: {
+        ...googleUserData,
+      },
+    };
+
+    const findOneByEmailSpy = jest
+      .spyOn(userService, 'findOneByEmail')
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(mockAuthenticateDto.user);
+
+    const createUserSpy = jest
+      .spyOn(userService, 'create')
+      .mockResolvedValueOnce(mockAuthenticateDto.user);
+
+    const signSpy = jest.spyOn(jwtService, 'sign').mockReturnValueOnce('token');
+    const cookieSpy = jest.fn();
+
+    const res = {
+      cookie: cookieSpy,
+    };
+
+    const response = await service.googleLogin(req, res);
+
+    expect(findOneByEmailSpy).toBeCalledWith(googleUserData.email);
+    expect(cookieSpy).toBeCalledTimes(1);
+    expect(cookieSpy).toBeCalledWith('EToken', 'token');
+    expect(signSpy).toBeCalledTimes(1);
+    expect(createUserSpy).toBeCalledWith({
+      email: mockAuthenticateDto.user.email,
+      userName: googleUserData.firstName + ' ' + googleUserData.lastName,
+      roles: [Role.USER],
+      hasGoogleAccount: true,
+    });
+
+    mockAuthenticateDto.token = 'token';
+
+    expect(response).toEqual(mockAuthenticateDto);
+
+    signSpy.mockRestore();
+    findOneByEmailSpy.mockRestore();
   });
 });

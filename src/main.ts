@@ -3,7 +3,9 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    cors: false,
+  });
 
   const version = process.env.npm_package_version;
 
@@ -19,7 +21,7 @@ async function bootstrap() {
 
   await app.listen(3000);
   console.log(
-    `8Tech-auth swagg is running on: ${await app.getUrl()}/api/swagger`,
+    `8Tech-auth swagger is running on: ${await app.getUrl()}/api/swagger`,
   );
 }
 bootstrap();

@@ -5,6 +5,7 @@ import { DeepMocked, createMock } from '@golevelup/ts-jest';
 import { CanActivate, HttpStatus } from '@nestjs/common';
 import { RoleGuard } from '../roles/role.guard';
 import { JwtAuthGuard } from '../jwt/jwt-auth.guard';
+import { GoogleGuard } from '../google/google.guard';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -21,6 +22,8 @@ describe('AuthController', () => {
       .overrideGuard(JwtAuthGuard)
       .useValue(mockFailGuard)
       .overrideGuard(RoleGuard)
+      .useValue(mockFailGuard)
+      .overrideGuard(GoogleGuard)
       .useValue(mockFailGuard)
       .compile();
     controller = module.get<AuthController>(AuthController);
@@ -44,6 +47,7 @@ describe('AuthController', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         roles: ['MEMBER'],
+        hasGoogleAccount: false,
       },
       token: 'token',
     };
@@ -118,5 +122,79 @@ describe('AuthController', () => {
     const response = await controller.getProfileInfo(mockReq);
 
     expect(response).toEqual(user);
+  });
+
+  it('googleRedirectLogin success', async () => {
+    const mockResponse = {
+      user: {
+        id: '1',
+        userName: 'test',
+        email: 'email@email.com',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        roles: ['MEMBER'],
+        hasGoogleAccount: false,
+      },
+      token: 'token',
+    };
+
+    const statusSpy = jest.fn().mockReturnThis();
+    const jsonSpy = jest.fn().mockReturnValue(mockResponse);
+
+    const mockRes = {
+      status: statusSpy,
+      json: jsonSpy,
+    };
+
+    const googleLoginSpy = jest
+      .spyOn(authService, 'googleLogin')
+      .mockResolvedValue(mockResponse);
+
+    const response = await controller.googleAuthRedirect(null, mockRes);
+
+    expect(response).toEqual(mockResponse);
+    expect(statusSpy).toBeCalledWith(HttpStatus.OK);
+    expect(jsonSpy).toBeCalledWith(mockResponse);
+    expect(googleLoginSpy).toBeCalledTimes(1);
+    statusSpy.mockRestore();
+    jsonSpy.mockRestore();
+    googleLoginSpy.mockRestore();
+  });
+
+  it('googleRedirectLogin error', async () => {
+    const mockResponse = {
+      status: HttpStatus.BAD_REQUEST,
+      message: 'ERROR_BAD_REQUEST',
+    };
+
+    const statusSpy = jest.fn().mockReturnThis();
+    const jsonSpy = jest.fn().mockReturnValue(mockResponse);
+
+    const mockRes = {
+      status: statusSpy,
+      json: jsonSpy,
+    };
+
+    const loginSpy = jest
+      .spyOn(authService, 'googleLogin')
+      .mockRejectedValue(mockResponse);
+
+    const response = await controller.googleAuthRedirect(null, mockRes);
+
+    expect(response).toEqual(mockResponse);
+    expect(statusSpy).toBeCalledWith(HttpStatus.BAD_REQUEST);
+    expect(jsonSpy).toBeCalledWith({
+      error: mockResponse.message,
+    });
+    expect(loginSpy).toBeCalledTimes(1);
+    statusSpy.mockRestore();
+    jsonSpy.mockRestore();
+    loginSpy.mockRestore();
+  });
+
+  it('google placeholder', async () => {
+    const response = await controller.googleAuth();
+
+    expect(response).toBeUndefined();
   });
 });
