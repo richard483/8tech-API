@@ -1,10 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { AuthenticateDto } from './dto/authenticate.dto';
-import { IAuthenticate, IGoogleUser } from './interface/authenticate.interface';
+import { AuthenticateRequest } from './requests/authenticate.request';
+import { IAuthenticate, IGoogleUser } from './interface/auth.interface';
 import { IUser } from '../users/interface/user.interface';
 import { Role } from './roles/role.enum';
+import * as bcyrpt from 'bcrypt';
+import { RegisterRequest } from './requests/register.request';
 
 @Injectable()
 export class AuthService {
@@ -13,8 +15,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(authenticateDto: AuthenticateDto): Promise<IAuthenticate> {
-    const user = await this.usersService.findOne(authenticateDto);
+  async validateUser(
+    authenticateRequest: AuthenticateRequest,
+  ): Promise<IAuthenticate> {
+    const user = await this.usersService.findOne(authenticateRequest);
     if (!user) {
       throw new UnauthorizedException('INVALID_CREDENTIALS');
     }
@@ -25,10 +29,26 @@ export class AuthService {
     return data;
   }
 
-  async login(authenitcateDto: AuthenticateDto, res): Promise<IAuthenticate> {
-    const user = await this.validateUser(authenitcateDto);
+  async login(
+    authenticateRequest: AuthenticateRequest,
+    res,
+  ): Promise<IAuthenticate> {
+    const user = await this.validateUser(authenticateRequest);
     user.token = this.jwtService.sign(user);
     res.cookie('EToken', user.token);
+    return user;
+  }
+
+  async register(registerRequest: RegisterRequest): Promise<IUser> {
+    const { repeatPassword, ...userCreate } = registerRequest;
+
+    if (userCreate.password !== repeatPassword) {
+      throw new UnauthorizedException('PASSWORD_NOT_MATCH');
+    }
+
+    const user = await this.usersService.create({
+      ...userCreate,
+    });
     return user;
   }
 
@@ -56,5 +76,11 @@ export class AuthService {
     res.cookie('EToken', userData.token);
 
     return userData;
+  }
+
+  private hashPassword(password: string): string {
+    const salt = bcyrpt.genSaltSync(10);
+    const hashedPassword = bcyrpt.hashSync(password, salt);
+    return hashedPassword;
   }
 }

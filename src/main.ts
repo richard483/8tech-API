@@ -14,6 +14,7 @@ async function bootstrap() {
     .setDescription('This is auth service for 8Tech app')
     .setVersion(version)
     .addBearerAuth()
+    .addCookieAuth('EToken')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

@@ -8,11 +8,11 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { UserCreateDto } from './dto/user-create.dto';
 import { Roles } from '../auth/roles/role.decorator';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { RoleGuard } from '../auth/roles/role.guard';
 import { Role } from '../auth/roles/role.enum';
+import { UserCreateRequest } from './requests/user-create.request';
 
 @ApiTags('User')
 @Controller('user')
@@ -35,7 +35,7 @@ export class UserController {
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create')
-  async createAdmin(@Res() res, @Body() user: UserCreateDto) {
+  async createAdmin(@Res() res, @Body() user: UserCreateRequest) {
     try {
       const response = await this.userService.create(user);
       return res.status(HttpStatus.OK).json({ response });
