@@ -20,5 +20,5 @@ export class RegisterRequest {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly username: string;
+  readonly userName: string;
 }

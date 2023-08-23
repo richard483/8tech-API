@@ -5,7 +5,6 @@ import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt/jwt.strategy';
-import { env } from 'process';
 import { GoogleStrategy } from './google/google.strategy';
 
 @Module({
@@ -14,8 +13,8 @@ import { GoogleStrategy } from './google/google.strategy';
     PassportModule,
     JwtModule.register({
       global: true,
-      secret: env.JWT_SECRET,
-      signOptions: { expiresIn: '6000s' },
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '600000s' },
     }),
     PassportModule,
   ],

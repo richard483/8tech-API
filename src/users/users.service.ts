@@ -6,11 +6,8 @@ import { IUser } from './interface/user.interface';
 export class UsersService {
   constructor(private userRepository: UserRepository) {}
 
-  async findOne(user: any): Promise<any | null> {
-    return this.userRepository.findOnebyEmailPassword(
-      user.email,
-      user.password,
-    );
+  async findOne(email: any): Promise<any | null> {
+    return this.userRepository.findOneByEmail(email);
   }
 
   async findOneByEmail(email: string): Promise<IUser | null> {

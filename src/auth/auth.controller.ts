@@ -29,7 +29,8 @@ export class AuthController {
       const response = await this.authService.login(authenticateDto, res);
       return res.status(HttpStatus.OK).json({ ...response });
     } catch (error) {
-      return res.status(error.status).json({ error: error.message });
+      console.error('#AuthLogin error caused by: ', error);
+      return res.status(error.status).json({ error });
     }
   }
 
@@ -39,6 +40,7 @@ export class AuthController {
       const response = await this.authService.register(request);
       return res.status(HttpStatus.OK).json({ ...response });
     } catch (error) {
+      console.error('#AuthRegister error caused by: ', error);
       return res.status(error.status).json({ error: error.message });
     }
   }
@@ -54,8 +56,10 @@ export class AuthController {
   async googleAuthRedirect(@Request() req, @Res() res) {
     try {
       const response = await this.authService.googleLogin(req, res);
+      // TODO : redirect to frontend
       return res.status(HttpStatus.OK).json({ ...response });
     } catch (error) {
+      console.error('#AutGoogleAuthRedirect error caused by: ', error);
       return res.status(error.status).json({ error: error.message });
     }
   }

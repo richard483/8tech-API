@@ -19,6 +19,8 @@ import { UserCreateRequest } from './requests/user-create.request';
 export class UserController {
   constructor(private userService: UsersService) {}
 
+  // TODO: add log for each controller
+
   // create user, for dev only
 
   // @Post('create')

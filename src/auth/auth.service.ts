@@ -5,7 +5,7 @@ import { AuthenticateRequest } from './requests/authenticate.request';
 import { IAuthenticate, IGoogleUser } from './interface/auth.interface';
 import { IUser } from '../users/interface/user.interface';
 import { Role } from './roles/role.enum';
-import * as bcyrpt from 'bcrypt';
+import { compare, genSaltSync, hashSync } from 'bcrypt';
 import { RegisterRequest } from './requests/register.request';
 
 @Injectable()
@@ -18,8 +18,17 @@ export class AuthService {
   async validateUser(
     authenticateRequest: AuthenticateRequest,
   ): Promise<IAuthenticate> {
-    const user = await this.usersService.findOne(authenticateRequest);
+    const user = await this.usersService.findOne(authenticateRequest.email);
     if (!user) {
+      throw new UnauthorizedException('INVALID_CREDENTIALS');
+    }
+
+    const isPasswordMatch = await compare(
+      authenticateRequest.password,
+      user.password,
+    );
+
+    if (!isPasswordMatch) {
       throw new UnauthorizedException('INVALID_CREDENTIALS');
     }
 
@@ -46,6 +55,7 @@ export class AuthService {
       throw new UnauthorizedException('PASSWORD_NOT_MATCH');
     }
 
+    userCreate.password = this.hashPassword(userCreate.password);
     const user = await this.usersService.create({
       ...userCreate,
     });
@@ -79,8 +89,8 @@ export class AuthService {
   }
 
   private hashPassword(password: string): string {
-    const salt = bcyrpt.genSaltSync(10);
-    const hashedPassword = bcyrpt.hashSync(password, salt);
+    const salt = genSaltSync(10);
+    const hashedPassword = hashSync(password, salt);
     return hashedPassword;
   }
 }

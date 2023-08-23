@@ -6,7 +6,6 @@ import { UsersService } from '../../users/users.service';
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IGoogleUser } from '../interface/auth.interface';
-import { mock } from 'node:test';
 import { Role } from '../roles/role.enum';
 
 describe('AuthService', () => {
