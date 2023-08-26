@@ -7,6 +7,7 @@ import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IGoogleUser } from '../interface/auth.interface';
 import { Role } from '../roles/role.enum';
+import { compare } from 'bcrypt';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -58,6 +59,8 @@ describe('AuthService', () => {
     const findOneSpy = jest
       .spyOn(userService, 'findOne')
       .mockResolvedValue(mockAuthenticateDto.user);
+
+    (compare as jest.Mock) = jest.fn().mockResolvedValue(true);
 
     const res = await service.validateUser({
       email: 'test',

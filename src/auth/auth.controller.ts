@@ -25,6 +25,7 @@ export class AuthController {
 
   @Post('login')
   async signIn(@Res() res, @Body() authenticateDto: AuthenticateRequest) {
+    console.info('#AuthLogin request incoming with: ', authenticateDto);
     try {
       const response = await this.authService.login(authenticateDto, res);
       return res.status(HttpStatus.OK).json({ ...response });
@@ -36,6 +37,7 @@ export class AuthController {
 
   @Post('register')
   async signUp(@Res() res, @Body() request: RegisterRequest) {
+    console.info('#AuthRegister request incoming with: ', request);
     try {
       const response = await this.authService.register(request);
       return res.status(HttpStatus.OK).json({ ...response });
@@ -54,6 +56,7 @@ export class AuthController {
   @Get('google/redirect')
   @UseGuards(GoogleGuard)
   async googleAuthRedirect(@Request() req, @Res() res) {
+    console.info('#AuthGoogleAuthRedirect google auth request incoming');
     try {
       const response = await this.authService.googleLogin(req, res);
       // TODO : redirect to frontend
@@ -69,7 +72,7 @@ export class AuthController {
   @Roles(Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('info')
-  async getProfileInfo(@Request() req) {
-    return req.user;
+  async getProfileInfo(@Request() req, @Res() res) {
+    return res.status(HttpStatus.OK).json({ ...req.user });
   }
 }

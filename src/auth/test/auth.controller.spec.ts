@@ -98,7 +98,7 @@ describe('AuthController', () => {
     expect(response).toEqual(mockResponse);
     expect(statusSpy).toBeCalledWith(HttpStatus.BAD_REQUEST);
     expect(jsonSpy).toBeCalledWith({
-      error: mockResponse.message,
+      error: mockResponse,
     });
     expect(loginSpy).toBeCalledTimes(1);
     statusSpy.mockRestore();
@@ -118,10 +118,17 @@ describe('AuthController', () => {
     const mockReq = {
       user,
     };
+    const jsonSpy = jest.fn().mockReturnValue(user);
+    const statusSpy = jest.fn().mockReturnValue({ json: jsonSpy });
+    const mockRes = {
+      status: statusSpy,
+    };
 
-    const response = await controller.getProfileInfo(mockReq);
+    const response = await controller.getProfileInfo(mockReq, mockRes);
 
     expect(response).toEqual(user);
+    expect(statusSpy).toBeCalledWith(HttpStatus.OK);
+    expect(jsonSpy).toBeCalledWith(user);
   });
 
   it('googleRedirectLogin success', async () => {
