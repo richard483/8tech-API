@@ -31,7 +31,7 @@ export class AuthController {
       return res.status(HttpStatus.OK).json({ ...response });
     } catch (error) {
       console.error('#AuthLogin error caused by: ', error);
-      return res.status(error.status).json({ error });
+      return res.status(error.status).json({ error: error.message });
     }
   }
 

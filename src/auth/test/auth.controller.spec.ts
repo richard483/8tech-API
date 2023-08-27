@@ -7,6 +7,34 @@ import { RoleGuard } from '../roles/role.guard';
 import { JwtAuthGuard } from '../jwt/jwt-auth.guard';
 import { GoogleGuard } from '../google/google.guard';
 
+const mockIAuthSuccessResponse = {
+  user: {
+    id: '1',
+    userName: 'test',
+    email: 'email@email.com',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    roles: ['MEMBER'],
+    hasGoogleAccount: false,
+  },
+  token: 'token',
+};
+
+const mockBadRequestResponse = {
+  status: HttpStatus.BAD_REQUEST,
+  message: 'ERROR_BAD_REQUEST',
+};
+
+const mockIUserResponse = {
+  id: '1',
+  userName: 'test',
+  email: 'email@email.com',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  roles: ['MEMBER'],
+  hasGoogleAccount: false,
+};
+
 describe('AuthController', () => {
   let controller: AuthController;
   let authService: DeepMocked<AuthService>;
@@ -39,21 +67,8 @@ describe('AuthController', () => {
   });
 
   it('login success', async () => {
-    const mockResponse = {
-      user: {
-        id: '1',
-        userName: 'test',
-        email: 'email@email.com',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        roles: ['MEMBER'],
-        hasGoogleAccount: false,
-      },
-      token: 'token',
-    };
-
     const statusSpy = jest.fn().mockReturnThis();
-    const jsonSpy = jest.fn().mockReturnValue(mockResponse);
+    const jsonSpy = jest.fn().mockReturnValue(mockIAuthSuccessResponse);
 
     const mockRes = {
       status: statusSpy,
@@ -62,13 +77,13 @@ describe('AuthController', () => {
 
     const loginSpy = jest
       .spyOn(authService, 'login')
-      .mockResolvedValue(mockResponse);
+      .mockResolvedValue(mockIAuthSuccessResponse);
 
     const response = await controller.signIn(mockRes, null);
 
-    expect(response).toEqual(mockResponse);
+    expect(response).toEqual(mockIAuthSuccessResponse);
     expect(statusSpy).toBeCalledWith(HttpStatus.OK);
-    expect(jsonSpy).toBeCalledWith(mockResponse);
+    expect(jsonSpy).toBeCalledWith(mockIAuthSuccessResponse);
     expect(loginSpy).toBeCalledTimes(1);
     statusSpy.mockRestore();
     jsonSpy.mockRestore();
@@ -76,13 +91,8 @@ describe('AuthController', () => {
   });
 
   it('login error', async () => {
-    const mockResponse = {
-      status: HttpStatus.BAD_REQUEST,
-      message: 'ERROR_BAD_REQUEST',
-    };
-
     const statusSpy = jest.fn().mockReturnThis();
-    const jsonSpy = jest.fn().mockReturnValue(mockResponse);
+    const jsonSpy = jest.fn().mockReturnValue(mockBadRequestResponse);
 
     const mockRes = {
       status: statusSpy,
@@ -91,34 +101,72 @@ describe('AuthController', () => {
 
     const loginSpy = jest
       .spyOn(authService, 'login')
-      .mockRejectedValue(mockResponse);
+      .mockRejectedValue(mockBadRequestResponse);
 
     const response = await controller.signIn(mockRes, null);
 
-    expect(response).toEqual(mockResponse);
+    expect(response).toEqual(mockBadRequestResponse);
     expect(statusSpy).toBeCalledWith(HttpStatus.BAD_REQUEST);
-    expect(jsonSpy).toBeCalledWith({
-      error: mockResponse,
-    });
+    expect(jsonSpy).toBeCalledWith({ error: mockBadRequestResponse.message });
     expect(loginSpy).toBeCalledTimes(1);
     statusSpy.mockRestore();
     jsonSpy.mockRestore();
     loginSpy.mockRestore();
   });
 
+  it('register success', async () => {
+    const statusSpy = jest.fn().mockReturnThis();
+    const jsonSpy = jest.fn().mockReturnValue(mockIUserResponse);
+
+    const mockRes = {
+      status: statusSpy,
+      json: jsonSpy,
+    };
+
+    const registerSpy = jest
+      .spyOn(authService, 'register')
+      .mockResolvedValue(mockIUserResponse);
+
+    const response = await controller.signUp(mockRes, null);
+
+    expect(response).toEqual(mockIUserResponse);
+    expect(statusSpy).toBeCalledWith(HttpStatus.OK);
+    expect(jsonSpy).toBeCalledWith(mockIUserResponse);
+    expect(registerSpy).toBeCalledTimes(1);
+    statusSpy.mockRestore();
+    jsonSpy.mockRestore();
+    registerSpy.mockRestore();
+  });
+
+  it('register error', async () => {
+    const statusSpy = jest.fn().mockReturnThis();
+    const jsonSpy = jest.fn().mockReturnValue(mockBadRequestResponse);
+
+    const mockRes = {
+      status: statusSpy,
+      json: jsonSpy,
+    };
+
+    const registerSpy = jest
+      .spyOn(authService, 'register')
+      .mockRejectedValue(mockBadRequestResponse);
+
+    const response = await controller.signUp(mockRes, null);
+
+    expect(response).toEqual(mockBadRequestResponse);
+    expect(statusSpy).toBeCalledWith(HttpStatus.BAD_REQUEST);
+    expect(jsonSpy).toBeCalledWith({ error: mockBadRequestResponse.message });
+    expect(registerSpy).toBeCalledTimes(1);
+    statusSpy.mockRestore();
+    jsonSpy.mockRestore();
+    registerSpy.mockRestore();
+  });
+
   it('getProfileInfo', async () => {
-    const user = {
-      id: '1',
-      userName: 'test',
-      email: 'email@email.com',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      roles: ['MEMBER'],
-    };
     const mockReq = {
-      user,
+      user: mockIUserResponse,
     };
-    const jsonSpy = jest.fn().mockReturnValue(user);
+    const jsonSpy = jest.fn().mockReturnValue(mockIUserResponse);
     const statusSpy = jest.fn().mockReturnValue({ json: jsonSpy });
     const mockRes = {
       status: statusSpy,
@@ -126,27 +174,14 @@ describe('AuthController', () => {
 
     const response = await controller.getProfileInfo(mockReq, mockRes);
 
-    expect(response).toEqual(user);
+    expect(response).toEqual(mockIUserResponse);
     expect(statusSpy).toBeCalledWith(HttpStatus.OK);
-    expect(jsonSpy).toBeCalledWith(user);
+    expect(jsonSpy).toBeCalledWith(mockIUserResponse);
   });
 
   it('googleRedirectLogin success', async () => {
-    const mockResponse = {
-      user: {
-        id: '1',
-        userName: 'test',
-        email: 'email@email.com',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        roles: ['MEMBER'],
-        hasGoogleAccount: false,
-      },
-      token: 'token',
-    };
-
     const statusSpy = jest.fn().mockReturnThis();
-    const jsonSpy = jest.fn().mockReturnValue(mockResponse);
+    const jsonSpy = jest.fn().mockReturnValue(mockIAuthSuccessResponse);
 
     const mockRes = {
       status: statusSpy,
@@ -155,13 +190,13 @@ describe('AuthController', () => {
 
     const googleLoginSpy = jest
       .spyOn(authService, 'googleLogin')
-      .mockResolvedValue(mockResponse);
+      .mockResolvedValue(mockIAuthSuccessResponse);
 
     const response = await controller.googleAuthRedirect(null, mockRes);
 
-    expect(response).toEqual(mockResponse);
+    expect(response).toEqual(mockIAuthSuccessResponse);
     expect(statusSpy).toBeCalledWith(HttpStatus.OK);
-    expect(jsonSpy).toBeCalledWith(mockResponse);
+    expect(jsonSpy).toBeCalledWith(mockIAuthSuccessResponse);
     expect(googleLoginSpy).toBeCalledTimes(1);
     statusSpy.mockRestore();
     jsonSpy.mockRestore();
@@ -169,13 +204,8 @@ describe('AuthController', () => {
   });
 
   it('googleRedirectLogin error', async () => {
-    const mockResponse = {
-      status: HttpStatus.BAD_REQUEST,
-      message: 'ERROR_BAD_REQUEST',
-    };
-
     const statusSpy = jest.fn().mockReturnThis();
-    const jsonSpy = jest.fn().mockReturnValue(mockResponse);
+    const jsonSpy = jest.fn().mockReturnValue(mockBadRequestResponse);
 
     const mockRes = {
       status: statusSpy,
@@ -184,14 +214,14 @@ describe('AuthController', () => {
 
     const loginSpy = jest
       .spyOn(authService, 'googleLogin')
-      .mockRejectedValue(mockResponse);
+      .mockRejectedValue(mockBadRequestResponse);
 
     const response = await controller.googleAuthRedirect(null, mockRes);
 
-    expect(response).toEqual(mockResponse);
+    expect(response).toEqual(mockBadRequestResponse);
     expect(statusSpy).toBeCalledWith(HttpStatus.BAD_REQUEST);
     expect(jsonSpy).toBeCalledWith({
-      error: mockResponse.message,
+      error: mockBadRequestResponse.message,
     });
     expect(loginSpy).toBeCalledTimes(1);
     statusSpy.mockRestore();

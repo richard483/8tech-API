@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { AuthenticateRequest } from './requests/authenticate.request';
@@ -52,7 +56,7 @@ export class AuthService {
     const { repeatPassword, ...userCreate } = registerRequest;
 
     if (userCreate.password !== repeatPassword) {
-      throw new UnauthorizedException('PASSWORD_NOT_MATCH');
+      throw new BadRequestException('PASSWORD_NOT_MATCH');
     }
 
     userCreate.password = this.hashPassword(userCreate.password);
