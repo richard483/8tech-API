@@ -8,7 +8,6 @@ import { JwtService } from '@nestjs/jwt';
 import { IGoogleUser } from '../interface/auth.interface';
 import { Role } from '../roles/role.enum';
 import { compare, genSaltSync, hashSync } from 'bcrypt';
-import { RegisterRequest } from '../requests/register.request';
 
 describe('AuthService', () => {
   let service: AuthService;
