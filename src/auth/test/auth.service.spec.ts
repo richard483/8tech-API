@@ -3,11 +3,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DeepMocked, createMock } from '@golevelup/ts-jest';
 import { AuthService } from '../auth.service';
 import { UsersService } from '../../users/users.service';
-import { UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { IGoogleUser } from '../interface/authenticate.interface';
-import { mock } from 'node:test';
+import { IGoogleUser } from '../interface/auth.interface';
 import { Role } from '../roles/role.enum';
+import { compare, genSaltSync, hashSync } from 'bcrypt';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -15,7 +15,9 @@ describe('AuthService', () => {
   let jwtService: JwtService;
 
   let mockAuthenticateDto: any;
+  let mockUser: any;
   let googleUserData: IGoogleUser;
+  let mockRegisterRequest: any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,17 +30,19 @@ describe('AuthService', () => {
     userService = module.get(UsersService);
     jwtService = module.get(JwtService);
 
+    mockUser = {
+      id: '1',
+      userName: 'test',
+      email: 'email@email.com',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      roles: ['USER'],
+      password: 'password',
+      hasGoogleAccount: false,
+    };
+
     mockAuthenticateDto = {
-      user: {
-        id: '1',
-        userName: 'test',
-        email: 'email@email.com',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        roles: ['USER'],
-        password: 'password',
-        hasGoogleAccount: false,
-      },
+      user: mockUser,
       token: null,
     };
 
@@ -49,6 +53,13 @@ describe('AuthService', () => {
       picture: 'picture',
       _accessToken: 'accessToken',
     };
+
+    mockRegisterRequest = {
+      email: 'email@email.com',
+      password: 'password',
+      repeatPassword: 'password',
+      userName: 'userName',
+    };
   });
 
   it('should be defined', () => {
@@ -58,14 +69,16 @@ describe('AuthService', () => {
   it('validateUser success', async () => {
     const findOneSpy = jest
       .spyOn(userService, 'findOne')
-      .mockResolvedValue(mockAuthenticateDto.user);
+      .mockResolvedValue(mockUser);
+
+    (compare as jest.Mock) = jest.fn().mockResolvedValue(true);
 
     const res = await service.validateUser({
       email: 'test',
       password: 'password',
     });
 
-    const { password, ...result } = mockAuthenticateDto.user;
+    const { password, ...result } = mockUser;
     expect(res).toEqual({ user: result });
     expect(findOneSpy).toBeCalledTimes(1);
 
@@ -76,6 +89,28 @@ describe('AuthService', () => {
     const findOneSpy = jest
       .spyOn(userService, 'findOne')
       .mockResolvedValue(null);
+
+    try {
+      await service.validateUser({
+        email: 'test',
+        password: 'password',
+      });
+    } catch (e) {
+      expect(e).toBeInstanceOf(UnauthorizedException);
+      expect(e.message).toBe('INVALID_CREDENTIALS');
+    }
+
+    expect(findOneSpy).toBeCalledTimes(1);
+
+    findOneSpy.mockRestore();
+  });
+
+  it('validateUser fail wrong password', async () => {
+    const findOneSpy = jest
+      .spyOn(userService, 'findOne')
+      .mockResolvedValue(mockUser);
+
+    (compare as jest.Mock) = jest.fn().mockResolvedValue(false);
 
     try {
       await service.validateUser({
@@ -128,6 +163,32 @@ describe('AuthService', () => {
     cookieSpy.mockRestore();
   });
 
+  it('register success', async () => {
+    (genSaltSync as jest.Mock) = jest.fn().mockReturnValue('salt');
+    (hashSync as jest.Mock) = jest.fn().mockReturnValue('hashedPassword');
+    const userCreateSpy = jest
+      .spyOn(userService, 'create')
+      .mockResolvedValue(mockUser);
+
+    expect(await service.register(mockRegisterRequest)).toEqual(mockUser);
+    expect(userCreateSpy).toBeCalledTimes(1);
+
+    userCreateSpy.mockRestore();
+  });
+
+  it('register success', async () => {
+    mockRegisterRequest.repeatPassword = 'wrongPassword';
+    (genSaltSync as jest.Mock) = jest.fn().mockReturnValue('salt');
+    (hashSync as jest.Mock) = jest.fn().mockReturnValue('hashedPassword');
+
+    try {
+      await service.register(mockRegisterRequest);
+    } catch (e) {
+      expect(e).toBeInstanceOf(BadRequestException);
+      expect(e.message).toBe('PASSWORD_NOT_MATCH');
+    }
+  });
+
   it('googleLogin success', async () => {
     const req = {
       user: {
@@ -137,7 +198,7 @@ describe('AuthService', () => {
 
     const findOneByEmailSpy = jest
       .spyOn(userService, 'findOneByEmail')
-      .mockResolvedValue(mockAuthenticateDto.user);
+      .mockResolvedValue(mockUser);
 
     const signSpy = jest.spyOn(jwtService, 'sign').mockReturnValue('token');
     const cookieSpy = jest.fn();
@@ -185,11 +246,11 @@ describe('AuthService', () => {
     const findOneByEmailSpy = jest
       .spyOn(userService, 'findOneByEmail')
       .mockResolvedValueOnce(null)
-      .mockResolvedValueOnce(mockAuthenticateDto.user);
+      .mockResolvedValueOnce(mockUser);
 
     const createUserSpy = jest
       .spyOn(userService, 'create')
-      .mockResolvedValueOnce(mockAuthenticateDto.user);
+      .mockResolvedValueOnce(mockUser);
 
     const signSpy = jest.spyOn(jwtService, 'sign').mockReturnValueOnce('token');
     const cookieSpy = jest.fn();
@@ -205,7 +266,7 @@ describe('AuthService', () => {
     expect(cookieSpy).toBeCalledWith('EToken', 'token');
     expect(signSpy).toBeCalledTimes(1);
     expect(createUserSpy).toBeCalledWith({
-      email: mockAuthenticateDto.user.email,
+      email: mockUser.email,
       userName: googleUserData.firstName + ' ' + googleUserData.lastName,
       roles: [Role.USER],
       hasGoogleAccount: true,

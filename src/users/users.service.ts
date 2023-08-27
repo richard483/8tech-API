@@ -6,19 +6,16 @@ import { IUser } from './interface/user.interface';
 export class UsersService {
   constructor(private userRepository: UserRepository) {}
 
-  async findOne(user: any): Promise<any | null> {
-    return this.userRepository.findOnebyEmailPassword(
-      user.email,
-      user.password,
-    );
+  async findOne(email: any): Promise<any | null> {
+    return this.userRepository.findOnebyEmail(email);
   }
 
   async findOneByEmail(email: string): Promise<IUser | null> {
-    return this.userRepository.findOneByEmail(email);
+    return this.userRepository.findOnebyEmail(email);
   }
 
   async create(user: any): Promise<IUser> {
-    const existingUser = await this.userRepository.findOneByEmail(user.email);
+    const existingUser = await this.userRepository.findOnebyEmail(user.email);
     if (existingUser !== null) {
       throw new HttpException('EMAIL_ALREADY_USED', HttpStatus.BAD_REQUEST);
     }

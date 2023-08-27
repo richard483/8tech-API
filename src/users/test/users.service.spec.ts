@@ -34,40 +34,33 @@ describe('UsersService', () => {
 
   it('findOne success', async () => {
     const findOneSpy = jest
-      .spyOn(reposiotry, 'findOnebyEmailPassword')
+      .spyOn(reposiotry, 'findOnebyEmail')
       .mockResolvedValue(userMock);
 
-    const res = await service.findOne({
-      email: 'email@email.com',
-      password: 'test',
-    });
+    const res = await service.findOne('email@email.com');
 
     expect(res).toEqual(userMock);
-    expect(findOneSpy).toBeCalledTimes(1);
+    expect(findOneSpy).toBeCalledWith('email@email.com');
 
     findOneSpy.mockRestore();
   });
 
   it('findOne success null', async () => {
     const findOneSpy = jest
-      .spyOn(reposiotry, 'findOnebyEmailPassword')
+      .spyOn(reposiotry, 'findOnebyEmail')
       .mockResolvedValue(null);
 
-    const res = await service.findOne({
-      email: 'email@email.com',
-      password: 'test',
-    });
+    const res = await service.findOne('email@email.com');
 
     expect(res).toEqual(null);
-    expect(findOneSpy).toBeCalledTimes(1);
-    expect(findOneSpy).toBeCalledWith('email@email.com', 'test');
+    expect(findOneSpy).toBeCalledWith('email@email.com');
 
     findOneSpy.mockRestore();
   });
 
   it('create success', async () => {
     const findOneSpy = jest
-      .spyOn(reposiotry, 'findOneByEmail')
+      .spyOn(reposiotry, 'findOnebyEmail')
       .mockResolvedValue(null);
 
     const createSpy = jest
@@ -88,7 +81,7 @@ describe('UsersService', () => {
 
   it('create fail email already used', async () => {
     const findOneSpy = jest
-      .spyOn(reposiotry, 'findOneByEmail')
+      .spyOn(reposiotry, 'findOnebyEmail')
       .mockResolvedValue(userMock);
 
     const createSpy = jest.spyOn(reposiotry, 'create');
@@ -110,7 +103,7 @@ describe('UsersService', () => {
 
   it('findOnebyEmail success', async () => {
     const findOneSpy = jest
-      .spyOn(reposiotry, 'findOneByEmail')
+      .spyOn(reposiotry, 'findOnebyEmail')
       .mockResolvedValue(userMock);
 
     const res = await service.findOneByEmail('email@email.com');
