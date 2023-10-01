@@ -23,6 +23,39 @@ model User {
   hasGoogleAccount Boolean  @default(false)
 }
 
+model JobVacancy {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  company     Company  @relation(fields: [companyId], references: [id])
+  companyId   String
+}
+
+model Company {
+  id          String       @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  jobs        JobVacancy[]
+  Contract    Contract[]
+}
+
+model Contract {
+  id          String   @id @default(uuid())
+  userId      String
+  jobId       String
+  title       String
+  description String
+  template    String   @db.VarChar()
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  company     Company  @relation(fields: [companyId], references: [id])
+  companyId   String
+}
+
 enum Role {
   ADMIN
   USER
