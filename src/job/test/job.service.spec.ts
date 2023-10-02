@@ -37,6 +37,7 @@ describe('JobService', () => {
     const createJobDto = {
       title: 'test',
       description: 'test',
+      companyId: 'test',
     };
     const createSpy = jest
       .spyOn(reposiotry, 'create')

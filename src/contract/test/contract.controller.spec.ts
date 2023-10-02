@@ -3,20 +3,20 @@ import { DeepMocked, createMock } from '@golevelup/ts-jest';
 import { CanActivate, HttpStatus } from '@nestjs/common';
 import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 import { RoleGuard } from '../../auth/roles/role.guard';
-import { JobController } from '../job.controller';
-import { JobService } from '../job.service';
-import { IJob } from '../interface/job.interface';
+import { ContractController } from '../contract.controller';
+import { ContractService } from '../contract.service';
+import { IContract } from '../interface/contract.interface';
 
-describe('JobController', () => {
-  let controller: JobController;
-  let jobService: DeepMocked<JobService>;
+describe('ContractController', () => {
+  let controller: ContractController;
+  let contractService: DeepMocked<ContractService>;
   const mockFailGuard: CanActivate = {
     canActivate: jest.fn().mockReturnValue(true),
   };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [JobService],
-      controllers: [JobController],
+      providers: [ContractService],
+      controllers: [ContractController],
     })
       .useMocker(createMock)
       .overrideGuard(JwtAuthGuard)
@@ -24,8 +24,8 @@ describe('JobController', () => {
       .overrideGuard(RoleGuard)
       .useValue(mockFailGuard)
       .compile();
-    controller = module.get<JobController>(JobController);
-    jobService = module.get(JobService);
+    controller = module.get<ContractController>(ContractController);
+    contractService = module.get(ContractService);
   });
 
   afterEach(() => {
@@ -36,49 +36,53 @@ describe('JobController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('craeteJob success', async () => {
-    const createJobDto = {
-      title: 'test',
-      description: 'test',
-      companyId: 'test',
-    };
-
-    const mockJob: IJob = {
-      id: 'randomId',
+  it('createContract success', async () => {
+    const createContractDto = {
+      userId: 'randomUserId',
+      jobId: 'randomJobId',
       title: 'deez noot',
       description: 'this is description about job that is created for test',
+      template: 'template',
+    };
+
+    const mockContract: IContract = {
+      id: 'randomId',
+      userId: 'randomUserId',
+      jobId: 'randomJobId',
+      title: 'deez noot',
+      description: 'this is description about job that is created for test',
+      template: 'template',
       createdAt: new Date(),
       updatedAt: new Date(),
-      companyId: 'randomCompanyId',
     };
 
     const createSpy = jest
-      .spyOn(jobService, 'create')
-      .mockResolvedValue(mockJob);
+      .spyOn(contractService, 'create')
+      .mockResolvedValue(mockContract);
 
     const statusSpy = jest.fn().mockReturnThis();
-    const jsonSpy = jest.fn().mockReturnValue(mockJob);
+    const jsonSpy = jest.fn().mockReturnValue(mockContract);
 
     const mockRes = {
       status: statusSpy,
       json: jsonSpy,
     };
 
-    const res = await controller.createJob(mockRes, createJobDto);
+    const res = await controller.createContract(mockRes, createContractDto);
 
-    expect(createSpy).toBeCalledWith(createJobDto);
-    expect(res).toEqual(mockJob);
+    expect(createSpy).toBeCalledWith(createContractDto);
+    expect(res).toEqual(mockContract);
 
     createSpy.mockRestore();
   });
-  it('craeteJob fail error', async () => {
+  it('craeteContract fail error', async () => {
     const mockResponse = {
       status: HttpStatus.I_AM_A_TEAPOT,
       message: 'GENERAL_ERROR',
     };
 
     const createSpy = jest
-      .spyOn(jobService, 'create')
+      .spyOn(contractService, 'create')
       .mockRejectedValue(mockResponse);
 
     const statusSpy = jest.fn().mockReturnThis();
@@ -89,7 +93,7 @@ describe('JobController', () => {
       json: jsonSpy,
     };
 
-    const res = await controller.createJob(mockRes, null);
+    const res = await controller.createContract(mockRes, null);
 
     expect(createSpy).toBeCalledWith(null);
     expect(res).toEqual(mockResponse);

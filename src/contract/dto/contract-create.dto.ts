@@ -1,7 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class JobCreateDto {
+export class ContractCreateDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  readonly userId: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  readonly jobId: string;
+
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -15,5 +25,5 @@ export class JobCreateDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly companyId: string;
+  readonly template: string;
 }
