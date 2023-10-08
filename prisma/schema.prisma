@@ -9,6 +9,7 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
+  // comment the directUrl for development in windows
   directUrl = env("DIRECT_URL")
 }
 
