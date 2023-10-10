@@ -9,4 +9,4 @@ import { JobRepository } from './job.repository';
   exports: [JobService],
   controllers: [JobController],
 })
-export class ContractModule {}
+export class JobModule {}

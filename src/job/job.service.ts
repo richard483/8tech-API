@@ -6,7 +6,11 @@ import { IJob } from './interface/job.interface';
 export class JobService {
   constructor(private jobRepository: JobRepository) {}
 
-  async create(user: any): Promise<IJob> {
-    return this.jobRepository.create(user);
+  async create(job: any): Promise<IJob> {
+    return this.jobRepository.create(job);
+  }
+
+  async delete(jobId: any): Promise<IJob> {
+    return this.jobRepository.create(jobId);
   }
 }

@@ -14,4 +14,12 @@ export class JobRepository {
       data: job,
     });
   }
+
+  async delete(jobId: any): Promise<any> {
+    return this.prisma.jobVacancy.delete({
+      where: {
+        id: jobId,
+      },
+    });
+  }
 }

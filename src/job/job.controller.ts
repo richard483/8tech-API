@@ -28,6 +28,20 @@ export class JobController {
       const response = await this.jobService.create(job);
       return res.status(HttpStatus.OK).json({ response });
     } catch (error) {
+      console.error('#JobCreate error caused by: ', error);
+      return res.status(error.status).json({ error: error.message });
+    }
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Post('delete')
+  async deleteJob(@Res() res, @Body() jobId: string) {
+    try {
+      const response = await this.jobService.delete(jobId);
+      return res.status(HttpStatus.OK).json({ response });
+    } catch (error) {
       return res.status(error.status).json({ error: error.message });
     }
   }

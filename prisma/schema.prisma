@@ -30,8 +30,9 @@ model JobVacancy {
   description String
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  company     Company    @relation(fields: [companyId], references: [id])
-  companyId   String
+  // company Id is optional for current development purposes
+  company     Company?   @relation(fields: [companyId], references: [id])
+  companyId   String?
   contracts   Contract[]
 }
 
