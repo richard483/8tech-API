@@ -1,12 +1,14 @@
 import {
   Body,
   Controller,
+  Get,
   HttpStatus,
+  Param,
   Post,
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JobService } from './job.service';
 import { JobCreateDto } from './dto/job-create.dto';
 import { Roles } from '../auth/roles/role.decorator';
@@ -34,14 +36,16 @@ export class JobController {
   }
 
   @ApiBearerAuth()
+  @ApiParam({ name: 'jobId', type: String })
   @Roles(Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @Post('delete')
-  async deleteJob(@Res() res, @Body() jobId: string) {
+  @Get('delete/:jobId')
+  async deleteJob(@Res() res, @Param() params: any) {
     try {
-      const response = await this.jobService.delete(jobId);
+      const response = await this.jobService.delete(params.jobId);
       return res.status(HttpStatus.OK).json({ response });
     } catch (error) {
+      console.error('#JobDelete error caused by: ', error);
       return res.status(error.status).json({ error: error.message });
     }
   }

@@ -11,6 +11,6 @@ export class JobService {
   }
 
   async delete(jobId: any): Promise<IJob> {
-    return this.jobRepository.create(jobId);
+    return this.jobRepository.delete(jobId);
   }
 }
