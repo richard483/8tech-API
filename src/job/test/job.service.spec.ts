@@ -51,4 +51,17 @@ describe('JobService', () => {
 
     createSpy.mockRestore();
   });
+  it('delete success', async () => {
+    const deleteSpy = jest
+      .spyOn(reposiotry, 'delete')
+      .mockResolvedValue(jobMock);
+
+    const res = await service.delete('randomId');
+
+    expect(deleteSpy).toBeCalledTimes(1);
+    expect(deleteSpy).toBeCalledWith('randomId');
+    expect(res).toEqual(jobMock);
+
+    deleteSpy.mockRestore();
+  });
 });
