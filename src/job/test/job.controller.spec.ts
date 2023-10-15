@@ -155,4 +155,66 @@ describe('JobController', () => {
 
     deleteSpy.mockRestore();
   });
+  it('updateJob success', async () => {
+    const mockJob: IJob = {
+      id: 'randomId',
+      title: 'deez noot',
+      description: 'this is description about job that is created for test',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      companyId: 'randomCompanyId',
+    };
+
+    const updateSpy = jest
+      .spyOn(jobService, 'update')
+      .mockResolvedValue(mockJob);
+
+    const statusSpy = jest.fn().mockReturnThis();
+    const jsonSpy = jest.fn().mockReturnValue(mockJob);
+
+    const mockRes = {
+      status: statusSpy,
+      json: jsonSpy,
+    };
+
+    const res = await controller.updateJob(mockRes, {
+      id: 'randomId',
+    });
+
+    expect(updateSpy).toBeCalledWith({
+      id: 'randomId',
+    });
+    expect(res).toEqual(mockJob);
+
+    updateSpy.mockRestore();
+  });
+  it('updateJob fail error', async () => {
+    const mockResponse = {
+      status: HttpStatus.I_AM_A_TEAPOT,
+      message: 'GENERAL_ERROR',
+    };
+
+    const updateSpy = jest
+      .spyOn(jobService, 'update')
+      .mockRejectedValue(mockResponse);
+
+    const statusSpy = jest.fn().mockReturnThis();
+    const jsonSpy = jest.fn().mockReturnValue(mockResponse);
+
+    const mockRes = {
+      status: statusSpy,
+      json: jsonSpy,
+    };
+
+    const res = await controller.updateJob(mockRes, {
+      id: null,
+    });
+
+    expect(updateSpy).toBeCalledWith({
+      id: null,
+    });
+    expect(res).toEqual(mockResponse);
+
+    updateSpy.mockRestore();
+  });
 });

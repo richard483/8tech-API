@@ -4,6 +4,7 @@ import { DeepMocked, createMock } from '@golevelup/ts-jest';
 import { JobService } from '../job.service';
 import { IJob } from '../interface/job.interface';
 import { JobRepository } from '../job.repository';
+import { JobUpdateDto } from '../dto/job-update.dto';
 
 describe('JobService', () => {
   let service: JobService;
@@ -63,5 +64,25 @@ describe('JobService', () => {
     expect(res).toEqual(jobMock);
 
     deleteSpy.mockRestore();
+  });
+  it('update success', async () => {
+    const jobUpdateDtoMock: JobUpdateDto = {
+      id: 'randomIdDesu',
+      title: 'deez noot',
+      description: 'this is description about job that is created for test',
+      companyId: 'randomCompanyId',
+    };
+    const updateSpy = jest
+      .spyOn(reposiotry, 'update')
+      .mockResolvedValue(jobMock);
+
+    const res = await service.update(jobUpdateDtoMock);
+
+    expect(updateSpy).toBeCalledTimes(1);
+    const { id, ...jobData } = jobUpdateDtoMock;
+    expect(updateSpy).toBeCalledWith(id, jobData);
+    expect(res).toEqual(jobMock);
+
+    updateSpy.mockRestore();
   });
 });
