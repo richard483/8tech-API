@@ -20,4 +20,8 @@ export class JobService {
     const { id, ...jobData } = job;
     return this.jobRepository.update(id, jobData);
   }
+
+  async getById(jobId: string): Promise<IJob> {
+    return this.jobRepository.getById(jobId);
+  }
 }

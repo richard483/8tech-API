@@ -31,7 +31,7 @@ export class JobController {
       const response = await this.jobService.create(job);
       return res.status(HttpStatus.OK).json({ response });
     } catch (error) {
-      console.error('#JobCreate error caused by: ', error);
+      console.error('#createJob error caused by: ', error);
       return res.status(error.status).json({ error: error.message });
     }
   }
@@ -46,7 +46,7 @@ export class JobController {
       const response = await this.jobService.delete(params.jobId);
       return res.status(HttpStatus.OK).json({ response });
     } catch (error) {
-      console.error('#JobDelete error caused by: ', error);
+      console.error('#deleteJob error caused by: ', error);
       return res.status(error.status).json({ error: error.message });
     }
   }
@@ -60,7 +60,22 @@ export class JobController {
       const response = await this.jobService.update(job);
       return res.status(HttpStatus.OK).json({ response });
     } catch (error) {
-      console.error('#JobUpdate error caused by: ', error);
+      console.error('#updateJob error caused by: ', error);
+      return res.status(error.status).json({ error: error.message });
+    }
+  }
+
+  @ApiBearerAuth()
+  @ApiParam({ name: 'jobId', type: String })
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Get('/:jobId')
+  async getjob(@Res() res, @Param() params: any) {
+    try {
+      const response = await this.jobService.getById(params.jobId);
+      return res.status(HttpStatus.OK).json({ response });
+    } catch (error) {
+      console.error('#getJob error caused by: ', error);
       return res.status(error.status).json({ error: error.message });
     }
   }

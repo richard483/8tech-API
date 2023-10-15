@@ -85,4 +85,15 @@ describe('JobService', () => {
 
     updateSpy.mockRestore();
   });
+  it('get success', async () => {
+    const getSpy = jest.spyOn(reposiotry, 'getById').mockResolvedValue(jobMock);
+
+    const res = await service.getById('randomId');
+
+    expect(getSpy).toBeCalledTimes(1);
+    expect(getSpy).toBeCalledWith('randomId');
+    expect(res).toEqual(jobMock);
+
+    getSpy.mockRestore();
+  });
 });

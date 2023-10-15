@@ -33,4 +33,12 @@ export class JobRepository {
       data: job,
     });
   }
+
+  async getById(jobId: string): Promise<any> {
+    return this.prisma.jobVacancy.findUnique({
+      where: {
+        id: jobId,
+      },
+    });
+  }
 }
