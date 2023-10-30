@@ -3,6 +3,7 @@ import {
   Controller,
   HttpStatus,
   Post,
+  Get,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -27,6 +28,16 @@ export class ContractController {
     try {
       const response = await this.contractService.create(contract);
       return res.status(HttpStatus.OK).json({ response });
+    } catch (error) {
+      return res.status(error.status).json({ error: error.message });
+    }
+  }
+
+  @Get('generate')
+  async generateContract(@Res() res) {
+    try {
+      await this.contractService.generate();
+      return res.status(HttpStatus.OK);
     } catch (error) {
       return res.status(error.status).json({ error: error.message });
     }
