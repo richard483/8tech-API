@@ -9,6 +9,7 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
+  // comment the directUrl for development in windows
   directUrl = env("DIRECT_URL")
 }
 
@@ -21,6 +22,39 @@ model User {
   updatedAt        DateTime @updatedAt
   roles            Role[]   @default([USER])
   hasGoogleAccount Boolean  @default(false)
+}
+
+model JobVacancy {
+  id          String     @id @default(uuid())
+  title       String
+  description String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  // company Id is optional for current development purposes
+  company     Company?   @relation(fields: [companyId], references: [id])
+  companyId   String?
+  contracts   Contract[]
+}
+
+model Company {
+  id          String       @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  jobs        JobVacancy[]
+}
+
+model Contract {
+  id          String      @id @default(uuid())
+  userId      String
+  jobId       String
+  title       String
+  description String
+  template    String      @db.VarChar()
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  JobVacancy  JobVacancy? @relation(fields: [jobId], references: [id])
 }
 
 enum Role {
