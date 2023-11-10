@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ContractRepository } from './contract.repository';
 import { IContract } from './interface/contract.interface';
 import { jsPDF } from 'jspdf';
-import template from './assets/template.js';
+import template from './assets/template.ts';
 @Injectable()
 export class ContractService {
   constructor(private contractRepository: ContractRepository) {}
