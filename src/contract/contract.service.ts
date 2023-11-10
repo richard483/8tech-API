@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ContractRepository } from './contract.repository';
 import { IContract } from './interface/contract.interface';
 import { jsPDF } from 'jspdf';
-import template from './assets/template.ts';
+// import template from './assets/template.ts';
 @Injectable()
 export class ContractService {
   constructor(private contractRepository: ContractRepository) {}
@@ -25,7 +25,7 @@ export class ContractService {
   async generate() {
     const docs = new jsPDF();
     try {
-      docs.html(template.template);
+      // docs.html(template.template);
       docs.save('contract.pdf');
       console.log('generate success');
     } catch (error) {
