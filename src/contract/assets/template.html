@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>${contract.title}</title>
+    <title>{{title}}</title>
   <style>
     html {
       background-color: rgb(156, 156, 156);
@@ -34,74 +34,68 @@
 <body>
   <div>
     <h1>Surat Perjanjian Kerja Lepas</h1>
-    <h3>Nomor: ${contract.number}</h3>
+    <h3>Nomor: {{id}}</h3>
     <p>Yang bertanda tangan di bawah ini:</p>
     <table>
       <tr>
-        <td>Nama</td>
+        <td>UserId</td>
         <td>:</td>
-        <td>${contract.worker.name}</td>
-      </tr>
-      <tr>
-        <td>Alamat</td>
-        <td>:</td>
-        <td>${contract.worker.address}</td>
-      </tr>
-      <tr>
-        <td>No. Telepon</td>
-        <td>:</td>
-        <td>${contract.worker.phone}</td>
+        <td>{{userId}}</td>
       </tr>
     </table>
     <p>Selanjutnya disebut sebagai <b>PEKERJA</b></p>
     <p>Dengan ini menyatakan bahwa PEKERJA telah sepakat untuk bekerja pada <b>PERUSAHAAN</b> dengan ketentuan sebagai berikut:</p>
     <table>
       <tr>
-        <td>Nama</td>
+        <td>Judul lowongan pekerjaan</td>
         <td>:</td>
-        <td>${contract.company.name}</td>
-      </tr>
-      <tr>
-        <td>Alamat</td>
-        <td>:</td>
-        <td>${contract.company.address}</td>
-      </tr>
-      <tr>
-        <td>No. Telepon</td>
-        <td>:</td>
-        <td>${contract.company.phone}</td>
+        <td>{{title}}</td>
       </tr>
     </table>
     <p>Selanjutnya disebut sebagai <b>PERUSAHAAN</b></p>
     <br>
-    <p>PEKERJA akan bekerja pada bagian <b>${contract.position}</b> dengan ketentuan sebagai berikut:</p>
+    <p>PEKERJA akan melakukan pekerjaan <b>{{title}}</b> dengan ketentuan sebagai berikut:</p>
     <table>
       <tr>
         <td>Waktu Kerja</td>
         <td>:</td>
-        <td>${contract.work_time}</td>
+        <td>{{contract.work_time}}</td>
       </tr>
       <tr>
         <td>Upah</td>
         <td>:</td>
-        <td>${contract.salary}</td>
+        <td>{{contract.salary}}</td>
       </tr>
       <tr>
         <td>Periode Pembayaran</td>
         <td>:</td>
-        <td>${contract.payment_method}</td>
+        <td>{{contract.payment_method}}</td>
       </tr>
       <tr>
         <td>Periode Kontrak</td>
         <td>:</td>
-        <td>${contract.periode}</td>
+        <td>{{contract.periode}}</td>
       </tr>
     </table>
-    <p>Demikian surat perjanjian ini dibuat dan ditandatangani oleh kedua belah pihak pada tanggal ${contract.createdAt}.</p>
+    <p>Demikian surat perjanjian ini dibuat dan ditandatangani oleh kedua belah pihak pada tanggal {{contract.createdAt}}.</p>
     <div class="signature">
-      <p>${contract.worker.name}</p>
-      <p>${contract.company.name}</p>
+      <p>{{contract.worker.name}}</p>
+      <p>{{contract.company.name}}</p>
     </div>
+    <br>
+    <br>
+    <table>
+      <tr>
+        <td>Created date</td>
+        <td>:</td>
+        <td>{{createdAt}}</td>
+      </tr>
+      <tr>
+        <td>Description</td>
+        <td>:</td>
+        <td>{{description}}</td>
+      </tr>
+    </table>
   </div>
 </body>
 </html>
