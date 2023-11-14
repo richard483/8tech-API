@@ -28,6 +28,9 @@ export class JobController {
   @Post('create')
   async createJob(@Res() res, @Body() job: JobCreateDto) {
     try {
+      console.log(
+        `#createJob request incoming with res: ${res} and data: ${job}`,
+      );
       const response = await this.jobService.create(job);
       return res.status(HttpStatus.OK).json({ response });
     } catch (error) {
@@ -43,6 +46,9 @@ export class JobController {
   @Get('delete/:jobId')
   async deleteJob(@Res() res, @Param() params: any) {
     try {
+      console.log(
+        `#deleteJob request incoming with res: ${res} and params: ${params}`,
+      );
       const response = await this.jobService.delete(params.jobId);
       return res.status(HttpStatus.OK).json({ response });
     } catch (error) {

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ContractRepository } from './contract.repository';
 import { IContract } from './interface/contract.interface';
 import { ContractHelper } from './contract.helper';
+import { join } from 'path';
 @Injectable()
 export class ContractService {
   constructor(
@@ -15,26 +16,18 @@ export class ContractService {
 
   async generate(contractId) {
     try {
-      const constdata: IContract = {
-        id: 'string',
-        userId: 'string',
-        jobId: 'string',
-        title: 'string',
-        description: 'string',
-        template: 'string',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      // docs.html(template.template);
       await this.contractHelper.createPdf(
         await this.contractRepository.get(contractId),
       );
-      // this.contractHelper.createPdf(constdata);
-      console.log('generate success');
+      console.log('#generate success');
     } catch (error) {
-      console.log('generate error');
-      console.log(error);
+      console.log('#generate error caused by: ', error);
     }
+  }
+
+  removeFile(fileName) {
+    this.contractHelper.removeFile(
+      join(process.cwd(), '/src/contract/temp/', `${fileName}.pdf`),
+    );
   }
 }

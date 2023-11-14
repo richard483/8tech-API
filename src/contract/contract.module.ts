@@ -8,9 +8,9 @@ import { ContractHelper } from './contract.helper';
 @Module({
   providers: [
     ContractService,
+    ContractHelper,
     PrismaService,
     ContractRepository,
-    ContractHelper,
   ],
   exports: [ContractService],
   controllers: [ContractController],

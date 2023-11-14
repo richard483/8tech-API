@@ -40,24 +40,28 @@ export class ContractController {
 
   //9432dae7-ba04-410a-a4ff-27d6da87ae63
   @Get('generate/:contractId')
+  @Roles(Role.USER)
   @Header('Content-Type', 'application/pdf')
   async generateContract(
     @Res({ passthrough: true }) res,
     @Param() params: any,
   ) {
+    const contractId = params.contractId;
     try {
-      await this.contractService.generate(params.contractId);
+      await this.contractService.generate(contractId);
       const file = createReadStream(
         join(process.cwd(), '/src/contract/temp/', `${params.contractId}.pdf`),
       );
-      // const file = createReadStream(
-      //   join(process.cwd(), '/src/contract/temp/', `asd.pdf`),
-      // );
-      // console.log('#downloading file');
-      return new StreamableFile(file);
-      // return res.status(HttpStatus.OK);
+      return await new StreamableFile(file);
     } catch (error) {
+      console.error('#generateContract error caused by: ', error);
       return res.status(error.status).json({ error: error.message });
+    } finally {
+      this.contractService.removeFile(contractId);
+      console.log(
+        '#generateContract removed residual file for contractId: ',
+        contractId,
+      );
     }
   }
 }

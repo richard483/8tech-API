@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpException } from '@nestjs/common';
 import { DeepMocked, createMock } from '@golevelup/ts-jest';
 import { JobService } from '../job.service';
 import { IJob } from '../interface/job.interface';
