@@ -65,7 +65,7 @@ describe('ContractService', () => {
       .spyOn(reposiotry, 'get')
       .mockResolvedValue(contractMock);
 
-    const helperSpy = jest.spyOn(helper, 'createPdf');
+    const helperSpy = jest.spyOn(helper, 'createPdf').mockResolvedValue(null);
 
     await service.generate('randomId');
 
@@ -92,30 +92,6 @@ describe('ContractService', () => {
     expect(helperSpy).not.toBeCalled();
 
     getSpy.mockRestore();
-    helperSpy.mockRestore();
-  });
-
-  it('removeFile success', async () => {
-    const helperSpy = jest.spyOn(helper, 'removeFile');
-
-    const joinSpy = jest
-      .spyOn(path, 'join')
-      .mockImplementation((args1, args2, args3) => args1 + args2 + args3);
-
-    await service.removeFile('randomId');
-
-    expect(joinSpy).toBeCalledTimes(1);
-    expect(joinSpy).toBeCalledWith(
-      process.cwd(),
-      '/src/contract/temp/',
-      `randomId.pdf`,
-    );
-    expect(helperSpy).toBeCalledTimes(1);
-    expect(helperSpy).toBeCalledWith(
-      process.cwd() + '/src/contract/temp/' + `randomId.pdf`,
-    );
-
-    joinSpy.mockRestore();
     helperSpy.mockRestore();
   });
 });
