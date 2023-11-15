@@ -5,6 +5,7 @@
   "author": "8tech",
   "private": true,
   "license": "UNLICENSED",
+  "main": "src/main.js",
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
   },
