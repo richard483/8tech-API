@@ -6,6 +6,8 @@ import { RoleGuard } from '../../auth/roles/role.guard';
 import { ContractController } from '../contract.controller';
 import { ContractService } from '../contract.service';
 import { IContract } from '../interface/contract.interface';
+import * as fs from 'fs';
+import * as path from 'path';
 
 describe('ContractController', () => {
   let controller: ContractController;
@@ -99,5 +101,36 @@ describe('ContractController', () => {
     expect(res).toEqual(mockResponse);
 
     createSpy.mockRestore();
+  });
+
+  it('generateContract success', async () => {
+    const joinSpy = jest
+      .spyOn(path, 'join')
+      .mockImplementation((args1, args2, args3) => args1 + args2 + args3);
+    const generateSpy = jest.spyOn(contractService, 'generate');
+
+    const statusSpy = jest.fn().mockReturnThis();
+    const createReadStreamSpy = jest
+      .spyOn(fs, 'createReadStream')
+      .mockReturnValue(null);
+    const jsonSpy = jest.fn().mockReturnValue(true);
+
+    const mockRes = {
+      status: statusSpy,
+      json: jsonSpy,
+    };
+
+    await controller.generateContract(mockRes, {
+      contractId: 'randomId',
+    });
+
+    expect(generateSpy).toBeCalledWith('randomId');
+    expect(createReadStreamSpy).toBeCalledWith(
+      process.cwd() + '/src/contract/temp/' + `randomId.pdf`,
+    );
+
+    generateSpy.mockRestore();
+    createReadStreamSpy.mockRestore();
+    joinSpy.mockRestore();
   });
 });
