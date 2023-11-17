@@ -10,10 +10,10 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "scripts": {
-    "build": "nest build && rm -r node_modules && rm ./package.json && cp ./package.prod.json ./package.json && npm i ",
+    "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "init:db": "docker compose up -d && npx prisma generate && npx prisma migrate dev && npx prisma db seed",
-    "start": "npm i  && node dist/src/main",
+    "start": "node dist/src/main",
     "dev": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
