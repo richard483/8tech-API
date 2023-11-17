@@ -10,7 +10,7 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "scripts": {
-    "build": "nest build && cp ./package.prod.json ./dist/package.json",
+    "build": "nest build && rm -r node_modules && rm ./package.json && cp ./package.prod.json ./package.json && npm i ",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "init:db": "docker compose up -d && npx prisma generate && npx prisma migrate dev && npx prisma db seed",
     "start": "npm i  && node dist/src/main",
@@ -38,7 +38,6 @@
     "bcrypt": "^5.1.1",
     "class-validator": "^0.14.0",
     "handlebars": "^4.7.8",
-    "jspdf": "^2.5.1",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
