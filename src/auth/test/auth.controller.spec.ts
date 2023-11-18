@@ -16,6 +16,7 @@ const mockIAuthSuccessResponse = {
     updatedAt: new Date(),
     roles: ['MEMBER'],
     hasGoogleAccount: false,
+    description: 'desc',
   },
   token: 'token',
 };
@@ -33,6 +34,7 @@ const mockIUserResponse = {
   updatedAt: new Date(),
   roles: ['MEMBER'],
   hasGoogleAccount: false,
+  description: 'desc',
 };
 
 describe('AuthController', () => {
