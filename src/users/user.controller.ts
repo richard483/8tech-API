@@ -13,6 +13,7 @@ import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { RoleGuard } from '../auth/roles/role.guard';
 import { Role } from '../auth/roles/role.enum';
 import { UserCreateRequest } from './requests/user-create.request';
+import { UserFilterRequest } from './requests/user-filter.request';
 
 @ApiTags('User')
 @Controller('user')
@@ -40,6 +41,23 @@ export class UserController {
   async createAdmin(@Res() res, @Body() user: UserCreateRequest) {
     try {
       const response = await this.userService.create(user);
+      return res.status(HttpStatus.OK).json({ response });
+    } catch (error) {
+      return res.status(error.status).json({ error: error.message });
+    }
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Post('filter')
+  async filterUser(@Res() res, @Body() body: UserFilterRequest) {
+    try {
+      const response = await this.userService.findManyByList(
+        body.field,
+        body.keyword,
+        body.sort,
+      );
       return res.status(HttpStatus.OK).json({ response });
     } catch (error) {
       return res.status(error.status).json({ error: error.message });

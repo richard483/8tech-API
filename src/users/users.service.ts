@@ -21,4 +21,12 @@ export class UsersService {
     }
     return this.userRepository.create(user);
   }
+
+  async findManyByList(
+    field: string,
+    keyword: string,
+    sort: string,
+  ): Promise<IUser[] | null> {
+    return this.userRepository.findManyByFieldAndSortBy(field, keyword, sort);
+  }
 }

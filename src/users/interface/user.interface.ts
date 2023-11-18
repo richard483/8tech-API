@@ -7,5 +7,8 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
   roles: string[] | Role[];
+  description: string;
+  // previousWorkplace: any;
+  // ratings: any;
   hasGoogleAccount: boolean;
 }

@@ -17,9 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   private static extractJwtFromCookie(req) {
     let token = null;
-    // TODO: need fix here to return unauthorized if no cookie or token
-    // the bug can be reproduced by sending request without login first (tried on createjob)
-    req.headers.cookie.split(';').forEach((element) => {
+    req.headers.cookie?.split(';').forEach((element) => {
       element = element.split('=');
       element[0].trim() === 'EToken' ? (token = element[1].trim()) : null;
     });
