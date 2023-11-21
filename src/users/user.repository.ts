@@ -94,4 +94,15 @@ export class UserRepository {
       orderBy: this.orderBy[sort] || this.orderBy['-createdAt'],
     });
   }
+
+  async updateUserGoogleStatus(email: string, value: boolean): Promise<IUser> {
+    return this.prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        hasGoogleAccount: value,
+      },
+    });
+  }
 }

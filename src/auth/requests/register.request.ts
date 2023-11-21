@@ -21,4 +21,14 @@ export class RegisterRequest {
   @IsNotEmpty()
   @IsString()
   readonly userName: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  readonly firstName: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  readonly lastName: string;
 }

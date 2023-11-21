@@ -16,6 +16,16 @@ export class UserCreateRequest {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  readonly firstName: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  readonly lastName: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   readonly password: string;
 
   @ApiProperty({ enum: Role })

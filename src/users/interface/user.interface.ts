@@ -4,6 +4,8 @@ export interface IUser {
   id: string;
   email: string;
   userName: string;
+  firstName: string;
+  lastName: string;
   createdAt: Date;
   updatedAt: Date;
   roles: string[] | Role[];
