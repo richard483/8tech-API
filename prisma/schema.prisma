@@ -14,14 +14,19 @@ datasource db {
 }
 
 model User {
-  id               String   @id @default(uuid())
-  email            String   @unique
-  userName         String?
-  password         String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  roles            Role[]   @default([USER])
-  hasGoogleAccount Boolean  @default(false)
+  id                     String   @id @default(uuid())
+  email                  String   @unique
+  userName               String?
+  password               String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  roles                  Role[]   @default([USER])
+  description            String?
+  previousWorkplaceId    String[]
+  previousWorkplaceCount Int?
+  ratings                Rating[]
+  ratingsAvg             Float?
+  hasGoogleAccount       Boolean  @default(false)
 }
 
 model JobVacancy {
@@ -55,6 +60,14 @@ model Contract {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   JobVacancy  JobVacancy? @relation(fields: [jobId], references: [id])
+}
+
+model Rating {
+  id            String @id @default(uuid())
+  User          User   @relation(fields: [userId], references: [id])
+  userId        String
+  givenByUserId String
+  ratingOf10    Int
 }
 
 enum Role {

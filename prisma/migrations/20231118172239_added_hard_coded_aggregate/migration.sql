@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "previousWorkplaceCount" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "ratingsAvg" DOUBLE PRECISION NOT NULL DEFAULT 0;
