@@ -75,7 +75,7 @@ export class UserRepository {
       ratingsAvg:
         user.ratings
           ?.map((rating) => rating.ratingOf10)
-          .reduce((a, b) => a + b, 0) / user.ratings.length,
+          .reduce((a, b) => a + b, 0) / user.ratings?.length,
     };
     return this.prisma.user.create({
       data,
