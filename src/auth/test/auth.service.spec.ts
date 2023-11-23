@@ -33,6 +33,8 @@ describe('AuthService', () => {
     mockUser = {
       id: '1',
       userName: 'test',
+      firstName: 'test',
+      lastName: 'test',
       email: 'email@email.com',
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -59,6 +61,8 @@ describe('AuthService', () => {
       password: 'password',
       repeatPassword: 'password',
       userName: 'userName',
+      firstName: 'test',
+      lastName: 'test',
     };
   });
 
@@ -268,6 +272,8 @@ describe('AuthService', () => {
     expect(createUserSpy).toBeCalledWith({
       email: mockUser.email,
       userName: googleUserData.firstName + ' ' + googleUserData.lastName,
+      firstName: googleUserData.firstName,
+      lastName: googleUserData.lastName,
       roles: [Role.USER],
       hasGoogleAccount: true,
     });

@@ -29,4 +29,11 @@ export class UsersService {
   ): Promise<IUser[] | null> {
     return this.userRepository.findManyByFieldAndSortBy(field, keyword, sort);
   }
+
+  async updateGoogleStatus(
+    email: string,
+    value: boolean,
+  ): Promise<IUser | null> {
+    return this.userRepository.updateUserGoogleStatus(email, value);
+  }
 }

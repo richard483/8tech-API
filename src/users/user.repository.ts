@@ -75,7 +75,7 @@ export class UserRepository {
       ratingsAvg:
         user.ratings
           ?.map((rating) => rating.ratingOf10)
-          .reduce((a, b) => a + b, 0) / user.ratings.length,
+          .reduce((a, b) => a + b, 0) / user.ratings?.length,
     };
     return this.prisma.user.create({
       data,
@@ -92,6 +92,17 @@ export class UserRepository {
         ? this.field[field](keyword)
         : this.field['description'](keyword),
       orderBy: this.orderBy[sort] || this.orderBy['-createdAt'],
+    });
+  }
+
+  async updateUserGoogleStatus(email: string, value: boolean): Promise<IUser> {
+    return this.prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        hasGoogleAccount: value,
+      },
     });
   }
 }

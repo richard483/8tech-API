@@ -79,10 +79,14 @@ export class AuthService {
       await this.usersService.create({
         email: user.email,
         userName: user.firstName + ' ' + user.lastName,
+        firstName: user.firstName,
+        lastName: user.lastName,
         roles: [Role.USER],
         hasGoogleAccount: true,
       });
       userDb = await this.usersService.findOneByEmail(user.email);
+    } else if (!userDb.hasGoogleAccount) {
+      await this.usersService.updateGoogleStatus(user.email, true);
     }
     const userData: IAuthenticate = { user: userDb };
     userData.token = this.jwtService.sign(userData);

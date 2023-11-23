@@ -11,6 +11,8 @@ const mockIAuthSuccessResponse = {
   user: {
     id: '1',
     userName: 'test',
+    firstName: 'test',
+    lastName: 'test',
     email: 'email@email.com',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -29,6 +31,8 @@ const mockBadRequestResponse = {
 const mockIUserResponse = {
   id: '1',
   userName: 'test',
+  firstName: 'test',
+  lastName: 'test',
   email: 'email@email.com',
   createdAt: new Date(),
   updatedAt: new Date(),

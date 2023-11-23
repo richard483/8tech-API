@@ -39,6 +39,8 @@ describe('AuthController', () => {
     const mockUserCreateDto = {
       email: 'email@email.com',
       userName: 'test',
+      firstName: 'test',
+      lastName: 'test',
       password: 'password',
       roles: ['MEMBER'],
     };
@@ -46,6 +48,8 @@ describe('AuthController', () => {
     const mockUser = {
       id: '1',
       userName: 'test',
+      firstName: 'test',
+      lastName: 'test',
       email: 'email',
       createdAt: new Date(),
       updatedAt: new Date(),

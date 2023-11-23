@@ -21,6 +21,8 @@ describe('UsersService', () => {
     userMock = {
       id: '1',
       userName: 'test',
+      firstName: 'test',
+      lastName: 'test',
       email: 'email@email.com',
       createdAt: new Date(),
       updatedAt: new Date(),

@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 
 declare const module: any;
 
@@ -18,6 +19,8 @@ async function bootstrap() {
     .addBearerAuth()
     .addCookieAuth('EToken')
     .build();
+
+  app.useGlobalPipes(new ValidationPipe());
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/swagger', app, document);

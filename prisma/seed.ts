@@ -16,6 +16,8 @@ async function users() {
     create: {
       email: 'admin@email.com',
       userName: 'Admin',
+      firstName: 'Admin',
+      lastName: 'Admin',
       password: hashPassword('Admin123_'),
       roles: ['ADMIN', 'USER'],
     },
@@ -27,6 +29,8 @@ async function users() {
     create: {
       email: 'default.user@email.com',
       userName: 'Default User',
+      firstName: 'Default',
+      lastName: 'User',
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'default user description that being created by seed.ts',
@@ -39,6 +43,8 @@ async function users() {
     create: {
       email: 'notADefault.user@email.com',
       userName: 'notADefault User',
+      firstName: 'notADefault',
+      lastName: 'User',
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'notADefault user description that being created by seed.ts',
@@ -51,6 +57,8 @@ async function users() {
     create: {
       email: 'mariaMarionette.user@email.com',
       userName: 'mariaMarionette User',
+      firstName: 'mariaMarionette',
+      lastName: 'User',
       password: hashPassword('User123_'),
       roles: ['USER'],
       description:
@@ -64,6 +72,8 @@ async function users() {
     create: {
       email: 'mika.user@email.com',
       userName: 'mika User',
+      firstName: 'mika',
+      lastName: 'User',
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'mika user description that being created by seed.ts',
@@ -76,6 +86,8 @@ async function users() {
     create: {
       email: 'sonny.user@email.com',
       userName: 'sonny User',
+      firstName: 'sonny',
+      lastName: 'User',
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'sonny user description that being created by seed.ts',
@@ -88,6 +100,8 @@ async function users() {
     create: {
       email: 'enna.user@email.com',
       userName: 'enna User',
+      firstName: 'enna',
+      lastName: 'User',
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'enna user description that being created by seed.ts',
@@ -100,6 +114,8 @@ async function users() {
     create: {
       email: 'satoru.user@email.com',
       userName: 'satoru User',
+      firstName: 'satoru',
+      lastName: 'User',
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'satoru user description that being created by seed.ts',
@@ -112,6 +128,8 @@ async function users() {
     create: {
       email: 'eyePatch.user@email.com',
       userName: 'eyePatch User',
+      firstName: 'eyePatch',
+      lastName: 'User',
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'eyePatch user description that being created by seed.ts',
@@ -124,6 +142,8 @@ async function users() {
     create: {
       email: 'ricat.user@email.com',
       userName: 'ricat User',
+      firstName: 'ricat',
+      lastName: 'User',
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'ricat user description that being created by seed.ts',
