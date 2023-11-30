@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsEmail, IsString, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 import { Role } from '../../auth/roles/role.enum';
 
 export class UserUpdateRequest {
