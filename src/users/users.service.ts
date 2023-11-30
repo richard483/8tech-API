@@ -22,6 +22,11 @@ export class UsersService {
     return this.userRepository.create(user);
   }
 
+  async update(userData: any): Promise<IUser | null> {
+    const { id, ...data } = userData;
+    return this.userRepository.update(id, data);
+  }
+
   async findManyByList(
     field: string,
     keyword: string,

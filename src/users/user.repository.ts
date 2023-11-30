@@ -82,6 +82,15 @@ export class UserRepository {
     });
   }
 
+  async update(id: string, data: any): Promise<IUser> {
+    return this.prisma.user.update({
+      where: {
+        id,
+      },
+      data,
+    });
+  }
+
   async findManyByFieldAndSortBy(
     field: string,
     keyword: string,

@@ -14,6 +14,7 @@ import { RoleGuard } from '../auth/roles/role.guard';
 import { Role } from '../auth/roles/role.enum';
 import { UserCreateRequest } from './requests/user-create.request';
 import { UserFilterRequest } from './requests/user-filter.request';
+import { UserUpdateRequest } from './requests/user-update.request';
 
 @ApiTags('User')
 @Controller('user')
@@ -41,6 +42,19 @@ export class UserController {
   async createAdmin(@Res() res, @Body() user: UserCreateRequest) {
     try {
       const response = await this.userService.create(user);
+      return res.status(HttpStatus.OK).json({ response });
+    } catch (error) {
+      return res.status(error.status).json({ error: error.message });
+    }
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Post('update')
+  async update(@Res() res, @Body() data: UserUpdateRequest) {
+    try {
+      const response = await this.userService.update(data);
       return res.status(HttpStatus.OK).json({ response });
     } catch (error) {
       return res.status(error.status).json({ error: error.message });
