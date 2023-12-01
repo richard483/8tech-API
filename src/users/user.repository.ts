@@ -12,8 +12,8 @@ export class UserRepository {
     this.model = this.prisma.user;
 
     this.orderBy = {
-      userName: { name: 'asc' },
-      '-userName': { name: 'desc' },
+      userName: { userName: 'asc' },
+      '-userName': { userName: 'desc' },
       createdAt: { createdAt: 'asc' },
       '-createdAt': { createdAt: 'desc' },
       description: { description: 'asc' },
