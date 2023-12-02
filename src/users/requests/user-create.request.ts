@@ -11,7 +11,7 @@ export class UserCreateRequest {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly userName: string;
+  readonly username: string;
 
   @ApiProperty()
   @IsNotEmpty()
