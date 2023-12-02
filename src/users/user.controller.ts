@@ -67,13 +67,7 @@ export class UserController {
   @Post('filter')
   async filterUser(@Res() res, @Body() body: UserFilterRequest) {
     try {
-      const response = await this.userService.findManyByList(
-        body.field,
-        body.keyword,
-        body.sort,
-        body.page,
-        body.size,
-      );
+      const response = await this.userService.findManyByList(body);
       return res.status(HttpStatus.OK).json({ response });
     } catch (error) {
       return res.status(error.status).json({ error: error.message });

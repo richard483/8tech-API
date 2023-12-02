@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { pagination, returnablePaginated } from '../prisma/prisma.util';
 import { IUser } from './interface/user.interface';
+import { UserFilterRequest } from './requests/user-filter.request';
 
 @Injectable()
 export class UserRepository {
@@ -92,31 +93,33 @@ export class UserRepository {
     });
   }
 
-  async findManyByFieldAndSortBy(
-    field: string,
-    keyword: string,
-    sort: string,
-    page: number,
-    size: number,
-  ): Promise<any> {
+  async findManyByFieldAndSortBy(reqData: UserFilterRequest): Promise<any> {
     const result = this.prisma.user.findMany({
-      ...pagination(page || 1, size || 5),
-      where: field
-        ? this.field[field](keyword)
-        : this.field['description'](keyword),
-      orderBy: this.orderBy[sort] || this.orderBy['-createdAt'],
+      ...pagination(reqData.page, reqData.size),
+      where: reqData.field
+        ? this.field[reqData.field](reqData.keyword)
+        : this.field['description'](reqData.keyword),
+      orderBy: this.orderBy[reqData.sort] || this.orderBy['-createdAt'],
     });
 
     const total = this.prisma.user.count({
-      where: field
-        ? this.field[field](keyword)
-        : this.field['description'](keyword),
+      where: reqData.field
+        ? this.field[reqData.field](reqData.keyword)
+        : this.field['description'](reqData.keyword),
     });
 
-    return Promise.all([result, total]).then((values) => {
-      const [data, total] = values;
-      return returnablePaginated(data, total, page, size);
-    });
+    return Promise.all([result, total])
+      .then((values) => {
+        const [data, total] = values;
+        return returnablePaginated(data, total, reqData.page, reqData.size);
+      })
+      .catch((e) => {
+        console.log(
+          '#UserRepository findManyByFieldAndSortBy error caused by: ',
+          e,
+        );
+        throw new HttpException('INVALID_QUERY_REQUEST', 400);
+      });
   }
 
   async updateUserGoogleStatus(email: string, value: boolean): Promise<IUser> {
