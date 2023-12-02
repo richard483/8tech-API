@@ -11,7 +11,7 @@ export class UserUpdateRequest {
   readonly email: string;
 
   @ApiProperty()
-  readonly userName: string;
+  readonly username: string;
 
   @ApiProperty()
   readonly firstName: string;

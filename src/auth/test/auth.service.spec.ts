@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { IGoogleUser } from '../interface/auth.interface';
 import { Role } from '../roles/role.enum';
 import { compare, genSaltSync, hashSync } from 'bcrypt';
+import { mock } from 'node:test';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -32,7 +33,7 @@ describe('AuthService', () => {
 
     mockUser = {
       id: '1',
-      userName: 'test',
+      username: 'test',
       firstName: 'test',
       lastName: 'test',
       email: 'email@email.com',
@@ -59,8 +60,7 @@ describe('AuthService', () => {
     mockRegisterRequest = {
       email: 'email@email.com',
       password: 'password',
-      repeatPassword: 'password',
-      userName: 'userName',
+      username: 'username',
       firstName: 'test',
       lastName: 'test',
     };
@@ -173,23 +173,23 @@ describe('AuthService', () => {
     const userCreateSpy = jest
       .spyOn(userService, 'create')
       .mockResolvedValue(mockUser);
-
+    mockRegisterRequest.password = 'password123';
     expect(await service.register(mockRegisterRequest)).toEqual(mockUser);
     expect(userCreateSpy).toBeCalledTimes(1);
 
     userCreateSpy.mockRestore();
   });
 
-  it('register success', async () => {
-    mockRegisterRequest.repeatPassword = 'wrongPassword';
+  it('register failed invalid password', async () => {
     (genSaltSync as jest.Mock) = jest.fn().mockReturnValue('salt');
     (hashSync as jest.Mock) = jest.fn().mockReturnValue('hashedPassword');
 
     try {
       await service.register(mockRegisterRequest);
     } catch (e) {
+      console.log('#register failed invalid password', e);
       expect(e).toBeInstanceOf(BadRequestException);
-      expect(e.message).toBe('PASSWORD_NOT_MATCH');
+      expect(e.message).toBe('INVALID_PASSWORD');
     }
   });
 
@@ -271,7 +271,7 @@ describe('AuthService', () => {
     expect(signSpy).toBeCalledTimes(1);
     expect(createUserSpy).toBeCalledWith({
       email: mockUser.email,
-      userName: googleUserData.firstName + ' ' + googleUserData.lastName,
+      username: googleUserData.firstName + ' ' + googleUserData.lastName,
       firstName: googleUserData.firstName,
       lastName: googleUserData.lastName,
       roles: [Role.USER],

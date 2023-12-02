@@ -14,8 +14,8 @@ export class UserRepository {
     this.model = this.prisma.user;
 
     this.orderBy = {
-      userName: { userName: 'asc' },
-      '-userName': { userName: 'desc' },
+      username: { username: 'asc' },
+      '-username': { username: 'desc' },
       createdAt: { createdAt: 'asc' },
       '-createdAt': { createdAt: 'desc' },
       description: { description: 'asc' },
@@ -96,14 +96,14 @@ export class UserRepository {
   async findManyByFieldAndSortBy(reqData: UserFilterRequest): Promise<any> {
     const result = this.prisma.user.findMany({
       ...pagination(reqData.page, reqData.size),
-      where: reqData.field
+      where: this.field[reqData.field]
         ? this.field[reqData.field](reqData.keyword)
         : this.field['description'](reqData.keyword),
       orderBy: this.orderBy[reqData.sort] || this.orderBy['-createdAt'],
     });
 
     const total = this.prisma.user.count({
-      where: reqData.field
+      where: this.field[reqData.field]
         ? this.field[reqData.field](reqData.keyword)
         : this.field['description'](reqData.keyword),
     });

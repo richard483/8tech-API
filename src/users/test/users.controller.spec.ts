@@ -38,7 +38,7 @@ describe('AuthController', () => {
   it('createAdmin success', async () => {
     const mockUserCreateDto = {
       email: 'email@email.com',
-      userName: 'test',
+      username: 'test',
       firstName: 'test',
       lastName: 'test',
       password: 'password',
@@ -47,7 +47,7 @@ describe('AuthController', () => {
 
     const mockUser = {
       id: '1',
-      userName: 'test',
+      username: 'test',
       firstName: 'test',
       lastName: 'test',
       email: 'email',

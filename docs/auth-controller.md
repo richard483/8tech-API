@@ -27,7 +27,7 @@ HTTP Code: 200
   "user": {
     "id": "4be2319f-489b-4630-b7cf-af0b07670ac0",
     "email": "admin@email.com",
-    "userName": "Admin",
+    "username": "Admin",
     "firstName": "",
     "lastName": "",
     "createdAt": "2023-11-18T12:56:18.427Z",
@@ -98,7 +98,7 @@ HTTP Code: 400
 | `email`          | String |
 | `password`       | String |
 | `repeatPassword` | String |
-| `userName`       | String |
+| `username`       | String |
 | `firstName`      | String |
 | `lastName`       | String |
 
@@ -110,7 +110,7 @@ HTTP Code: 200
 {
   "id": "89edfeb7-0b26-4c88-950a-2216123ec367",
   "email": "asdasdas@gmail.com",
-  "userName": "string",
+  "username": "string",
   "firstName": "string",
   "lastName": "string",
   "password": "$2b$10$wxulL2C86NpVTzWMlA9Knu9CVUdasWCwSwaC3tqj/S9ziA/iT9JiW",

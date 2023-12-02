@@ -10,7 +10,7 @@ import { GoogleGuard } from '../google/google.guard';
 const mockIAuthSuccessResponse = {
   user: {
     id: '1',
-    userName: 'test',
+    username: 'test',
     firstName: 'test',
     lastName: 'test',
     email: 'email@email.com',
@@ -30,7 +30,7 @@ const mockBadRequestResponse = {
 
 const mockIUserResponse = {
   id: '1',
-  userName: 'test',
+  username: 'test',
   firstName: 'test',
   lastName: 'test',
   email: 'email@email.com',

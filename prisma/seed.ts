@@ -15,7 +15,7 @@ async function users() {
     update: {},
     create: {
       email: 'admin@email.com',
-      userName: 'Admin',
+      username: 'Admin',
       firstName: 'Admin',
       lastName: 'Admin',
       password: hashPassword('Admin123_'),
@@ -27,7 +27,7 @@ async function users() {
     update: {},
     create: {
       email: 'recruiter@email.com',
-      userName: 'Recruiter User',
+      username: 'Recruiter User',
       firstName: 'Recruiter',
       lastName: 'User',
       password: hashPassword('User123_'),
@@ -47,7 +47,7 @@ async function users() {
     update: {},
     create: {
       email: 'default.user@email.com',
-      userName: 'Default User',
+      username: 'Default User',
       firstName: 'Default',
       lastName: 'User',
       password: hashPassword('User123_'),
@@ -61,7 +61,7 @@ async function users() {
     update: {},
     create: {
       email: 'notADefault.user@email.com',
-      userName: 'notADefault User',
+      username: 'notADefault User',
       firstName: 'notADefault',
       lastName: 'User',
       password: hashPassword('User123_'),
@@ -75,7 +75,7 @@ async function users() {
     update: {},
     create: {
       email: 'mariaMarionette.user@email.com',
-      userName: 'mariaMarionette User',
+      username: 'mariaMarionette User',
       firstName: 'mariaMarionette',
       lastName: 'User',
       password: hashPassword('User123_'),
@@ -90,7 +90,7 @@ async function users() {
     update: {},
     create: {
       email: 'mika.user@email.com',
-      userName: 'mika User',
+      username: 'mika User',
       firstName: 'mika',
       lastName: 'User',
       password: hashPassword('User123_'),
@@ -104,7 +104,7 @@ async function users() {
     update: {},
     create: {
       email: 'sonny.user@email.com',
-      userName: 'sonny User',
+      username: 'sonny User',
       firstName: 'sonny',
       lastName: 'User',
       password: hashPassword('User123_'),
@@ -118,7 +118,7 @@ async function users() {
     update: {},
     create: {
       email: 'enna.user@email.com',
-      userName: 'enna User',
+      username: 'enna User',
       firstName: 'enna',
       lastName: 'User',
       password: hashPassword('User123_'),
@@ -132,7 +132,7 @@ async function users() {
     update: {},
     create: {
       email: 'satoru.user@email.com',
-      userName: 'satoru User',
+      username: 'satoru User',
       firstName: 'satoru',
       lastName: 'User',
       password: hashPassword('User123_'),
@@ -146,7 +146,7 @@ async function users() {
     update: {},
     create: {
       email: 'eyePatch.user@email.com',
-      userName: 'eyePatch User',
+      username: 'eyePatch User',
       firstName: 'eyePatch',
       lastName: 'User',
       password: hashPassword('User123_'),
@@ -160,7 +160,7 @@ async function users() {
     update: {},
     create: {
       email: 'ricat.user@email.com',
-      userName: 'ricat User',
+      username: 'ricat User',
       firstName: 'ricat',
       lastName: 'User',
       password: hashPassword('User123_'),

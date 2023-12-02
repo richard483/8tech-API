@@ -52,16 +52,13 @@ export class AuthService {
     return user;
   }
 
-  async register(registerRequest: RegisterRequest): Promise<IUser> {
-    const { repeatPassword, ...userCreate } = registerRequest;
-
-    if (userCreate.password !== repeatPassword) {
-      throw new BadRequestException('PASSWORD_NOT_MATCH');
+  async register(userCreate: RegisterRequest): Promise<IUser> {
+    if (!this.passwordValidation(userCreate.password)) {
+      throw new BadRequestException('INVALID_PASSWORD');
     }
-
-    userCreate.password = this.hashPassword(userCreate.password);
     const user = await this.usersService.create({
       ...userCreate,
+      password: this.hashPassword(userCreate.password),
     });
     return user;
   }
@@ -78,7 +75,7 @@ export class AuthService {
     if (!userDb) {
       await this.usersService.create({
         email: user.email,
-        userName: user.firstName + ' ' + user.lastName,
+        username: user.firstName + ' ' + user.lastName,
         firstName: user.firstName,
         lastName: user.lastName,
         roles: [Role.USER],
@@ -100,5 +97,11 @@ export class AuthService {
     const salt = genSaltSync(10);
     const hashedPassword = hashSync(password, salt);
     return hashedPassword;
+  }
+
+  private passwordValidation(password: string): boolean {
+    const passwordWithNumberAndAlphabetRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return passwordWithNumberAndAlphabetRegex.test(password);
   }
 }

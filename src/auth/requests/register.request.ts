@@ -15,12 +15,7 @@ export class RegisterRequest {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly repeatPassword: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  readonly userName: string;
+  readonly username: string;
 
   @ApiProperty()
   @IsNotEmpty()

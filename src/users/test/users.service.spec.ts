@@ -20,7 +20,7 @@ describe('UsersService', () => {
     reposiotry = module.get(UserRepository);
     userMock = {
       id: '1',
-      userName: 'test',
+      username: 'test',
       firstName: 'test',
       lastName: 'test',
       email: 'email@email.com',
