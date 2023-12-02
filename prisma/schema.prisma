@@ -28,7 +28,9 @@ model User {
   previousWorkplaceCount Int?
   ratings                Rating[]
   ratingsAvg             Float?
+  companyId              String?
   hasGoogleAccount       Boolean  @default(false)
+  company                Company? @relation(fields: [companyId], references: [id])
 }
 
 model JobVacancy {
@@ -50,6 +52,7 @@ model Company {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   jobs        JobVacancy[]
+  User        User[]
 }
 
 model Contract {
@@ -75,4 +78,5 @@ model Rating {
 enum Role {
   ADMIN
   USER
+  RECRUITER
 }

@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { IUser } from './interface/user.interface';
+import { UserFilterRequest } from './requests/user-filter.request';
 
 @Injectable()
 export class UsersService {
@@ -22,12 +23,13 @@ export class UsersService {
     return this.userRepository.create(user);
   }
 
-  async findManyByList(
-    field: string,
-    keyword: string,
-    sort: string,
-  ): Promise<IUser[] | null> {
-    return this.userRepository.findManyByFieldAndSortBy(field, keyword, sort);
+  async update(userData: any): Promise<IUser | null> {
+    const { id, ...data } = userData;
+    return this.userRepository.update(id, data);
+  }
+
+  async findManyByList(data: UserFilterRequest): Promise<IUser[] | null> {
+    return this.userRepository.findManyByFieldAndSortBy(data);
   }
 
   async updateGoogleStatus(

@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { pagination, returnablePaginated } from '../prisma/prisma.util';
 import { IUser } from './interface/user.interface';
+import { UserFilterRequest } from './requests/user-filter.request';
 
 @Injectable()
 export class UserRepository {
@@ -12,8 +14,8 @@ export class UserRepository {
     this.model = this.prisma.user;
 
     this.orderBy = {
-      userName: { name: 'asc' },
-      '-userName': { name: 'desc' },
+      userName: { userName: 'asc' },
+      '-userName': { userName: 'desc' },
       createdAt: { createdAt: 'asc' },
       '-createdAt': { createdAt: 'desc' },
       description: { description: 'asc' },
@@ -82,17 +84,42 @@ export class UserRepository {
     });
   }
 
-  async findManyByFieldAndSortBy(
-    field: string,
-    keyword: string,
-    sort: string,
-  ): Promise<IUser[] | null> {
-    return this.prisma.user.findMany({
-      where: field
-        ? this.field[field](keyword)
-        : this.field['description'](keyword),
-      orderBy: this.orderBy[sort] || this.orderBy['-createdAt'],
+  async update(id: string, data: any): Promise<IUser> {
+    return this.prisma.user.update({
+      where: {
+        id,
+      },
+      data,
     });
+  }
+
+  async findManyByFieldAndSortBy(reqData: UserFilterRequest): Promise<any> {
+    const result = this.prisma.user.findMany({
+      ...pagination(reqData.page, reqData.size),
+      where: reqData.field
+        ? this.field[reqData.field](reqData.keyword)
+        : this.field['description'](reqData.keyword),
+      orderBy: this.orderBy[reqData.sort] || this.orderBy['-createdAt'],
+    });
+
+    const total = this.prisma.user.count({
+      where: reqData.field
+        ? this.field[reqData.field](reqData.keyword)
+        : this.field['description'](reqData.keyword),
+    });
+
+    return Promise.all([result, total])
+      .then((values) => {
+        const [data, total] = values;
+        return returnablePaginated(data, total, reqData.page, reqData.size);
+      })
+      .catch((e) => {
+        console.log(
+          '#UserRepository findManyByFieldAndSortBy error caused by: ',
+          e,
+        );
+        throw new HttpException('INVALID_QUERY_REQUEST', 400);
+      });
   }
 
   async updateUserGoogleStatus(email: string, value: boolean): Promise<IUser> {

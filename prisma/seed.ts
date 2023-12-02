@@ -22,7 +22,26 @@ async function users() {
       roles: ['ADMIN', 'USER'],
     },
   });
-
+  const recruiter = await prisma.user.upsert({
+    where: { email: 'recruiter@email.com' },
+    update: {},
+    create: {
+      email: 'recruiter@email.com',
+      userName: 'Recruiter User',
+      firstName: 'Recruiter',
+      lastName: 'User',
+      password: hashPassword('User123_'),
+      roles: ['USER', 'RECRUITER'],
+      description: 'default user description that being created by seed.ts',
+      companyId: await prisma.company
+        .findFirst({
+          where: {
+            name: 'Nijisanji Anycolor',
+          },
+        })
+        .then((company) => company.id),
+    },
+  });
   const defaultUser = await prisma.user.upsert({
     where: { email: 'default.user@email.com' },
     update: {},
@@ -151,6 +170,7 @@ async function users() {
     },
   });
 
+  console.log('Created recruiter user: ', recruiter);
   console.log(
     await [
       admin,

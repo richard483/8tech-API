@@ -1,17 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class UserFilterRequest {
   @ApiProperty()
-  @IsEmail()
-  readonly field: string;
+  readonly field?: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  readonly keyword: string;
+  readonly keyword?: string;
 
   @ApiProperty()
-  @IsString()
-  readonly sort: string;
+  readonly sort?: string;
+
+  @ApiProperty()
+  readonly page?: number;
+
+  @ApiProperty()
+  readonly size?: number;
 }
