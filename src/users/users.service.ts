@@ -31,8 +31,16 @@ export class UsersService {
     field: string,
     keyword: string,
     sort: string,
+    page: number,
+    size: number,
   ): Promise<IUser[] | null> {
-    return this.userRepository.findManyByFieldAndSortBy(field, keyword, sort);
+    return this.userRepository.findManyByFieldAndSortBy(
+      field,
+      keyword,
+      sort,
+      page,
+      size,
+    );
   }
 
   async updateGoogleStatus(

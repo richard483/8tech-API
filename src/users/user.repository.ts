@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { pagination, returnablePaginated } from '../prisma/prisma.util';
 import { IUser } from './interface/user.interface';
 
 @Injectable()
@@ -95,12 +96,26 @@ export class UserRepository {
     field: string,
     keyword: string,
     sort: string,
-  ): Promise<IUser[] | null> {
-    return this.prisma.user.findMany({
+    page: number,
+    size: number,
+  ): Promise<any> {
+    const result = this.prisma.user.findMany({
+      ...pagination(page || 1, size || 5),
       where: field
         ? this.field[field](keyword)
         : this.field['description'](keyword),
       orderBy: this.orderBy[sort] || this.orderBy['-createdAt'],
+    });
+
+    const total = this.prisma.user.count({
+      where: field
+        ? this.field[field](keyword)
+        : this.field['description'](keyword),
+    });
+
+    return Promise.all([result, total]).then((values) => {
+      const [data, total] = values;
+      return returnablePaginated(data, total, page, size);
     });
   }
 

@@ -71,6 +71,8 @@ export class UserController {
         body.field,
         body.keyword,
         body.sort,
+        body.page,
+        body.size,
       );
       return res.status(HttpStatus.OK).json({ response });
     } catch (error) {

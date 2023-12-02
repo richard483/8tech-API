@@ -9,4 +9,10 @@ export class UserFilterRequest {
 
   @ApiProperty()
   readonly sort?: string;
+
+  @ApiProperty()
+  readonly page?: number;
+
+  @ApiProperty()
+  readonly size?: number;
 }
