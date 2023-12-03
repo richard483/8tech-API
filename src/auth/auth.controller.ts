@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpStatus,
   Post,
   Request,
   Res,
@@ -27,14 +26,14 @@ export class AuthController {
   async signIn(@Res() res, @Body() authenticateDto: AuthenticateRequest) {
     console.info('#AuthLogin request incoming with: ', authenticateDto);
     const response = await this.authService.login(authenticateDto, res);
-    return res.status(HttpStatus.OK).json({ ...response });
+    return response;
   }
 
   @Post('register')
   async signUp(@Res() res, @Body() request: RegisterRequest) {
     console.info('#AuthRegister request incoming with: ', request);
     const response = await this.authService.register(request);
-    return res.status(HttpStatus.OK).json({ ...response });
+    return response;
   }
 
   @Get('google')
@@ -49,7 +48,7 @@ export class AuthController {
     console.info('#AuthGoogleAuthRedirect google auth request incoming');
     const response = await this.authService.googleLogin(req, res);
     // TODO : redirect to frontend
-    return res.status(HttpStatus.OK).json({ ...response });
+    return response;
   }
 
   @ApiBearerAuth()
@@ -59,6 +58,6 @@ export class AuthController {
   @Get('info')
   async getProfileInfo(@Request() req, @Res() res) {
     console.info('#AuthGetProfileInfo request incoming');
-    return res.status(HttpStatus.OK).json({ ...req.user });
+    return req.user;
   }
 }

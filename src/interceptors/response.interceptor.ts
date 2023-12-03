@@ -4,8 +4,9 @@ import {
   ExecutionContext,
   CallHandler,
   HttpException,
+  HttpStatus,
+  StreamableFile,
 } from '@nestjs/common';
-import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -40,7 +41,6 @@ export class ResponseInterceptor implements NestInterceptor {
       'and stack trace: ',
       exception.stack,
     );
-    console.error('#Error caused by: ', HttpErrorByCode[status]);
 
     response.status(status).json({
       status: false,
@@ -51,17 +51,18 @@ export class ResponseInterceptor implements NestInterceptor {
   }
 
   private responseHandler(res: any, context: ExecutionContext) {
+    if (res instanceof StreamableFile) {
+      return res;
+    }
+
     const ctx = context.switchToHttp();
     const response = ctx.getResponse();
-    const request = ctx.getRequest();
 
-    const statusCode = response.statusCode;
-    return {
+    response.status(HttpStatus.OK).json({
       status: true,
-      path: request.url,
-      statusCode,
-      result: res,
-    };
+      statusCode: HttpStatus.OK,
+      data: res,
+    });
   }
 
   private htttpCodeParser(statusCode: number) {

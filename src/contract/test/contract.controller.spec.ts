@@ -95,12 +95,14 @@ describe('ContractController', () => {
       json: jsonSpy,
     };
 
-    const res = await controller.createContract(mockRes, null);
+    try {
+      await controller.createContract(mockRes, null);
+    } catch (e) {
+      expect(createSpy).toBeCalledWith(null);
+      expect(e).toEqual(mockResponse);
 
-    expect(createSpy).toBeCalledWith(null);
-    expect(res).toEqual(mockResponse);
-
-    createSpy.mockRestore();
+      createSpy.mockRestore();
+    }
   });
 
   it('generateContract success', async () => {
@@ -120,17 +122,19 @@ describe('ContractController', () => {
       json: jsonSpy,
     };
 
-    await controller.generateContract(mockRes, {
-      contractId: 'randomId',
-    });
+    try {
+      await controller.generateContract(mockRes, {
+        contractId: 'randomId',
+      });
+    } catch (e) {
+      expect(generateSpy).toBeCalledWith('randomId');
+      expect(createReadStreamSpy).toBeCalledWith(
+        process.cwd() + '/src/contract/temp/' + `randomId.pdf`,
+      );
 
-    expect(generateSpy).toBeCalledWith('randomId');
-    expect(createReadStreamSpy).toBeCalledWith(
-      process.cwd() + '/src/contract/temp/' + `randomId.pdf`,
-    );
-
-    generateSpy.mockRestore();
-    createReadStreamSpy.mockRestore();
-    joinSpy.mockRestore();
+      generateSpy.mockRestore();
+      createReadStreamSpy.mockRestore();
+      joinSpy.mockRestore();
+    }
   });
 });

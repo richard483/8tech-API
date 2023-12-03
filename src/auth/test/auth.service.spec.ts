@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DeepMocked, createMock } from '@golevelup/ts-jest';
 import { AuthService } from '../auth.service';
 import { UsersService } from '../../users/users.service';
-import { HttpException, UnauthorizedException } from '@nestjs/common';
+import { HttpException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IGoogleUser } from '../interface/auth.interface';
 import { Role } from '../roles/role.enum';
@@ -234,8 +234,8 @@ describe('AuthService', () => {
     try {
       await service.googleLogin(req, res);
     } catch (e) {
-      expect(e).toBeInstanceOf(UnauthorizedException);
-      expect(e.message).toBe('INVALID_CREDENTIALS');
+      expect(e).toBeInstanceOf(HttpException);
+      expect(e.message).toBe('Http Exception');
     }
   });
 

@@ -88,8 +88,6 @@ describe('AuthController', () => {
     const response = await controller.signIn(mockRes, null);
 
     expect(response).toEqual(mockIAuthSuccessResponse);
-    expect(statusSpy).toBeCalledWith(HttpStatus.OK);
-    expect(jsonSpy).toBeCalledWith(mockIAuthSuccessResponse);
     expect(loginSpy).toBeCalledTimes(1);
     statusSpy.mockRestore();
     jsonSpy.mockRestore();
@@ -136,8 +134,6 @@ describe('AuthController', () => {
     const response = await controller.signUp(mockRes, null);
 
     expect(response).toEqual(mockIUserResponse);
-    expect(statusSpy).toBeCalledWith(HttpStatus.OK);
-    expect(jsonSpy).toBeCalledWith(mockIUserResponse);
     expect(registerSpy).toBeCalledTimes(1);
     statusSpy.mockRestore();
     jsonSpy.mockRestore();
@@ -181,8 +177,6 @@ describe('AuthController', () => {
     const response = await controller.getProfileInfo(mockReq, mockRes);
 
     expect(response).toEqual(mockIUserResponse);
-    expect(statusSpy).toBeCalledWith(HttpStatus.OK);
-    expect(jsonSpy).toBeCalledWith(mockIUserResponse);
   });
 
   it('googleRedirectLogin success', async () => {
@@ -201,8 +195,6 @@ describe('AuthController', () => {
     const response = await controller.googleAuthRedirect(null, mockRes);
 
     expect(response).toEqual(mockIAuthSuccessResponse);
-    expect(statusSpy).toBeCalledWith(HttpStatus.OK);
-    expect(jsonSpy).toBeCalledWith(mockIAuthSuccessResponse);
     expect(googleLoginSpy).toBeCalledTimes(1);
     statusSpy.mockRestore();
     jsonSpy.mockRestore();

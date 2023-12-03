@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpStatus,
-  Post,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RatingService } from './rating.service';
 import { RatingCreateDto } from './dto/rating-create.dto';
@@ -25,16 +18,8 @@ export class RatingController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create')
   async createRating(@Res() res, @Body() data: RatingCreateDto) {
-    try {
-      console.log(
-        `#createRating request incoming with res: ${res} and data: ${data}`,
-      );
-      const response = await this.ratingService.create(data);
-      return res.status(HttpStatus.OK).json({ response });
-    } catch (error) {
-      console.error('#createJob error caused by: ', error);
-      return res.status(error.status).json({ error: error.message });
-    }
+    const response = await this.ratingService.create(data);
+    return response;
   }
 
   @ApiBearerAuth()
@@ -42,12 +27,7 @@ export class RatingController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('update')
   async updateRating(@Res() res, @Body() data: RatingUpdateDto) {
-    try {
-      const response = await this.ratingService.update(data);
-      return res.status(HttpStatus.OK).json({ response });
-    } catch (error) {
-      console.error('#updateJob error caused by: ', error);
-      return res.status(error.status).json({ error: error.message });
-    }
+    const response = await this.ratingService.update(data);
+    return response;
   }
 }

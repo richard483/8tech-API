@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  HttpStatus,
   Post,
   Get,
   Res,
@@ -30,12 +29,9 @@ export class ContractController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create')
   async createContract(@Res() res, @Body() contract: ContractCreateDto) {
-    try {
-      const response = await this.contractService.create(contract);
-      return res.status(HttpStatus.OK).json({ response });
-    } catch (error) {
-      return res.status(error.status).json({ error: error.message });
-    }
+    console.info('#ContractCreate request incoming with: ', contract);
+    const response = await this.contractService.create(contract);
+    return response;
   }
 
   //9432dae7-ba04-410a-a4ff-27d6da87ae63
@@ -46,6 +42,7 @@ export class ContractController {
     @Res({ passthrough: true }) res,
     @Param() params: any,
   ) {
+    console.info('#ContractGenerate request incoming with: ', params);
     const contractId = params.contractId;
     try {
       await this.contractService.generate(contractId);
@@ -53,9 +50,6 @@ export class ContractController {
         join(process.cwd(), '/src/contract/temp/', `${params.contractId}.pdf`),
       );
       return await new StreamableFile(file);
-    } catch (error) {
-      console.error('#generateContract error caused by: ', error);
-      return res.status(error.status).json({ error: error.message });
     } finally {
       this.contractService.removeFile(contractId);
       console.log(
