@@ -45,7 +45,13 @@ export class ResponseInterceptor implements NestInterceptor {
     response.status(status).json({
       status: false,
       statusCode: status,
-      message: exception.getResponse(),
+      message:
+        exception.getResponse() instanceof Object
+          ? Object(exception.getResponse()).reduce(
+              (acc, obj) => ({ ...Object(acc), ...Object(obj) }),
+              {},
+            )
+          : exception.getResponse(),
       error: this.htttpCodeParser(status),
     });
   }

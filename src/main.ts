@@ -32,7 +32,7 @@ async function bootstrap() {
       exceptionFactory: (errors) => {
         const result = errors.map((error) => {
           return {
-            ...error.constraints,
+            [error.property]: Object.values(error.constraints)[0],
           };
         });
         console.error('#Validation error caused by: ', errors);
