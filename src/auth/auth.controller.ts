@@ -26,25 +26,15 @@ export class AuthController {
   @Post('login')
   async signIn(@Res() res, @Body() authenticateDto: AuthenticateRequest) {
     console.info('#AuthLogin request incoming with: ', authenticateDto);
-    try {
-      const response = await this.authService.login(authenticateDto, res);
-      return res.status(HttpStatus.OK).json({ ...response });
-    } catch (error) {
-      console.error('#AuthLogin error caused by: ', error);
-      return res.status(error.status).json({ error: error.message });
-    }
+    const response = await this.authService.login(authenticateDto, res);
+    return res.status(HttpStatus.OK).json({ ...response });
   }
 
   @Post('register')
   async signUp(@Res() res, @Body() request: RegisterRequest) {
     console.info('#AuthRegister request incoming with: ', request);
-    try {
-      const response = await this.authService.register(request);
-      return res.status(HttpStatus.OK).json({ ...response });
-    } catch (error) {
-      console.error('#AuthRegister error caused by: ', error);
-      return res.status(error.status).json({ error: error.message });
-    }
+    const response = await this.authService.register(request);
+    return res.status(HttpStatus.OK).json({ ...response });
   }
 
   @Get('google')
@@ -57,14 +47,9 @@ export class AuthController {
   @UseGuards(GoogleGuard)
   async googleAuthRedirect(@Request() req, @Res() res) {
     console.info('#AuthGoogleAuthRedirect google auth request incoming');
-    try {
-      const response = await this.authService.googleLogin(req, res);
-      // TODO : redirect to frontend
-      return res.status(HttpStatus.OK).json({ ...response });
-    } catch (error) {
-      console.error('#AutGoogleAuthRedirect error caused by: ', error);
-      return res.status(error.status).json({ error: error.message });
-    }
+    const response = await this.authService.googleLogin(req, res);
+    // TODO : redirect to frontend
+    return res.status(HttpStatus.OK).json({ ...response });
   }
 
   @ApiBearerAuth()
@@ -73,6 +58,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('info')
   async getProfileInfo(@Request() req, @Res() res) {
+    console.info('#AuthGetProfileInfo request incoming');
     return res.status(HttpStatus.OK).json({ ...req.user });
   }
 }

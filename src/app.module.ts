@@ -7,6 +7,8 @@ import { ConfigModule } from '@nestjs/config';
 import { JobModule } from './job/job.module';
 import { ContractModule } from './contract/contract.module';
 import { RatingModule } from './rating/rating.module';
+import { ResponseInterceptor } from './interceptors/response.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -18,6 +20,12 @@ import { RatingModule } from './rating/rating.module';
     RatingModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseInterceptor,
+    },
+  ],
 })
 export class AppModule {}

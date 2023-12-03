@@ -1,5 +1,6 @@
 import {
-  BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -24,7 +25,7 @@ export class AuthService {
   ): Promise<IAuthenticate> {
     const user = await this.usersService.findOne(authenticateRequest.email);
     if (!user) {
-      throw new UnauthorizedException('INVALID_CREDENTIALS');
+      throw new HttpException({ user: 'NOT_FOUND' }, HttpStatus.NOT_FOUND);
     }
 
     const isPasswordMatch = await compare(
@@ -33,7 +34,10 @@ export class AuthService {
     );
 
     if (!isPasswordMatch) {
-      throw new UnauthorizedException('INVALID_CREDENTIALS');
+      throw new HttpException(
+        { password: 'NOT_MATCH' },
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     // remove password from user object
@@ -54,7 +58,10 @@ export class AuthService {
 
   async register(userCreate: RegisterRequest): Promise<IUser> {
     if (!this.passwordValidation(userCreate.password)) {
-      throw new BadRequestException('INVALID_PASSWORD');
+      throw new HttpException(
+        { password: 'INVALID_PASSWORD' },
+        HttpStatus.BAD_REQUEST,
+      );
     }
     const user = await this.usersService.create({
       ...userCreate,

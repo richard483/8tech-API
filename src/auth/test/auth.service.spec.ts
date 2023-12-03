@@ -3,12 +3,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DeepMocked, createMock } from '@golevelup/ts-jest';
 import { AuthService } from '../auth.service';
 import { UsersService } from '../../users/users.service';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { HttpException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IGoogleUser } from '../interface/auth.interface';
 import { Role } from '../roles/role.enum';
 import { compare, genSaltSync, hashSync } from 'bcrypt';
-import { mock } from 'node:test';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -100,8 +99,8 @@ describe('AuthService', () => {
         password: 'password',
       });
     } catch (e) {
-      expect(e).toBeInstanceOf(UnauthorizedException);
-      expect(e.message).toBe('INVALID_CREDENTIALS');
+      expect(e).toBeInstanceOf(HttpException);
+      expect(e.message).toBe('Http Exception');
     }
 
     expect(findOneSpy).toBeCalledTimes(1);
@@ -122,8 +121,8 @@ describe('AuthService', () => {
         password: 'password',
       });
     } catch (e) {
-      expect(e).toBeInstanceOf(UnauthorizedException);
-      expect(e.message).toBe('INVALID_CREDENTIALS');
+      expect(e).toBeInstanceOf(HttpException);
+      expect(e.message).toBe('Http Exception');
     }
 
     expect(findOneSpy).toBeCalledTimes(1);
@@ -188,8 +187,8 @@ describe('AuthService', () => {
       await service.register(mockRegisterRequest);
     } catch (e) {
       console.log('#register failed invalid password', e);
-      expect(e).toBeInstanceOf(BadRequestException);
-      expect(e.message).toBe('INVALID_PASSWORD');
+      expect(e).toBeInstanceOf(HttpException);
+      expect(e.message).toBe('Http Exception');
     }
   });
 

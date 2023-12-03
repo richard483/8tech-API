@@ -109,15 +109,15 @@ describe('AuthController', () => {
       .spyOn(authService, 'login')
       .mockRejectedValue(mockBadRequestResponse);
 
-    const response = await controller.signIn(mockRes, null);
-
-    expect(response).toEqual(mockBadRequestResponse);
-    expect(statusSpy).toBeCalledWith(HttpStatus.BAD_REQUEST);
-    expect(jsonSpy).toBeCalledWith({ error: mockBadRequestResponse.message });
-    expect(loginSpy).toBeCalledTimes(1);
-    statusSpy.mockRestore();
-    jsonSpy.mockRestore();
-    loginSpy.mockRestore();
+    try {
+      await controller.signIn(mockRes, null);
+    } catch (e) {
+      expect(e).toEqual(mockBadRequestResponse);
+      expect(loginSpy).toBeCalledTimes(1);
+      statusSpy.mockRestore();
+      jsonSpy.mockRestore();
+      loginSpy.mockRestore();
+    }
   });
 
   it('register success', async () => {
@@ -157,15 +157,15 @@ describe('AuthController', () => {
       .spyOn(authService, 'register')
       .mockRejectedValue(mockBadRequestResponse);
 
-    const response = await controller.signUp(mockRes, null);
-
-    expect(response).toEqual(mockBadRequestResponse);
-    expect(statusSpy).toBeCalledWith(HttpStatus.BAD_REQUEST);
-    expect(jsonSpy).toBeCalledWith({ error: mockBadRequestResponse.message });
-    expect(registerSpy).toBeCalledTimes(1);
-    statusSpy.mockRestore();
-    jsonSpy.mockRestore();
-    registerSpy.mockRestore();
+    try {
+      await controller.signUp(mockRes, null);
+    } catch (e) {
+      expect(e).toEqual(mockBadRequestResponse);
+      expect(registerSpy).toBeCalledTimes(1);
+      statusSpy.mockRestore();
+      jsonSpy.mockRestore();
+      registerSpy.mockRestore();
+    }
   });
 
   it('getProfileInfo', async () => {
@@ -222,17 +222,15 @@ describe('AuthController', () => {
       .spyOn(authService, 'googleLogin')
       .mockRejectedValue(mockBadRequestResponse);
 
-    const response = await controller.googleAuthRedirect(null, mockRes);
-
-    expect(response).toEqual(mockBadRequestResponse);
-    expect(statusSpy).toBeCalledWith(HttpStatus.BAD_REQUEST);
-    expect(jsonSpy).toBeCalledWith({
-      error: mockBadRequestResponse.message,
-    });
-    expect(loginSpy).toBeCalledTimes(1);
-    statusSpy.mockRestore();
-    jsonSpy.mockRestore();
-    loginSpy.mockRestore();
+    try {
+      await controller.googleAuthRedirect(null, mockRes);
+    } catch (e) {
+      expect(e).toEqual(mockBadRequestResponse);
+      expect(loginSpy).toBeCalledTimes(1);
+      statusSpy.mockRestore();
+      jsonSpy.mockRestore();
+      loginSpy.mockRestore();
+    }
   });
 
   it('google placeholder', async () => {
