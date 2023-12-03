@@ -108,30 +108,27 @@ HTTP Code: 200
 
 ```json
 {
-  "id": "89edfeb7-0b26-4c88-950a-2216123ec367",
-  "email": "asdasdas@gmail.com",
-  "username": "string",
-  "firstName": "string",
-  "lastName": "string",
-  "password": "$2b$10$wxulL2C86NpVTzWMlA9Knu9CVUdasWCwSwaC3tqj/S9ziA/iT9JiW",
-  "createdAt": "2023-11-22T17:19:18.472Z",
-  "updatedAt": "2023-11-22T17:19:18.472Z",
-  "roles": ["USER"],
-  "description": null,
-  "previousWorkplaceId": [],
-  "previousWorkplaceCount": null,
-  "ratingsAvg": null,
-  "hasGoogleAccount": false
-}
-```
-
-### Password not match
-
-HTTP Code: 400
-
-```json
-{
-  "error": "PASSWORD_NOT_MATCH"
+  "status": true,
+  "statusCode": 200,
+  "data": {
+    "id": "57b3634c-3789-4a46-b6f0-afe22a195f27",
+    "email": "aassaad@gmail.com",
+    "username": "username",
+    "firstName": "firsl",
+    "lastName": "last",
+    "password": "$2b$10$yAmMDeIyOHRo/bKfWWQ6N.Z/LrnU1PEA4lMBO/4M/48c23zz54QYa",
+    "createdAt": "2023-12-03T17:59:31.655Z",
+    "updatedAt": "2023-12-03T17:59:31.655Z",
+    "roles": [
+      "USER"
+    ],
+    "description": null,
+    "previousWorkplaceId": [],
+    "previousWorkplaceCount": null,
+    "ratingsAvg": null,
+    "companyId": null,
+    "hasGoogleAccount": false
+  }
 }
 ```
 
@@ -141,7 +138,10 @@ HTTP Code: 400
 
 ```json
 {
-  "error": "EMAIL_ALREADY_USED"
+  "status": false,
+  "statusCode": 400,
+  "message": "EMAIL_ALREADY_USED",
+  "error": "BAD_REQUEST"
 }
 ```
 
@@ -151,9 +151,14 @@ HTTP Code: 400
 
 ```json
 {
+  "status": false,
   "statusCode": 400,
-  "message": ["email must be an email"],
-  "error": "Bad Request"
+  "message": [
+    {
+      "isEmail": "email must be an email"
+    }
+  ],
+  "error": "BAD_REQUEST"
 }
 ```
 
@@ -163,8 +168,12 @@ HTTP Code: 400
 
 ```json
 {
+  "status": false,
   "statusCode": 400,
-  "message": ["firstName must be a string", "firstName should not be empty"],
-  "error": "Bad Request"
+  "message": {
+    "firstName": "firstName must be a string",
+    "lastName": "lastName must be a string"
+  },
+  "error": "BAD_REQUEST"
 }
 ```

@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpStatus,
-  Post,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { Roles } from '../auth/roles/role.decorator';
@@ -40,12 +33,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create')
   async createAdmin(@Res() res, @Body() user: UserCreateRequest) {
-    try {
-      const response = await this.userService.create(user);
-      return res.status(HttpStatus.OK).json({ response });
-    } catch (error) {
-      return res.status(error.status).json({ error: error.message });
-    }
+    const response = await this.userService.create(user);
+    return response;
   }
 
   @ApiBearerAuth()
@@ -53,12 +42,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('update')
   async update(@Res() res, @Body() data: UserUpdateRequest) {
-    try {
-      const response = await this.userService.update(data);
-      return res.status(HttpStatus.OK).json({ response });
-    } catch (error) {
-      return res.status(error.status).json({ error: error.message });
-    }
+    const response = await this.userService.update(data);
+    return response;
   }
 
   @ApiBearerAuth()
@@ -66,11 +51,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('filter')
   async filterUser(@Res() res, @Body() body: UserFilterRequest) {
-    try {
-      const response = await this.userService.findManyByList(body);
-      return res.status(HttpStatus.OK).json({ response });
-    } catch (error) {
-      return res.status(error.status).json({ error: error.message });
-    }
+    const response = await this.userService.findManyByList(body);
+    return response;
   }
 }

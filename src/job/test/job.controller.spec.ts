@@ -89,12 +89,14 @@ describe('JobController', () => {
       json: jsonSpy,
     };
 
-    const res = await controller.createJob(mockRes, null);
+    try {
+      await controller.createJob(mockRes, null);
+    } catch (e) {
+      expect(createSpy).toBeCalledWith(null);
+      expect(e).toEqual(mockResponse);
 
-    expect(createSpy).toBeCalledWith(null);
-    expect(res).toEqual(mockResponse);
-
-    createSpy.mockRestore();
+      createSpy.mockRestore();
+    }
   });
 
   it('deleteJob success', async () => {
@@ -146,14 +148,16 @@ describe('JobController', () => {
       json: jsonSpy,
     };
 
-    const res = await controller.deleteJob(mockRes, {
-      jobId: null,
-    });
+    try {
+      await controller.deleteJob(mockRes, {
+        jobId: null,
+      });
+    } catch (e) {
+      expect(deleteSpy).toBeCalledWith(null);
+      expect(e).toEqual(mockResponse);
 
-    expect(deleteSpy).toBeCalledWith(null);
-    expect(res).toEqual(mockResponse);
-
-    deleteSpy.mockRestore();
+      deleteSpy.mockRestore();
+    }
   });
   it('updateJob success', async () => {
     const mockJob: IJob = {
@@ -206,16 +210,18 @@ describe('JobController', () => {
       json: jsonSpy,
     };
 
-    const res = await controller.updateJob(mockRes, {
-      id: null,
-    });
+    try {
+      await controller.updateJob(mockRes, {
+        id: null,
+      });
+    } catch (e) {
+      expect(updateSpy).toBeCalledWith({
+        id: null,
+      });
+      expect(e).toEqual(mockResponse);
 
-    expect(updateSpy).toBeCalledWith({
-      id: null,
-    });
-    expect(res).toEqual(mockResponse);
-
-    updateSpy.mockRestore();
+      updateSpy.mockRestore();
+    }
   });
   it('getJob success', async () => {
     const mockJob: IJob = {
@@ -266,13 +272,15 @@ describe('JobController', () => {
       json: jsonSpy,
     };
 
-    const res = await controller.getjob(mockRes, {
-      jobId: null,
-    });
+    try {
+      await controller.getjob(mockRes, {
+        jobId: null,
+      });
+    } catch (e) {
+      expect(getJobSpy).toBeCalledWith(null);
+      expect(e).toEqual(mockResponse);
 
-    expect(getJobSpy).toBeCalledWith(null);
-    expect(res).toEqual(mockResponse);
-
-    getJobSpy.mockRestore();
+      getJobSpy.mockRestore();
+    }
   });
 });

@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpStatus,
   Param,
   Post,
   Res,
@@ -27,16 +26,11 @@ export class JobController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create')
   async createJob(@Res() res, @Body() job: JobCreateDto) {
-    try {
-      console.log(
-        `#createJob request incoming with res: ${res} and data: ${job}`,
-      );
-      const response = await this.jobService.create(job);
-      return res.status(HttpStatus.OK).json({ response });
-    } catch (error) {
-      console.error('#createJob error caused by: ', error);
-      return res.status(error.status).json({ error: error.message });
-    }
+    console.log(
+      `#createJob request incoming with res: ${res} and data: ${job}`,
+    );
+    const response = await this.jobService.create(job);
+    return response;
   }
 
   @ApiBearerAuth()
@@ -45,16 +39,11 @@ export class JobController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('delete/:jobId')
   async deleteJob(@Res() res, @Param() params: any) {
-    try {
-      console.log(
-        `#deleteJob request incoming with res: ${res} and params: ${params}`,
-      );
-      const response = await this.jobService.delete(params.jobId);
-      return res.status(HttpStatus.OK).json({ response });
-    } catch (error) {
-      console.error('#deleteJob error caused by: ', error);
-      return res.status(error.status).json({ error: error.message });
-    }
+    console.log(
+      `#deleteJob request incoming with res: ${res} and params: ${params}`,
+    );
+    const response = await this.jobService.delete(params.jobId);
+    return response;
   }
 
   @ApiBearerAuth()
@@ -62,13 +51,8 @@ export class JobController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('update')
   async updateJob(@Res() res, @Body() job: JobUpdateDto) {
-    try {
-      const response = await this.jobService.update(job);
-      return res.status(HttpStatus.OK).json({ response });
-    } catch (error) {
-      console.error('#updateJob error caused by: ', error);
-      return res.status(error.status).json({ error: error.message });
-    }
+    const response = await this.jobService.update(job);
+    return response;
   }
 
   @ApiBearerAuth()
@@ -77,12 +61,7 @@ export class JobController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('/:jobId')
   async getjob(@Res() res, @Param() params: any) {
-    try {
-      const response = await this.jobService.getById(params.jobId);
-      return res.status(HttpStatus.OK).json({ response });
-    } catch (error) {
-      console.error('#getJob error caused by: ', error);
-      return res.status(error.status).json({ error: error.message });
-    }
+    const response = await this.jobService.getById(params.jobId);
+    return response;
   }
 }

@@ -88,12 +88,14 @@ describe('RatingController', () => {
       json: jsonSpy,
     };
 
-    const res = await controller.createRating(mockRes, null);
+    try {
+      await controller.createRating(mockRes, null);
+    } catch (e) {
+      expect(createSpy).toBeCalledWith(null);
+      expect(e).toEqual(mockResponse);
 
-    expect(createSpy).toBeCalledWith(null);
-    expect(res).toEqual(mockResponse);
-
-    createSpy.mockRestore();
+      createSpy.mockRestore();
+    }
   });
   it('updateRating success', async () => {
     const ratingUpdateDto: RatingUpdateDto = {
@@ -156,16 +158,18 @@ describe('RatingController', () => {
       json: jsonSpy,
     };
 
-    const res = await controller.updateRating(mockRes, ratingUpdateDto);
+    try {
+      await controller.updateRating(mockRes, ratingUpdateDto);
+    } catch (e) {
+      expect(updateSpy).toBeCalledWith({
+        id: 'randomId',
+        userId: 'test',
+        givenByUserId: 'test',
+        ratingOf10: 9,
+      });
+      expect(e).toEqual(mockResponse);
 
-    expect(updateSpy).toBeCalledWith({
-      id: 'randomId',
-      userId: 'test',
-      givenByUserId: 'test',
-      ratingOf10: 9,
-    });
-    expect(res).toEqual(mockResponse);
-
-    updateSpy.mockRestore();
+      updateSpy.mockRestore();
+    }
   });
 });

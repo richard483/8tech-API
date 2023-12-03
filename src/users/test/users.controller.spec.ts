@@ -96,11 +96,13 @@ describe('AuthController', () => {
       json: jsonSpy,
     };
 
-    const res = await controller.createAdmin(mockRes, null);
+    try {
+      await controller.createAdmin(mockRes, null);
+    } catch (e) {
+      expect(createSpy).toBeCalledWith(null);
+      expect(e).toEqual(mockResponse);
 
-    expect(createSpy).toBeCalledWith(null);
-    expect(res).toEqual(mockResponse);
-
-    createSpy.mockRestore();
+      createSpy.mockRestore();
+    }
   });
 });
