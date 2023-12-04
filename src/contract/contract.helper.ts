@@ -23,6 +23,8 @@ export class ContractHelper {
 
     const browser = await launch({
       args: ['--no-sandbox'],
+      // comment the below line for running locally
+      executablePath: '/usr/bin/chromium',
       headless: true,
     });
     const page = await browser.newPage();
