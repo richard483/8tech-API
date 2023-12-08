@@ -45,13 +45,7 @@ export class ResponseInterceptor implements NestInterceptor {
     response.status(status).json({
       status: false,
       statusCode: status,
-      message:
-        exception.getResponse() instanceof Object
-          ? Object(exception.getResponse()).reduce(
-              (acc, obj) => ({ ...Object(acc), ...Object(obj) }),
-              {},
-            )
-          : exception.getResponse(),
+      message: this.extractErrorMessages(exception),
       error: this.htttpCodeParser(status),
     });
   }
@@ -69,6 +63,22 @@ export class ResponseInterceptor implements NestInterceptor {
       statusCode: HttpStatus.OK,
       data: res,
     });
+  }
+
+  private extractErrorMessages(exception: any) {
+    try {
+      return Object(exception.getResponse()).reduce(
+        (acc, obj) => ({ ...Object(acc), ...Object(obj) }),
+        {},
+      );
+    } catch (e) {
+      console.log(
+        '#Failed to restructure exception for this response: ',
+        exception.getResponse(),
+        " would return it's original response instead.",
+      );
+      return exception.getResponse();
+    }
   }
 
   private htttpCodeParser(statusCode: number) {

@@ -1,4 +1,6 @@
-FROM node:lts-alpine
+ARG NODE_VERSION=18.17.1
+
+FROM node:${NODE_VERSION}-alpine
 
 WORKDIR /usr/src/app
 
@@ -17,9 +19,9 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 COPY . /usr/src/app
 
-RUN npm run build
-
 RUN npm ci
+
+RUN npm run build
 
 EXPOSE 3000
 
