@@ -47,7 +47,6 @@ export class AuthService {
   ): Promise<IAuthenticate> {
     const user = await this.validateUser(authenticateRequest);
     user.token = this.jwtService.sign(user);
-    res.cookie('EToken', user.token);
     return user;
   }
 
@@ -92,8 +91,6 @@ export class AuthService {
     }
     const userData: IAuthenticate = { user: userDb };
     userData.token = this.jwtService.sign(userData);
-
-    res.cookie('EToken', userData.token);
 
     return userData;
   }

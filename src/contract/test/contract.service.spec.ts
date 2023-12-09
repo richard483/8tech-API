@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpException } from '@nestjs/common';
 import { DeepMocked, createMock } from '@golevelup/ts-jest';
 import { ContractHelper } from '../contract.helper';
 import { ContractService } from '../contract.service';
@@ -30,6 +29,10 @@ describe('ContractService', () => {
       title: 'deez noot',
       description: 'this is description about job that is created for test',
       template: 'template',
+      paymentRate: 100000,
+      bankName: 'BCA',
+      bankAccountName: 'randomAccountName',
+      status: 'PENDING',
       createdAt: new Date(),
       updatedAt: new Date(),
     };

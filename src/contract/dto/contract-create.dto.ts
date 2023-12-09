@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
+import { Bank } from '../../contract/enum/bank.enum';
 
 export class ContractCreateDto {
   @ApiProperty()
@@ -21,6 +22,24 @@ export class ContractCreateDto {
   @IsNotEmpty()
   @IsString()
   readonly description: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  readonly paymentRate: number;
+
+  @ApiProperty({ enum: Bank })
+  @IsNotEmpty()
+  @IsString()
+  readonly bankName?: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  readonly bankAccountName?: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  readonly bankAccountNumber?: number;
 
   @ApiProperty()
   @IsNotEmpty()

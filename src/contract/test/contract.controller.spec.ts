@@ -8,6 +8,8 @@ import { ContractService } from '../contract.service';
 import { IContract } from '../interface/contract.interface';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Bank } from '../enum/bank.enum';
+import { ContractStatus } from '../enum/contract-status.enum';
 
 describe('ContractController', () => {
   let controller: ContractController;
@@ -45,6 +47,7 @@ describe('ContractController', () => {
       title: 'deez noot',
       description: 'this is description about job that is created for test',
       template: 'template',
+      paymentRate: 100000,
     };
 
     const mockContract: IContract = {
@@ -54,6 +57,10 @@ describe('ContractController', () => {
       title: 'deez noot',
       description: 'this is description about job that is created for test',
       template: 'template',
+      paymentRate: 100000,
+      bankName: Bank.BCA,
+      bankAccountName: 'randomAccountName',
+      status: ContractStatus.PENDING,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
