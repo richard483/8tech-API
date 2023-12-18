@@ -4,17 +4,23 @@ import { AuthGuard } from '@nestjs/passport';
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   handleRequest(err, user, info) {
+    let exceptionMessage = 'UNKNOWN_EXCEPTION';
     if (err || !user) {
       if (info && info.name == 'TokenExpiredError') {
-        throw new HttpException(
-          { access: 'token expired' },
-          HttpStatus.UNAUTHORIZED,
-        );
+        exceptionMessage = 'token expired';
+      } else if (info == 'Error: No auth token') {
+        exceptionMessage = 'UNAUTHORIZED';
       }
       throw (
         err ||
         new HttpException(
-          { access: 'UNKNOWN_EXCEPTION' },
+          {
+            status: true,
+            statusCode: HttpStatus.UNAUTHORIZED,
+            data: {
+              access: exceptionMessage,
+            },
+          },
           HttpStatus.UNAUTHORIZED,
         )
       );

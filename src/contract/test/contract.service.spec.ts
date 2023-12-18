@@ -4,7 +4,6 @@ import { ContractHelper } from '../contract.helper';
 import { ContractService } from '../contract.service';
 import { ContractRepository } from '../contract.repository';
 import { IContract } from '../interface/contract.interface';
-import * as path from 'path';
 
 describe('ContractService', () => {
   let service: ContractService;
@@ -30,9 +29,8 @@ describe('ContractService', () => {
       description: 'this is description about job that is created for test',
       template: 'template',
       paymentRate: 100000,
-      bankName: 'BCA',
-      bankAccountName: 'randomAccountName',
       status: 'PENDING',
+      paymentStatus: 'PENDING',
       createdAt: new Date(),
       updatedAt: new Date(),
     };

@@ -4,6 +4,7 @@ import { ContractService } from './contract.service';
 import { ContractRepository } from './contract.repository';
 import { ContractController } from './contract.controller';
 import { ContractHelper } from './contract.helper';
+import { PaymentService } from '../payment/payment.service';
 
 @Module({
   providers: [
@@ -11,6 +12,7 @@ import { ContractHelper } from './contract.helper';
     ContractHelper,
     PrismaService,
     ContractRepository,
+    PaymentService,
   ],
   exports: [ContractService],
   controllers: [ContractController],

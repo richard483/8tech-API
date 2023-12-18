@@ -42,6 +42,20 @@ async function users() {
         .then((company) => company.id),
     },
   });
+  const richardWilliam = await prisma.user.upsert({
+    where: { email: 'richard.william483@gmail.com' },
+    update: {},
+    create: {
+      email: 'richard.william483@gmail.com',
+      username: 'richard__uwu',
+      firstName: 'Richard',
+      lastName: 'William',
+      password: hashPassword('User123_'),
+      roles: ['USER'],
+      description: 'default richard description that being created by seed.ts',
+      previousWorkplaceId: ['01', '02', '04'],
+    },
+  });
   const defaultUser = await prisma.user.upsert({
     where: { email: 'default.user@email.com' },
     update: {},
@@ -183,6 +197,7 @@ async function users() {
       satoruUser,
       eyePatchUser,
       ricatUser,
+      richardWilliam,
     ].map(async (user) => {
       await prisma.user.update({
         where: {
@@ -245,9 +260,82 @@ async function companies() {
   });
 }
 
+async function job() {
+  const job1 = await prisma.jobVacancy.upsert({
+    where: {
+      id: '01',
+    },
+    update: {},
+    create: {
+      title: 'This is job1 title',
+      description: 'This is job1 description',
+      companyId: await prisma.company
+        .findFirst({
+          where: {
+            name: 'Nijisanji Anycolor',
+          },
+        })
+        .then((company) => company.id),
+    },
+  });
+
+  console.log({
+    job1,
+  });
+}
+
+async function contract() {
+  const contract1 = await prisma.contract.upsert({
+    where: {
+      id: await prisma.user
+        .findFirst({
+          where: {
+            email: 'richard.william483@gmail.com',
+          },
+        })
+        .then((user) => user.id),
+    },
+    update: {},
+    create: {
+      paymentRate: 243400,
+      template: 'This is contract1 template',
+      description: 'This is contract1 description',
+      title: 'This is contract1 title',
+      userId: (
+        await prisma.user.findFirst({
+          where: {
+            email: 'richard.william483@gmail.com',
+          },
+        })
+      ).id,
+      jobId: (
+        await prisma.jobVacancy.findFirst({
+          where: {
+            title: 'This is job1 title',
+          },
+        })
+      ).id,
+    },
+  });
+
+  console.log({
+    contract1,
+  });
+}
+
+async function clean() {
+  await prisma.contract.deleteMany({});
+  await prisma.jobVacancy.deleteMany({});
+  await prisma.company.deleteMany({});
+  await prisma.user.deleteMany({});
+}
+
 async function main() {
+  await clean();
   await companies();
   await users();
+  await job();
+  await contract();
 }
 
 main()

@@ -9,6 +9,7 @@ import { ContractModule } from './contract/contract.module';
 import { RatingModule } from './rating/rating.module';
 import { ResponseInterceptor } from './interceptors/response.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     JobModule,
     ContractModule,
     RatingModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [

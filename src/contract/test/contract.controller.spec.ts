@@ -8,8 +8,7 @@ import { ContractService } from '../contract.service';
 import { IContract } from '../interface/contract.interface';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Bank } from '../enum/bank.enum';
-import { ContractStatus } from '../enum/contract-status.enum';
+import { ContractStatus, PaymentStatus } from '@prisma/client';
 
 describe('ContractController', () => {
   let controller: ContractController;
@@ -58,9 +57,8 @@ describe('ContractController', () => {
       description: 'this is description about job that is created for test',
       template: 'template',
       paymentRate: 100000,
-      bankName: Bank.BCA,
-      bankAccountName: 'randomAccountName',
       status: ContractStatus.PENDING,
+      paymentStatus: PaymentStatus.PENDING,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
