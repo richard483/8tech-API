@@ -38,7 +38,7 @@ async function bootstrap() {
         console.error('#Validation error caused by: ', errors);
         return new HttpException(result, HttpStatus.BAD_REQUEST);
       },
-      stopAtFirstError: true,
+      stopAtFirstError: false,
     }),
   );
 
