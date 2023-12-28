@@ -183,7 +183,7 @@ describe('AuthService', () => {
     } catch (e) {
       console.log('#register failed invalid password', e);
       expect(e).toBeInstanceOf(HttpException);
-      expect(e.message).toBe('Http Exception');
+      expect(e.message).toBe('EMAIL_ALREADY_USED');
     }
   });
 

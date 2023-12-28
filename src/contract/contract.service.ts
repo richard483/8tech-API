@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ContractRepository } from './contract.repository';
 import {
-  IContract,
   IContractPaymentRequest,
   IContractPayoutLink,
 } from './interface/contract.interface';
@@ -12,9 +11,12 @@ import {
   EWalletChannelCode,
   PaymentRequestStatus,
 } from 'xendit-node/payment_request/models';
-import { PaymentStatus } from '@prisma/client';
+import { Contract, Payment, PaymentStatus } from '@prisma/client';
 import Xendit, { XenditSdkError } from 'xendit-node';
-import { IPayoutLinkData } from '../payment/interface/payment.interface';
+import {
+  IPaymentData,
+  IPayoutLinkData,
+} from '../payment/interface/payment.interface';
 @Injectable()
 export class ContractService {
   private xenditClient: Xendit;
@@ -29,7 +31,7 @@ export class ContractService {
     });
   }
 
-  async create(user: any): Promise<IContract> {
+  async create(user: any): Promise<Contract> {
     return this.contractRepository.create(user);
   }
 
@@ -48,35 +50,38 @@ export class ContractService {
     contractId: string,
     ewalletChannelCode: EWalletChannelCode,
   ): Promise<IContractPaymentRequest> {
-    const contract = await this.contractRepository.get(contractId);
+    const contract: Contract = await this.contractRepository.get(contractId);
     if (!contract) {
       throw new HttpException(
         { payment: 'CONTRACT_NOT_FOUND' },
         HttpStatus.NOT_FOUND,
       );
     }
-    if (contract.paymentStatus === PaymentStatus.PAID) {
-      throw new HttpException(
-        { payment: 'ALREADY_PAID' },
-        HttpStatus.BAD_REQUEST,
+    if (contract.paymentId) {
+      const payment: Payment = await this.paymentService.getPaymentById(
+        contract.paymentId,
       );
+      if (payment.paymentStatus === PaymentStatus.PAID) {
+        throw new HttpException(
+          { payment: 'ALREADY_PAID' },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     }
 
-    const paymentRequest = await this.paymentService.createPaymentRequest(
-      {
-        amount: contract.paymentRate,
-        ewalletChannelCode: ewalletChannelCode,
-      },
-      contractId,
-    );
+    const paymentData: IPaymentData =
+      await this.paymentService.createPaymentRequest(
+        {
+          amount: contract.paymentRate,
+          ewalletChannelCode: ewalletChannelCode,
+        },
+        contractId,
+      );
 
-    await this.contractRepository.updatePaymentRequestId(
-      contractId,
-      paymentRequest.id,
-    );
+    await this.contractRepository.updatePaymentId(contract.id, paymentData.id);
 
     return {
-      paymentUrl: paymentRequest.actions[0].url,
+      paymentUrl: paymentData.xenditPaymentRequest.actions[0].url,
       paymentMethod: ewalletChannelCode.toString(),
     };
   }
@@ -89,9 +94,19 @@ export class ContractService {
         HttpStatus.NOT_FOUND,
       );
     }
-    if (contract.payoutLinkId) {
+    const payment = await this.paymentService.getPaymentById(
+      contract.paymentId,
+    );
+    if (!payment) {
+      throw new HttpException(
+        { payment: 'PAYMENT_NOT_FOUND' },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    if (payment.payoutLinkId) {
       const payout: IPayoutLinkData = await this.paymentService.getPayoutLink(
-        contract.payoutLinkId,
+        payment.payoutLinkId,
       );
       if (['PENDING', 'COMPLETED'].includes(payout.status)) {
         throw new HttpException(
@@ -100,7 +115,7 @@ export class ContractService {
         );
       }
     }
-    if (contract.paymentStatus !== PaymentStatus.PAID) {
+    if (payment.paymentStatus !== PaymentStatus.PAID) {
       throw new HttpException(
         { payment: 'PAYMENT_NOT_COMPLETED' },
         HttpStatus.BAD_REQUEST,
@@ -114,9 +129,8 @@ export class ContractService {
           email: contract.User.email,
         },
         contractId,
+        contract.paymentId,
       );
-
-    await this.contractRepository.updatePayoutLinkId(contractId, payoutLink.id);
 
     return {
       amount: payoutLink.amount,
@@ -128,16 +142,24 @@ export class ContractService {
 
   async updatePaymentStatusSuccess(contractId: string) {
     try {
-      const contract = await this.contractRepository.get(contractId);
+      const contract: Contract = await this.contractRepository.get(contractId);
       console.log('#updatePaymentStatusSuccess contract: ', contract);
 
       if (contract == null) {
         throw new HttpException({ payment: 'NOT_FOUND' }, HttpStatus.NOT_FOUND);
       }
 
+      const payment: Payment = await this.paymentService.getPaymentById(
+        contract.paymentId,
+      );
+
+      if (payment == null) {
+        throw new HttpException({ payment: 'NOT_FOUND' }, HttpStatus.NOT_FOUND);
+      }
+
       const paymentRequest =
         await this.xenditClient.PaymentRequest.getPaymentRequestByID({
-          paymentRequestId: contract.paymentRequestId,
+          paymentRequestId: payment.paymentRequestId,
         });
 
       if (paymentRequest.status !== PaymentRequestStatus.Succeeded) {
@@ -146,8 +168,8 @@ export class ContractService {
           HttpStatus.BAD_REQUEST,
         );
       }
-      await this.contractRepository.updatePaymentStatus(
-        contractId,
+      await this.paymentService.updatePaymentStatus(
+        payment.id,
         PaymentStatus.PAID,
       );
       return;

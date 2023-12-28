@@ -3,13 +3,12 @@ import { DeepMocked, createMock } from '@golevelup/ts-jest';
 import { ContractHelper } from '../contract.helper';
 import { ContractService } from '../contract.service';
 import { ContractRepository } from '../contract.repository';
-import { IContract } from '../interface/contract.interface';
 
 describe('ContractService', () => {
   let service: ContractService;
   let reposiotry: DeepMocked<ContractRepository>;
   let helper: DeepMocked<ContractHelper>;
-  let contractMock: IContract;
+  let contractMock;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
