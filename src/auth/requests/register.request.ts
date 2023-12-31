@@ -1,29 +1,45 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, Matches } from 'class-validator';
 
 export class RegisterRequest {
   @ApiProperty()
-  @IsNotEmpty()
-  @IsEmail()
+  @IsNotEmpty({
+    message: 'MUST_NOT_BE_EMPTY',
+  })
+  @IsEmail(
+    {
+      allow_display_name: false,
+    },
+    {
+      message: 'INVALID_EMAIL',
+    },
+  )
   readonly email: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
+    message: 'INVALID_PASSWORD',
+  })
+  @IsNotEmpty({
+    message: 'MUST_NOT_BE_EMPTY',
+  })
   readonly password: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({
+    message: 'MUST_NOT_BE_EMPTY',
+  })
   readonly username: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({
+    message: 'MUST_NOT_BE_EMPTY',
+  })
   readonly firstName: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({
+    message: 'MUST_NOT_BE_EMPTY',
+  })
   readonly lastName: string;
 }

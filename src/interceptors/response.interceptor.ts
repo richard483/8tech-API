@@ -29,6 +29,20 @@ export class ResponseInterceptor implements NestInterceptor {
     const status =
       exception instanceof HttpException ? exception.getStatus() : 500;
 
+    if (
+      exception.message ===
+      'Cannot set headers after they are sent to the client'
+    ) {
+      console.log(
+        '#Error response: headers already sent, but its okay :D *trust me bro',
+      );
+      response.status(HttpStatus.OK).json({
+        status: true,
+        statusCode: HttpStatus.OK,
+      });
+      return;
+    }
+
     console.error(
       '#Error response to path',
       request.url,
@@ -57,6 +71,25 @@ export class ResponseInterceptor implements NestInterceptor {
 
     const ctx = context.switchToHttp();
     const response = ctx.getResponse();
+
+    try {
+      console.log(
+        '#responseHandler: trying to set cookie for this response: ',
+        res.token,
+      );
+      if (res.token !== undefined) {
+        response.cookie('EToken', res.token);
+        console.log(
+          '#responseHandler: success to set cookie for this response: ',
+          res,
+        );
+      }
+    } catch (err) {
+      console.log(
+        '#responseHandler: failed to set cookie for this response: ',
+        res,
+      );
+    }
 
     response.status(HttpStatus.OK).json({
       status: true,

@@ -1,17 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpException } from '@nestjs/common';
 import { DeepMocked, createMock } from '@golevelup/ts-jest';
 import { ContractHelper } from '../contract.helper';
 import { ContractService } from '../contract.service';
 import { ContractRepository } from '../contract.repository';
-import { IContract } from '../interface/contract.interface';
-import * as path from 'path';
 
 describe('ContractService', () => {
   let service: ContractService;
   let reposiotry: DeepMocked<ContractRepository>;
   let helper: DeepMocked<ContractHelper>;
-  let contractMock: IContract;
+  let contractMock;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,6 +27,9 @@ describe('ContractService', () => {
       title: 'deez noot',
       description: 'this is description about job that is created for test',
       template: 'template',
+      paymentRate: 100000,
+      status: 'PENDING',
+      paymentStatus: 'PENDING',
       createdAt: new Date(),
       updatedAt: new Date(),
     };

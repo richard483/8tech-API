@@ -3,14 +3,14 @@ import { compile } from 'handlebars';
 import { launch } from 'puppeteer';
 import { rm } from 'fs';
 import { join } from 'path';
-import { IContract } from './interface/contract.interface';
+import { Contract } from '@prisma/client';
 
 @Injectable()
 export class ContractHelper {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
 
-  async createPdf(contractData: IContract) {
+  async createPdf(contractData: Contract) {
     const { template, ...data } = contractData;
 
     const templates = compile(template);
@@ -23,7 +23,7 @@ export class ContractHelper {
 
     const browser = await launch({
       args: ['--no-sandbox'],
-      // comment the below line for running locally
+      // #DEBUG : comment the below line for running locally
       executablePath: '/usr/bin/chromium',
       headless: true,
     });

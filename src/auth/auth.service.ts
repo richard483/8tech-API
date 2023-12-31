@@ -47,17 +47,10 @@ export class AuthService {
   ): Promise<IAuthenticate> {
     const user = await this.validateUser(authenticateRequest);
     user.token = this.jwtService.sign(user);
-    res.cookie('EToken', user.token);
     return user;
   }
 
   async register(userCreate: RegisterRequest): Promise<IUser> {
-    if (!this.passwordValidation(userCreate.password)) {
-      throw new HttpException(
-        { password: 'INVALID_PASSWORD' },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
     const user = await this.usersService.create({
       ...userCreate,
       password: this.hashPassword(userCreate.password),
@@ -93,8 +86,6 @@ export class AuthService {
     const userData: IAuthenticate = { user: userDb };
     userData.token = this.jwtService.sign(userData);
 
-    res.cookie('EToken', userData.token);
-
     return userData;
   }
 
@@ -102,11 +93,5 @@ export class AuthService {
     const salt = genSaltSync(10);
     const hashedPassword = hashSync(password, salt);
     return hashedPassword;
-  }
-
-  private passwordValidation(password: string): boolean {
-    const passwordWithNumberAndAlphabetRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    return passwordWithNumberAndAlphabetRegex.test(password);
   }
 }

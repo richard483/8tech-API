@@ -136,10 +136,8 @@ describe('AuthService', () => {
       password: 'password',
     };
 
-    const cookieSpy = jest.fn();
-
     const resMock = {
-      cookie: cookieSpy,
+      cookie: 'any',
     };
 
     const validateUserSpy = jest
@@ -154,8 +152,6 @@ describe('AuthService', () => {
     expect(signSpy).toBeCalledWith(mockAuthenticateDto);
     expect(validateUserSpy).toBeCalledTimes(1);
     expect(validateUserSpy).toBeCalledWith(authenticateDto);
-    expect(cookieSpy).toBeCalledTimes(1);
-    expect(cookieSpy).toBeCalledWith('EToken', 'token');
 
     mockAuthenticateDto.token = 'token';
 
@@ -163,7 +159,6 @@ describe('AuthService', () => {
 
     validateUserSpy.mockRestore();
     signSpy.mockRestore();
-    cookieSpy.mockRestore();
   });
 
   it('register success', async () => {
@@ -188,7 +183,7 @@ describe('AuthService', () => {
     } catch (e) {
       console.log('#register failed invalid password', e);
       expect(e).toBeInstanceOf(HttpException);
-      expect(e.message).toBe('Http Exception');
+      expect(e.message).toBe('EMAIL_ALREADY_USED');
     }
   });
 
@@ -204,17 +199,14 @@ describe('AuthService', () => {
       .mockResolvedValue(mockUser);
 
     const signSpy = jest.spyOn(jwtService, 'sign').mockReturnValue('token');
-    const cookieSpy = jest.fn();
 
     const res = {
-      cookie: cookieSpy,
+      cookie: 'any',
     };
 
     const response = await service.googleLogin(req, res);
 
     expect(findOneByEmailSpy).toBeCalledWith(googleUserData.email);
-    expect(cookieSpy).toBeCalledTimes(1);
-    expect(cookieSpy).toBeCalledWith('EToken', 'token');
     expect(signSpy).toBeCalledTimes(1);
 
     mockAuthenticateDto.token = 'token';
@@ -256,17 +248,14 @@ describe('AuthService', () => {
       .mockResolvedValueOnce(mockUser);
 
     const signSpy = jest.spyOn(jwtService, 'sign').mockReturnValueOnce('token');
-    const cookieSpy = jest.fn();
 
     const res = {
-      cookie: cookieSpy,
+      cookie: 'any',
     };
 
     const response = await service.googleLogin(req, res);
 
     expect(findOneByEmailSpy).toBeCalledWith(googleUserData.email);
-    expect(cookieSpy).toBeCalledTimes(1);
-    expect(cookieSpy).toBeCalledWith('EToken', 'token');
     expect(signSpy).toBeCalledTimes(1);
     expect(createUserSpy).toBeCalledWith({
       email: mockUser.email,

@@ -24,6 +24,13 @@ export class ContractCreateDto {
 
   @ApiProperty()
   @IsNotEmpty()
+  readonly paymentRate: number;
+
+  @ApiProperty()
+  readonly paymentRequestId?: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
   @IsString()
   readonly template: string;
 }

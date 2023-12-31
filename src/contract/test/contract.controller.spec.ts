@@ -5,9 +5,9 @@ import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 import { RoleGuard } from '../../auth/roles/role.guard';
 import { ContractController } from '../contract.controller';
 import { ContractService } from '../contract.service';
-import { IContract } from '../interface/contract.interface';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Contract, ContractStatus } from '@prisma/client';
 
 describe('ContractController', () => {
   let controller: ContractController;
@@ -45,15 +45,19 @@ describe('ContractController', () => {
       title: 'deez noot',
       description: 'this is description about job that is created for test',
       template: 'template',
+      paymentRate: 100000,
     };
 
-    const mockContract: IContract = {
+    const mockContract: Contract = {
       id: 'randomId',
       userId: 'randomUserId',
       jobId: 'randomJobId',
+      paymentId: 'asd',
       title: 'deez noot',
       description: 'this is description about job that is created for test',
       template: 'template',
+      paymentRate: 100000,
+      status: ContractStatus.PENDING,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
