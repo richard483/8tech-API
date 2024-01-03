@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { pagination, returnablePaginated } from '../prisma/prisma.util';
 import { IUser } from './interface/user.interface';
 import { UserFilterRequest } from './requests/user-filter.request';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserRepository {
@@ -70,6 +71,22 @@ export class UserRepository {
     });
   }
 
+  async findOnebyId(id: string): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async findOnebyUsername(username: string): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: {
+        username,
+      },
+    });
+  }
+
   async create(user: any): Promise<IUser> {
     const data = {
       ...user,
@@ -84,7 +101,7 @@ export class UserRepository {
     });
   }
 
-  async update(id: string, data: any): Promise<IUser> {
+  async update(id: string, data: any): Promise<User> {
     return this.prisma.user.update({
       where: {
         id,

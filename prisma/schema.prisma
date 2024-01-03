@@ -29,6 +29,8 @@ model User {
   ratings                Rating[]
   ratingsAvg             Float?
   companyId              String?
+  portofolio             String[]
+  profilePicture         String?
   hasGoogleAccount       Boolean    @default(false)
   company                Company?   @relation(fields: [companyId], references: [id])
   Contract               Contract[]
