@@ -21,6 +21,8 @@ COPY . /usr/src/app
 
 RUN npm ci
 
+RUN npm run migrate
+
 RUN npm run build
 
 EXPOSE 3000
