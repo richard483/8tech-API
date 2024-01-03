@@ -10,6 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - run: npm ci
-    - run: npm run migrate
     - uses: ArtiomTr/jest-coverage-report-action@v2
+      with:
+        test-script: npm run ci && npm run migrate && npm run test:cov
