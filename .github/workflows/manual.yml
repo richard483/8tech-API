@@ -10,6 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - run: npm ci
-    - run: npx prisma generate
     - uses: ArtiomTr/jest-coverage-report-action@v2
+      with:
+        test-script: npx prisma generate && npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json
