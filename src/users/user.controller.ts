@@ -1,5 +1,15 @@
-import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  Res,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { Roles } from '../auth/roles/role.decorator';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
@@ -7,7 +17,12 @@ import { RoleGuard } from '../auth/roles/role.guard';
 import { Role } from '../auth/roles/role.enum';
 import { UserCreateRequest } from './requests/user-create.request';
 import { UserFilterRequest } from './requests/user-filter.request';
-import { UserUpdateRequest } from './requests/user-update.request';
+import {
+  UserUpdateRequest,
+  UserUpdateRequestMe,
+} from './requests/user-update.request';
+import { Express } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('User')
 @Controller('user')
@@ -38,7 +53,7 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @Roles(Role.ADMIN, Role.USER)
+  @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('update')
   async update(@Res() res, @Body() data: UserUpdateRequest) {
@@ -49,9 +64,48 @@ export class UserController {
   @ApiBearerAuth()
   @Roles(Role.ADMIN, Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
+  @Post('update/me')
+  async updateMe(@Request() req, @Body() data: UserUpdateRequestMe) {
+    const response = await this.userService.update({
+      ...data,
+      id: req.user.id,
+    });
+    return response;
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('filter')
   async filterUser(@Res() res, @Body() body: UserFilterRequest) {
     const response = await this.userService.findManyByList(body);
     return response;
+  }
+
+  @ApiBearerAuth()
+  @UseInterceptors(FileInterceptor('file'))
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Post('uploadProfilePicture')
+  async uploadProfilePicture(
+    @Request() req,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    console.log('#uploadProfilePicture user', req.user);
+    const response = await this.userService.uploadProfilePicture(
+      file,
+      req.user.id,
+    );
+    return response;
+  }
+
+  @ApiBearerAuth()
+  @ApiCookieAuth()
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Get('info')
+  async getProfileInfo(@Request() req, @Res() res) {
+    console.info('#UserGetProfileInfo request incoming');
+    return await this.userService.findOneById(req.user.id);
   }
 }
