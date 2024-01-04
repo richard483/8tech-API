@@ -15,6 +15,7 @@ import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { RoleGuard } from '../auth/roles/role.guard';
 import { Role } from '../auth/roles/role.enum';
 import { JobUpdateDto } from './dto/job-update.dto';
+import { JobFilterRequest } from './dto/job-filter.request';
 
 @ApiTags('Job')
 @Controller('job')
@@ -62,6 +63,15 @@ export class JobController {
   @Get('/:jobId')
   async getjob(@Res() res, @Param() params: any) {
     const response = await this.jobService.getById(params.jobId);
+    return response;
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Post('filter')
+  async filter(@Res() res, @Body() data: JobFilterRequest) {
+    const response = await this.jobService.findManyByList(data);
     return response;
   }
 }

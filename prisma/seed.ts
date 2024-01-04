@@ -53,7 +53,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'default richard description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '04'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const defaultUser = await prisma.user.upsert({
@@ -67,7 +89,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'default user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '04'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const notADefaultUser = await prisma.user.upsert({
@@ -81,7 +125,15 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'notADefault user description that being created by seed.ts',
-      previousWorkplaceId: ['01'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const mariaMarionetteUser = await prisma.user.upsert({
@@ -96,7 +148,22 @@ async function users() {
       roles: ['USER'],
       description:
         'mariaMarionette user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '03', '04'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const mikaUser = await prisma.user.upsert({
@@ -110,7 +177,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'mika user description that being created by seed.ts',
-      previousWorkplaceId: ['02', '03', '04'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const sonnyUser = await prisma.user.upsert({
@@ -124,7 +213,22 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'sonny user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const ennaUser = await prisma.user.upsert({
@@ -138,7 +242,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'enna user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '03'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const satoruUser = await prisma.user.upsert({
@@ -152,7 +278,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'satoru user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '03'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const eyePatchUser = await prisma.user.upsert({
@@ -166,7 +314,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'eyePatch user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '03'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const ricatUser = await prisma.user.upsert({
@@ -180,7 +350,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'ricat user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '03'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
 
@@ -268,7 +460,7 @@ async function job() {
     update: {},
     create: {
       title: 'This is job1 title',
-      description: 'This is job1 description',
+      description: 'This is job1 description for ninisani',
       companyId: await prisma.company
         .findFirst({
           where: {
@@ -279,8 +471,46 @@ async function job() {
     },
   });
 
+  const job2 = await prisma.jobVacancy.upsert({
+    where: {
+      id: '02',
+    },
+    update: {},
+    create: {
+      title: 'This is job2 title',
+      description: 'This is job2 description for Hololive',
+      companyId: await prisma.company
+        .findFirst({
+          where: {
+            name: 'Hololive',
+          },
+        })
+        .then((company) => company.id),
+    },
+  });
+
+  const job3 = await prisma.jobVacancy.upsert({
+    where: {
+      id: '03',
+    },
+    update: {},
+    create: {
+      title: 'This is job3 title',
+      description: 'This is job3 description for Djarum',
+      companyId: await prisma.company
+        .findFirst({
+          where: {
+            name: 'Djarum',
+          },
+        })
+        .then((company) => company.id),
+    },
+  });
+
   console.log({
     job1,
+    job2,
+    job3,
   });
 }
 
