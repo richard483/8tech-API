@@ -66,10 +66,11 @@ model Contract {
   title       String
   description String
   paymentRate Int
-  template    String         @db.VarChar()
+  template    String?        @db.VarChar()
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   status      ContractStatus @default(PENDING)
+  customField String?
   JobVacancy  JobVacancy?    @relation(fields: [jobId], references: [id])
   User        User?          @relation(fields: [userId], references: [id])
   Payment     Payment?       @relation(fields: [paymentId], references: [id])

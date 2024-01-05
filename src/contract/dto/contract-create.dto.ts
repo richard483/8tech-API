@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class ContractCreateDto {
   @ApiProperty()
@@ -24,13 +24,23 @@ export class ContractCreateDto {
 
   @ApiProperty()
   @IsNotEmpty()
+  @IsNumber()
   readonly paymentRate: number;
 
   @ApiProperty()
+  @IsString()
+  @IsOptional()
   readonly paymentRequestId?: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly template: string;
+  @IsOptional()
+  readonly template?: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @IsOptional()
+  readonly customField?: string;
 }
