@@ -168,7 +168,8 @@ describe('AuthService', () => {
       .spyOn(userService, 'create')
       .mockResolvedValue(mockUser);
     mockRegisterRequest.password = 'password123';
-    expect(await service.register(mockRegisterRequest)).toEqual(mockUser);
+    const { password, ...expected } = mockUser;
+    expect(await service.register(mockRegisterRequest)).toEqual(expected);
     expect(userCreateSpy).toBeCalledTimes(1);
 
     userCreateSpy.mockRestore();

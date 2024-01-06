@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, Matches } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, Matches } from 'class-validator';
 
 export class RegisterRequest {
   @ApiProperty()
@@ -42,4 +42,12 @@ export class RegisterRequest {
     message: 'MUST_NOT_BE_EMPTY',
   })
   readonly lastName: string;
+
+  @ApiProperty()
+  @IsOptional()
+  readonly isRecruiter: boolean;
+
+  @ApiProperty()
+  @IsOptional()
+  readonly companyId: string;
 }

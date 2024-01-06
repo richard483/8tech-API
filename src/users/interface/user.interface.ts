@@ -10,8 +10,10 @@ export interface IUser {
   updatedAt: Date;
   roles: string[] | Role[];
   description: string;
-  previousWorkplace?: any;
+  previousWorkplaceId?: any;
   ratings?: any;
   companyId?: string;
+  portofolio: string[];
+  profilePicture?: string;
   hasGoogleAccount: boolean;
 }

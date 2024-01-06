@@ -49,13 +49,14 @@ model JobVacancy {
 }
 
 model Company {
-  id          String       @id @default(uuid())
-  name        String
-  description String
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  jobs        JobVacancy[]
-  User        User[]
+  id             String       @id @default(uuid())
+  profilePicture String?
+  name           String
+  description    String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  jobs           JobVacancy[]
+  User           User[]
 }
 
 model Contract {

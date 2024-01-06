@@ -5,6 +5,7 @@ import { UserController } from '../user.controller';
 import { UsersService } from '../users.service';
 import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 import { RoleGuard } from '../../auth/roles/role.guard';
+import { Role, User } from '@prisma/client';
 
 describe('AuthController', () => {
   let controller: UserController;
@@ -45,7 +46,7 @@ describe('AuthController', () => {
       roles: ['MEMBER'],
     };
 
-    const mockUser = {
+    const mockUser: User = {
       id: '1',
       username: 'test',
       firstName: 'test',
@@ -53,9 +54,16 @@ describe('AuthController', () => {
       email: 'email',
       createdAt: new Date(),
       updatedAt: new Date(),
-      roles: ['MEMBER'],
+      roles: [Role.USER],
       hasGoogleAccount: false,
       description: 'desc',
+      password: 'password',
+      ratingsAvg: 0,
+      companyId: '1',
+      portofolio: ['1', '2'],
+      previousWorkplaceCount: 0,
+      previousWorkplaceId: ['1', '2'],
+      profilePicture: 'picture',
     };
 
     const createSpy = jest

@@ -6,8 +6,10 @@ import { CanActivate, HttpStatus } from '@nestjs/common';
 import { RoleGuard } from '../roles/role.guard';
 import { JwtAuthGuard } from '../jwt/jwt-auth.guard';
 import { GoogleGuard } from '../google/google.guard';
+import { IAuthenticate } from '../interface/auth.interface';
+import { IUser } from '../../users/interface/user.interface';
 
-const mockIAuthSuccessResponse = {
+const mockIAuthSuccessResponse: IAuthenticate = {
   user: {
     id: '1',
     username: 'test',
@@ -19,6 +21,7 @@ const mockIAuthSuccessResponse = {
     roles: ['MEMBER'],
     hasGoogleAccount: false,
     description: 'desc',
+    portofolio: [],
   },
   token: 'token',
 };
@@ -28,7 +31,7 @@ const mockBadRequestResponse = {
   message: 'ERROR_BAD_REQUEST',
 };
 
-const mockIUserResponse = {
+const mockIUserResponse: IUser = {
   id: '1',
   username: 'test',
   firstName: 'test',
@@ -39,6 +42,7 @@ const mockIUserResponse = {
   roles: ['MEMBER'],
   hasGoogleAccount: false,
   description: 'desc',
+  portofolio: [],
 };
 
 describe('AuthController', () => {

@@ -65,6 +65,10 @@ describe('UsersService', () => {
       .spyOn(reposiotry, 'findOnebyEmail')
       .mockResolvedValue(null);
 
+    const findUsernameSpy = jest
+      .spyOn(reposiotry, 'findOnebyUsername')
+      .mockResolvedValue(null);
+
     const createSpy = jest
       .spyOn(reposiotry, 'create')
       .mockResolvedValue(userMock);
@@ -73,6 +77,8 @@ describe('UsersService', () => {
 
     expect(findOneSpy).toBeCalledTimes(1);
     expect(findOneSpy).toBeCalledWith(userMock.email);
+    expect(findUsernameSpy).toBeCalledTimes(1);
+    expect(findUsernameSpy).toBeCalledWith(userMock.username);
     expect(createSpy).toBeCalledTimes(1);
     expect(createSpy).toBeCalledWith(userMock);
     expect(res).toEqual(userMock);
