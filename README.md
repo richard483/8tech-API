@@ -19,16 +19,19 @@ Installing project
 ```bash
 $ npm install
 ```
-Pushing prisma schema to database
+Run prisma migration & seeding
 
 ```bash
-$ npx prisma db push
+$ npm run migrate
 ```
 ## Running the app
 
 ```bash
 # development
 $ npm run start
+
+# development with hot reload
+$ npm run dev
 
 # watch mode
 $ npm run start:dev
