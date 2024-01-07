@@ -21,7 +21,7 @@ COPY . /usr/src/app
 
 RUN npm ci
 
-RUN npm run migrate
+RUN npx prisma generate
 
 RUN npm run build
 
