@@ -10,7 +10,7 @@ export class ContractRepository {
     this.model = this.prisma.contract;
   }
 
-  async create(contract: any): Promise<any> {
+  async create(contract: any): Promise<Contract> {
     return this.prisma.contract.create({
       data: contract,
     });
@@ -33,7 +33,7 @@ export class ContractRepository {
     });
   }
 
-  async updatePaymentId(id: string, paymentId: string): Promise<any> {
+  async updatePaymentId(id: string, paymentId: string): Promise<Contract> {
     return this.prisma.contract.update({
       where: {
         id,

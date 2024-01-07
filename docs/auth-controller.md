@@ -101,6 +101,8 @@ HTTP Code: 400
 | `username`       | String |
 | `firstName`      | String |
 | `lastName`       | String |
+| `isRecruiter`       | Boolean? |
+| `companyId`       | String? |
 
 ### Success Response
 
@@ -111,22 +113,24 @@ HTTP Code: 200
   "status": true,
   "statusCode": 200,
   "data": {
-    "id": "57b3634c-3789-4a46-b6f0-afe22a195f27",
-    "email": "aassaad@gmail.com",
-    "username": "username",
-    "firstName": "firsl",
-    "lastName": "last",
-    "password": "$2b$10$yAmMDeIyOHRo/bKfWWQ6N.Z/LrnU1PEA4lMBO/4M/48c23zz54QYa",
-    "createdAt": "2023-12-03T17:59:31.655Z",
-    "updatedAt": "2023-12-03T17:59:31.655Z",
+    "id": "e712c07f-0d79-43be-a222-4676049fa476",
+    "email": "rec@gmail.com",
+    "username": "rec",
+    "firstName": "rec",
+    "lastName": "rec",
+    "createdAt": "2024-01-06T14:28:15.249Z",
+    "updatedAt": "2024-01-06T14:28:15.249Z",
     "roles": [
-      "USER"
+      "USER",
+      "RECRUITER"
     ],
     "description": null,
     "previousWorkplaceId": [],
     "previousWorkplaceCount": null,
     "ratingsAvg": null,
     "companyId": null,
+    "portofolio": [],
+    "profilePicture": null,
     "hasGoogleAccount": false
   }
 }
@@ -141,6 +145,19 @@ HTTP Code: 400
   "status": false,
   "statusCode": 400,
   "message": "EMAIL_ALREADY_USED",
+  "error": "BAD_REQUEST"
+}
+```
+
+### Username already used
+
+HTTP Code: 400
+
+```json
+{
+  "status": false,
+  "statusCode": 400,
+  "message": "USERNAME_ALREADY_USED",
   "error": "BAD_REQUEST"
 }
 ```

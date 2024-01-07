@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
-import { IUser } from './interface/user.interface';
 import { UserFilterRequest } from './requests/user-filter.request';
 import { UserHelper } from './user.helper';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -15,14 +15,20 @@ export class UsersService {
     return this.userRepository.findOnebyEmail(email);
   }
 
-  async findOneByEmail(email: string): Promise<IUser | null> {
+  async findOneByEmail(email: string): Promise<User | null> {
     return this.userRepository.findOnebyEmail(email);
   }
 
-  async create(user: any): Promise<IUser> {
+  async create(user: any): Promise<User> {
     const existingUser = await this.userRepository.findOnebyEmail(user.email);
     if (existingUser !== null) {
       throw new HttpException('EMAIL_ALREADY_USED', HttpStatus.BAD_REQUEST);
+    }
+    const existingUsername = await this.userRepository.findOnebyUsername(
+      user.username,
+    );
+    if (existingUsername !== null) {
+      throw new HttpException('USERNAME_ALREADY_USED', HttpStatus.BAD_REQUEST);
     }
     return this.userRepository.create(user);
   }
@@ -46,7 +52,7 @@ export class UsersService {
     return user;
   }
 
-  async findManyByList(data: UserFilterRequest): Promise<IUser[] | null> {
+  async findManyByList(data: UserFilterRequest): Promise<any | null> {
     return this.userRepository.findManyByFieldAndSortBy(data);
   }
 
@@ -58,7 +64,7 @@ export class UsersService {
   async updateGoogleStatus(
     email: string,
     value: boolean,
-  ): Promise<IUser | null> {
+  ): Promise<User | null> {
     return this.userRepository.updateUserGoogleStatus(email, value);
   }
 

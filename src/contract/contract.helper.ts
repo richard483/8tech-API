@@ -11,7 +11,18 @@ export class ContractHelper {
   constructor() {}
 
   async createPdf(contractData: Contract) {
-    const { template, ...data } = contractData;
+    const { template, customField, ...data } = contractData;
+
+    if (customField) {
+      // splitting customField string into array
+      const fieldList = customField.split(';').filter((field) => field);
+
+      // converting array to object
+      fieldList.forEach((field) => {
+        const [key, value] = field.split('=');
+        data[key] = value;
+      });
+    }
 
     const templates = compile(template);
     const html = templates(data);

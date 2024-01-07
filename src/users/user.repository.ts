@@ -1,7 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { pagination, returnablePaginated } from '../prisma/prisma.util';
-import { IUser } from './interface/user.interface';
 import { UserFilterRequest } from './requests/user-filter.request';
 import { User } from '@prisma/client';
 
@@ -54,7 +53,7 @@ export class UserRepository {
   async findOnebyEmailPassword(
     email: string,
     password: string,
-  ): Promise<IUser | null> {
+  ): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: {
         email,
@@ -63,7 +62,7 @@ export class UserRepository {
     });
   }
 
-  async findOnebyEmail(email: string): Promise<IUser | null> {
+  async findOnebyEmail(email: string): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: {
         email,
@@ -87,7 +86,7 @@ export class UserRepository {
     });
   }
 
-  async create(user: any): Promise<IUser> {
+  async create(user: any): Promise<User> {
     const data = {
       ...user,
       previousWorkplaceCount: user.previousWorkplaceId?.length,
@@ -139,7 +138,7 @@ export class UserRepository {
       });
   }
 
-  async updateUserGoogleStatus(email: string, value: boolean): Promise<IUser> {
+  async updateUserGoogleStatus(email: string, value: boolean): Promise<User> {
     return this.prisma.user.update({
       where: {
         email,

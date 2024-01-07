@@ -60,6 +60,7 @@ describe('ContractController', () => {
       status: ContractStatus.PENDING,
       createdAt: new Date(),
       updatedAt: new Date(),
+      customField: null,
     };
 
     const createSpy = jest

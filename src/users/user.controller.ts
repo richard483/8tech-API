@@ -74,7 +74,7 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @Roles(Role.ADMIN, Role.USER)
+  @Roles(Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('filter')
   async filterUser(@Res() res, @Body() body: UserFilterRequest) {
@@ -84,7 +84,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseInterceptors(FileInterceptor('file'))
-  @Roles(Role.ADMIN, Role.USER)
+  @Roles(Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('uploadProfilePicture')
   async uploadProfilePicture(
