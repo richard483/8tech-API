@@ -16,7 +16,7 @@ export class ContractRepository {
     });
   }
 
-  async getAllbyUserId(userId : string): Promise<IContract[]> {
+  async getAllbyUserId(userId : string): Promise<Contract[]> {
     return this.prisma.contract.findMany({
       where: {
         userId,
@@ -24,7 +24,7 @@ export class ContractRepository {
     });
   }
 
-  async getAllbyJobId(jobId : string): Promise<IContract[]> {
+  async getAllbyJobId(jobId : string): Promise<Contract[]> {
     return this.prisma.contract.findMany({
       where: {
         jobId,
