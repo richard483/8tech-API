@@ -21,7 +21,7 @@ const mockIAuthSuccessResponse: IAuthenticate = {
     roles: ['MEMBER'],
     hasGoogleAccount: false,
     description: 'desc',
-    portofolio: [],
+    portfolio: [],
   },
   token: 'token',
 };
@@ -42,7 +42,7 @@ const mockIUserResponse: IUser = {
   roles: ['MEMBER'],
   hasGoogleAccount: false,
   description: 'desc',
-  portofolio: [],
+  portfolio: [],
 };
 
 describe('AuthController', () => {

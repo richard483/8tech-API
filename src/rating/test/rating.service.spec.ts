@@ -22,7 +22,7 @@ describe('RatingService', () => {
     reposiotry = module.get(RatingRepository);
     ratingMock = {
       id: 'randomId',
-      givenByUserId: 'randomUserId',
+      recruiterUserId: 'randomUserId',
       ratingOf10: 9,
     };
   });
@@ -34,7 +34,7 @@ describe('RatingService', () => {
   it('create success', async () => {
     const createRatingDto: RatingCreateDto = {
       userId: 'randomUserId',
-      givenByUserId: 'randomUserId',
+      recruiterUserId: 'randomUserId',
       ratingOf10: 9,
     };
     const createSpy = jest
@@ -53,7 +53,7 @@ describe('RatingService', () => {
     const ratingUpdate: RatingUpdateDto = {
       id: 'randomId',
       userId: 'randomUserId',
-      givenByUserId: 'randomUserId',
+      recruiterUserId: 'randomUserId',
       ratingOf10: 9,
     };
     const updateSpy = jest

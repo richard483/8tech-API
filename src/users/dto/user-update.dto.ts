@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Role } from '../../auth/roles/role.enum';
 
-export class UserUpdateRequest {
+export class UserUpdateRequestDto {
   @ApiProperty()
   @IsNotEmpty({
     message: 'MUST_NOT_BE_EMPTY',
@@ -10,7 +10,14 @@ export class UserUpdateRequest {
   readonly id: string;
 
   @ApiProperty()
-  @IsEmail()
+  @IsEmail(
+    {
+      allow_display_name: false,
+    },
+    {
+      message: 'INVALID_EMAIL',
+    },
+  )
   @IsOptional()
   readonly email: string;
 
@@ -46,9 +53,8 @@ export class UserUpdateRequest {
   readonly companyId: string;
 
   @ApiProperty()
-  @IsString()
   @IsOptional()
-  readonly portofolio: string;
+  readonly portfolio: string[];
 
   @ApiProperty()
   @IsString()
@@ -56,9 +62,16 @@ export class UserUpdateRequest {
   readonly profilePicture: string;
 }
 
-export class UserUpdateRequestMe {
+export class UserUpdateRequestMeDto {
   @ApiProperty()
-  @IsEmail()
+  @IsEmail(
+    {
+      allow_display_name: false,
+    },
+    {
+      message: 'INVALID_EMAIL',
+    },
+  )
   @IsOptional()
   readonly email: string;
 
@@ -94,9 +107,8 @@ export class UserUpdateRequestMe {
   readonly companyId: string;
 
   @ApiProperty()
-  @IsString()
   @IsOptional()
-  readonly portofolio: string;
+  readonly portfolio: string[];
 
   @ApiProperty()
   @IsString()

@@ -1,5 +1,5 @@
 export interface IRating {
   id: string;
-  givenByUserId: string;
+  recruiterUserId: string;
   ratingOf10?: number;
 }

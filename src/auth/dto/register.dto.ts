@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional, Matches } from 'class-validator';
 
-export class RegisterRequest {
+export class RegisterRequestDto {
   @ApiProperty()
   @IsNotEmpty({
     message: 'MUST_NOT_BE_EMPTY',

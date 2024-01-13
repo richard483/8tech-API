@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeepMocked, createMock } from '@golevelup/ts-jest';
 import { JobService } from '../job.service';
-import { IJob } from '../interface/job.interface';
 import { JobRepository } from '../job.repository';
 import { JobUpdateDto } from '../dto/job-update.dto';
+import { JobVacancy } from '@prisma/client';
 
 describe('JobService', () => {
   let service: JobService;
   let reposiotry: DeepMocked<JobRepository>;
-  let jobMock: IJob;
+  let jobMock: JobVacancy;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

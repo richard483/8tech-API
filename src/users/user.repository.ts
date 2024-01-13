@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { pagination, returnablePaginated } from '../prisma/prisma.util';
-import { UserFilterRequest } from './requests/user-filter.request';
+import { UserFilterRequestDto } from './dto/user-filter.dto';
 import { User } from '@prisma/client';
 
 @Injectable()
@@ -109,7 +109,7 @@ export class UserRepository {
     });
   }
 
-  async findManyByFieldAndSortBy(reqData: UserFilterRequest): Promise<any> {
+  async findManyByFieldAndSortBy(reqData: UserFilterRequestDto): Promise<any> {
     const result = this.prisma.user.findMany({
       ...pagination(reqData.page, reqData.size),
       where: this.field[reqData.field]

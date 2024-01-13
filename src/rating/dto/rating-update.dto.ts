@@ -15,7 +15,7 @@ export class RatingUpdateDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly givenByUserId: string;
+  readonly recruiterUserId: string;
 
   @ApiProperty()
   @IsNotEmpty()

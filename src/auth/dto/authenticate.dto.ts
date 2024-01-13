@@ -1,10 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-export class AuthenticateRequest {
+export class AuthenticateRequestDto {
   @ApiProperty()
   @IsNotEmpty()
-  @IsEmail()
+  @IsEmail(
+    {
+      allow_display_name: false,
+    },
+    {
+      message: 'INVALID_EMAIL',
+    },
+  )
   readonly email: string;
 
   @ApiProperty()

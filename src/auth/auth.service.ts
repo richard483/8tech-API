@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { AuthenticateRequest } from './requests/authenticate.request';
+import { AuthenticateRequestDto } from './dto/authenticate.dto';
 import { IAuthenticate, IGoogleUser } from './interface/auth.interface';
 import { IUser } from '../users/interface/user.interface';
 import { compare, genSaltSync, hashSync } from 'bcrypt';
-import { RegisterRequest } from './requests/register.request';
+import { RegisterRequestDto } from './dto/register.dto';
 import { Role } from '@prisma/client';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class AuthService {
   ) {}
 
   async validateUser(
-    authenticateRequest: AuthenticateRequest,
+    authenticateRequest: AuthenticateRequestDto,
   ): Promise<IAuthenticate> {
     const user = await this.usersService.findOne(authenticateRequest.email);
     if (!user) {
@@ -42,7 +42,7 @@ export class AuthService {
   }
 
   async login(
-    authenticateRequest: AuthenticateRequest,
+    authenticateRequest: AuthenticateRequestDto,
     res,
   ): Promise<IAuthenticate> {
     const user = await this.validateUser(authenticateRequest);
@@ -50,7 +50,7 @@ export class AuthService {
     return user;
   }
 
-  async register(request: RegisterRequest): Promise<IUser> {
+  async register(request: RegisterRequestDto): Promise<IUser> {
     let data;
     const { isRecruiter, ...userCreate } = request;
     if (isRecruiter) {

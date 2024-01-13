@@ -41,13 +41,13 @@ describe('RatingController', () => {
   it('craeteRating success', async () => {
     const createRatingDTO: RatingCreateDto = {
       userId: 'test',
-      givenByUserId: 'test',
+      recruiterUserId: 'test',
       ratingOf10: 9,
     };
 
     const mockJob: IRating = {
       id: 'ratingId',
-      givenByUserId: 'userId',
+      recruiterUserId: 'userId',
       ratingOf10: 9,
     };
 
@@ -101,12 +101,12 @@ describe('RatingController', () => {
     const ratingUpdateDto: RatingUpdateDto = {
       id: 'randomId',
       userId: 'test',
-      givenByUserId: 'test',
+      recruiterUserId: 'test',
       ratingOf10: 9,
     };
     const mockJob: IRating = {
       id: 'ratingId',
-      givenByUserId: 'userId',
+      recruiterUserId: 'userId',
       ratingOf10: 9,
     };
 
@@ -126,7 +126,7 @@ describe('RatingController', () => {
 
     expect(updateSpy).toBeCalledWith({
       id: 'randomId',
-      givenByUserId: 'test',
+      recruiterUserId: 'test',
       ratingOf10: 9,
       userId: 'test',
     });
@@ -138,7 +138,7 @@ describe('RatingController', () => {
     const ratingUpdateDto: RatingUpdateDto = {
       id: 'randomId',
       userId: 'test',
-      givenByUserId: 'test',
+      recruiterUserId: 'test',
       ratingOf10: 9,
     };
     const mockResponse = {
@@ -164,7 +164,7 @@ describe('RatingController', () => {
       expect(updateSpy).toBeCalledWith({
         id: 'randomId',
         userId: 'test',
-        givenByUserId: 'test',
+        recruiterUserId: 'test',
         ratingOf10: 9,
       });
       expect(e).toEqual(mockResponse);

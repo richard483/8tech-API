@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
-import { UserFilterRequest } from './requests/user-filter.request';
+import { UserFilterRequestDto } from './dto/user-filter.dto';
 import { UserHelper } from './user.helper';
 import { User } from '@prisma/client';
 
@@ -28,7 +28,12 @@ export class UsersService {
       user.username,
     );
     if (existingUsername !== null) {
-      throw new HttpException('USERNAME_ALREADY_USED', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        {
+          username: 'USERNAME_ALREADY_USED',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return this.userRepository.create(user);
   }
@@ -52,7 +57,7 @@ export class UsersService {
     return user;
   }
 
-  async findManyByList(data: UserFilterRequest): Promise<any | null> {
+  async findManyByList(data: UserFilterRequestDto): Promise<any | null> {
     return this.userRepository.findManyByFieldAndSortBy(data);
   }
 
