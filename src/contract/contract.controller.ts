@@ -41,7 +41,6 @@ export class ContractController {
     return response;
   }
 
-  //9432dae7-ba04-410a-a4ff-27d6da87ae63
   @Get('generate/:contractId')
   @ApiParam({ name: 'contractId', type: String })
   @Roles(Role.USER)
@@ -72,8 +71,9 @@ export class ContractController {
   @ApiParam({ name: 'userId', type: String })
   async getAllbyUserId(@Res() res, @Param('userId') userId: string) {
     console.info('#getAllbyUserId request incoming with: ', userId);
-    const response: Contract[] =
-      await this.contractService.getAllbyUserId(userId);
+    const response: Contract[] = await this.contractService.getAllbyUserId(
+      userId,
+    );
     return response;
   }
 
@@ -82,8 +82,9 @@ export class ContractController {
   @ApiParam({ name: 'jobId', type: String })
   async getAllbyJobId(@Res() res, @Param('jobId') jobId: string) {
     console.info('#getAllbyJobId request incoming with: ', jobId);
-    const response: Contract[] =
-      await this.contractService.getAllbyJobId(jobId);
+    const response: Contract[] = await this.contractService.getAllbyJobId(
+      jobId,
+    );
     return response;
   }
 
@@ -92,8 +93,7 @@ export class ContractController {
   @ApiParam({ name: 'Id', type: String })
   async getContractbyId(@Res() res, @Param('Id') Id: string) {
     console.info('#getContractbyId request incoming with: ', Id);
-    const response: Contract =
-      await this.contractService.getContractbyId(Id);
+    const response: Contract = await this.contractService.getContractbyId(Id);
     return response;
   }
 
