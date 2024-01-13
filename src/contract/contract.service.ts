@@ -29,6 +29,8 @@ export class ContractService {
     });
   }
 
+  //#region Contract
+  //Create Contract
   async create(user: any): Promise<IContract> {
     return this.contractRepository.create(user);
   }
@@ -44,6 +46,27 @@ export class ContractService {
     }
   }
 
+  //GetAll Contract by userId
+  async getAllbyUserId(userId : string): Promise<IContract[]> {
+    return await this.contractRepository.getAllbyUserId(userId);
+  }
+
+  //GetAll Contract by jobId
+  async getAllbyJobId(jobId : string): Promise<IContract[]> {
+    return await this.contractRepository.getAllbyJobId(jobId);
+  }
+
+  //Get Contract by contractId
+  async getContractbyId(id : string): Promise<IContract>{
+    return await this.contractRepository.get(id);
+  }
+
+  //Update Contract
+
+  //#endregion
+
+  //#region Payment
+  //Create Payment Request
   async createPaymentRequest(
     contractId: string,
     ewalletChannelCode: EWalletChannelCode,
@@ -81,6 +104,7 @@ export class ContractService {
     };
   }
 
+  //Create Payout by contractId
   async createPayout(contractId: string): Promise<IContractPayoutLink> {
     const contract = await this.contractRepository.getWithUser(contractId);
     if (!contract) {
@@ -126,6 +150,7 @@ export class ContractService {
     };
   }
 
+  //Update Payment Status by contractId
   async updatePaymentStatusSuccess(contractId: string) {
     try {
       const contract = await this.contractRepository.get(contractId);
@@ -161,10 +186,14 @@ export class ContractService {
       throw error;
     }
   }
+  //#endregion
 
+  //#region File
+  //Remove File by fileName
   removeFile(fileName) {
     this.contractHelper.removeFile(
       join(process.cwd(), '/src/contract/temp/', `${fileName}.pdf`),
     );
   }
+  //#endregion
 }

@@ -21,6 +21,7 @@ import { createReadStream } from 'fs';
 import { join } from 'path';
 import { ContractPaymentRequestCreateDto } from './dto/contract-payment_request-create.dto';
 import {
+  IContract,
   IContractPaymentRequest,
   IContractPayoutLink,
 } from './interface/contract.interface';
@@ -64,6 +65,36 @@ export class ContractController {
         contractId,
       );
     }
+  }
+
+  @ApiBearerAuth()
+  @Get('userId/:userId')
+  @ApiParam({ name: 'userId', type: String })
+  async getAllbyUserId(@Res() res, @Param('userId') userId: string) {
+    console.info('#getAllbyUserId request incoming with: ', userId);
+    const response: IContract[] =
+      await this.contractService.getAllbyUserId(userId);
+    return response;
+  }
+
+  @ApiBearerAuth()
+  @Get('jobId/:jobId')
+  @ApiParam({ name: 'jobId', type: String })
+  async getAllbyJobId(@Res() res, @Param('jobId') jobId: string) {
+    console.info('#getAllbyJobId request incoming with: ', jobId);
+    const response: IContract[] =
+      await this.contractService.getAllbyJobId(jobId);
+    return response;
+  }
+
+  @ApiBearerAuth()
+  @Get('Id/:Id')
+  @ApiParam({ name: 'Id', type: String })
+  async getContractbyId(@Res() res, @Param('Id') Id: string) {
+    console.info('#getContractbyId request incoming with: ', Id);
+    const response: IContract =
+      await this.contractService.getContractbyId(Id);
+    return response;
   }
 
   @ApiBearerAuth()
