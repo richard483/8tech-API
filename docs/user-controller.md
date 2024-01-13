@@ -23,7 +23,7 @@
 | `description` | String |
 | `previousWorkPlace` | String[] |
 | `companyId` | String |
-| `portofolio` | String[] |
+| `portfolio` | String[] |
 | `profilePicture` | String |
 
 ### Success Response
@@ -54,7 +54,7 @@ HTTP Code: 200
     "previousWorkplaceCount": 3,
     "ratingsAvg": null,
     "companyId": null,
-    "portofolio": [],
+    "portfolio": [],
     "profilePicture": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fgithub.com%2Fnestjs%2Fswagger%2Fissues%2F1062&psig=AOvVaw3aa3sM4HwPBnbxa_JISyrs&ust=1704354787503000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKDOkcfewIMDFQAAAAAdAAAAABAD",
     "hasGoogleAccount": false
   }
@@ -164,7 +164,7 @@ HTTP Code: 200
         "previousWorkplaceCount": 3,
         "ratingsAvg": null,
         "companyId": null,
-        "portofolio": [],
+        "portfolio": [],
         "profilePicture": "https://firebasestorage.googleapis.com/v0/b/tech-395620.appspot.com/o/profilePicture%2Fd29636a9-ecdd-4905-9568-27e0af35732f.jpg?alt=media&token=25968c38-961d-41f2-be7e-2262ee44e142",
         "hasGoogleAccount": false
     }
@@ -220,7 +220,7 @@ HTTP Code: 200
     "previousWorkplaceCount": 0,
     "ratingsAvg": null,
     "companyId": null,
-    "portofolio": [],
+    "portfolio": [],
     "profilePicture": null,
     "hasGoogleAccount": false
   }

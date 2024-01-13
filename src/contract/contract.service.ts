@@ -49,17 +49,17 @@ export class ContractService {
   }
 
   //GetAll Contract by userId
-  async getAllbyUserId(userId : string): Promise<Contract[]> {
+  async getAllbyUserId(userId: string): Promise<Contract[]> {
     return await this.contractRepository.getAllbyUserId(userId);
   }
 
   //GetAll Contract by jobId
-  async getAllbyJobId(jobId : string): Promise<Contract[]> {
+  async getAllbyJobId(jobId: string): Promise<Contract[]> {
     return await this.contractRepository.getAllbyJobId(jobId);
   }
 
   //Get Contract by contractId
-  async getContractbyId(id : string): Promise<Contract>{
+  async getContractbyId(id: string): Promise<Contract> {
     return await this.contractRepository.get(id);
   }
 

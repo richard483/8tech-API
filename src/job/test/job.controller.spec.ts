@@ -5,7 +5,7 @@ import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 import { RoleGuard } from '../../auth/roles/role.guard';
 import { JobController } from '../job.controller';
 import { JobService } from '../job.service';
-import { IJob } from '../interface/job.interface';
+import { JobVacancy } from '@prisma/client';
 
 describe('JobController', () => {
   let controller: JobController;
@@ -43,7 +43,7 @@ describe('JobController', () => {
       companyId: 'test',
     };
 
-    const mockJob: IJob = {
+    const mockJob: JobVacancy = {
       id: 'randomId',
       title: 'deez noot',
       description: 'this is description about job that is created for test',
@@ -100,7 +100,7 @@ describe('JobController', () => {
   });
 
   it('deleteJob success', async () => {
-    const mockJob: IJob = {
+    const mockJob: JobVacancy = {
       id: 'randomId',
       title: 'deez noot',
       description: 'this is description about job that is created for test',
@@ -160,7 +160,7 @@ describe('JobController', () => {
     }
   });
   it('updateJob success', async () => {
-    const mockJob: IJob = {
+    const mockJob: JobVacancy = {
       id: 'randomId',
       title: 'deez noot',
       description: 'this is description about job that is created for test',
@@ -224,7 +224,7 @@ describe('JobController', () => {
     }
   });
   it('getJob success', async () => {
-    const mockJob: IJob = {
+    const mockJob: JobVacancy = {
       id: 'randomId',
       title: 'deez noot',
       description: 'this is description about job that is created for test',

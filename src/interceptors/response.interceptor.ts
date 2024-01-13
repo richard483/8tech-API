@@ -81,7 +81,7 @@ export class ResponseInterceptor implements NestInterceptor {
         '#responseHandler: trying to set cookie for this response: ',
         res,
       );
-      if (res != undefined) {
+      if (res != undefined && res?.token != undefined) {
         response.cookie('EToken', res?.token);
         console.log(
           '#responseHandler: success to set cookie for this response: ',

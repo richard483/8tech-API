@@ -15,12 +15,12 @@ import { Roles } from '../auth/roles/role.decorator';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { RoleGuard } from '../auth/roles/role.guard';
 import { Role } from '../auth/roles/role.enum';
-import { UserCreateRequest } from './requests/user-create.request';
-import { UserFilterRequest } from './requests/user-filter.request';
+import { UserCreateRequestDto } from './dto/user-create.dto';
+import { UserFilterRequestDto } from './dto/user-filter.dto';
 import {
-  UserUpdateRequest,
-  UserUpdateRequestMe,
-} from './requests/user-update.request';
+  UserUpdateRequestDto,
+  UserUpdateRequestMeDto,
+} from './dto/user-update.dto';
 import { Express } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -47,7 +47,7 @@ export class UserController {
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create')
-  async createAdmin(@Res() res, @Body() user: UserCreateRequest) {
+  async createAdmin(@Res() res, @Body() user: UserCreateRequestDto) {
     const response = await this.userService.create(user);
     return response;
   }
@@ -56,7 +56,7 @@ export class UserController {
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('update')
-  async update(@Res() res, @Body() data: UserUpdateRequest) {
+  async update(@Res() res, @Body() data: UserUpdateRequestDto) {
     const response = await this.userService.update(data);
     return response;
   }
@@ -65,7 +65,7 @@ export class UserController {
   @Roles(Role.ADMIN, Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('update/me')
-  async updateMe(@Request() req, @Body() data: UserUpdateRequestMe) {
+  async updateMe(@Request() req, @Body() data: UserUpdateRequestMeDto) {
     const response = await this.userService.update({
       ...data,
       id: req.user.id,
@@ -77,7 +77,7 @@ export class UserController {
   @Roles(Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('filter')
-  async filterUser(@Res() res, @Body() body: UserFilterRequest) {
+  async filterUser(@Res() res, @Body() body: UserFilterRequestDto) {
     const response = await this.userService.findManyByList(body);
     return response;
   }

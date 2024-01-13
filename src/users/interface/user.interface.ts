@@ -13,7 +13,7 @@ export interface IUser {
   previousWorkplaceId?: any;
   ratings?: any;
   companyId?: string;
-  portofolio: string[];
+  portfolio: string[];
   profilePicture?: string;
   hasGoogleAccount: boolean;
 }

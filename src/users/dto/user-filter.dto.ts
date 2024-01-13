@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserFilterRequest {
+export class UserFilterRequestDto {
   @ApiProperty()
   readonly field?: string;
 

@@ -129,7 +129,7 @@ HTTP Code: 200
     "previousWorkplaceCount": null,
     "ratingsAvg": null,
     "companyId": null,
-    "portofolio": [],
+    "portfolio": [],
     "profilePicture": null,
     "hasGoogleAccount": false
   }

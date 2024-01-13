@@ -2,10 +2,17 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { Role } from '../../auth/roles/role.enum';
 
-export class UserCreateRequest {
+export class UserCreateRequestDto {
   @ApiProperty()
   @IsNotEmpty()
-  @IsEmail()
+  @IsEmail(
+    {
+      allow_display_name: false,
+    },
+    {
+      message: 'INVALID_EMAIL',
+    },
+  )
   readonly email: string;
 
   @ApiProperty()
