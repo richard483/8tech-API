@@ -1,3 +1,4 @@
+import { PaymentRequest } from 'xendit-node/payment_request/models';
 import { PayoutStatusEnum } from 'xendit-node/payout/models';
 
 export interface IPayoutLinkData {
@@ -10,4 +11,9 @@ export interface IPayoutLinkData {
   created: Date;
   email: string;
   payout_url: string;
+}
+
+export interface IPaymentData {
+  id: string;
+  xenditPaymentRequest: PaymentRequest;
 }

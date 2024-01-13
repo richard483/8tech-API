@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IContract } from './interface/contract.interface';
-import { PaymentStatus } from '@prisma/client';
+import { Contract } from '@prisma/client';
 
 @Injectable()
 export class ContractRepository {
@@ -11,7 +10,7 @@ export class ContractRepository {
     this.model = this.prisma.contract;
   }
 
-  async create(contract: any): Promise<any> {
+  async create(contract: any): Promise<Contract> {
     return this.prisma.contract.create({
       data: contract,
     });
@@ -33,7 +32,7 @@ export class ContractRepository {
     });
   }
 
-  async get(id: any): Promise<IContract> {
+  async get(id: any): Promise<Contract> {
     return this.prisma.contract.findUnique({
       where: {
         id,
@@ -51,43 +50,14 @@ export class ContractRepository {
       },
     });
   }
-  async updatePaymentRequestId(
-    id: string,
-    paymentRequestId: string,
-  ): Promise<IContract> {
-    return this.prisma.contract.update({
-      where: {
-        id,
-      },
-      data: {
-        paymentRequestId,
-      },
-    });
-  }
-  async updatePaymentStatus(
-    id: string,
-    paymentStatus: PaymentStatus,
-  ): Promise<IContract> {
-    return this.prisma.contract.update({
-      where: {
-        id,
-      },
-      data: {
-        paymentStatus,
-      },
-    });
-  }
 
-  async updatePayoutLinkId(
-    id: string,
-    payoutLinkId: string,
-  ): Promise<IContract> {
+  async updatePaymentId(id: string, paymentId: string): Promise<Contract> {
     return this.prisma.contract.update({
       where: {
         id,
       },
       data: {
-        payoutLinkId,
+        paymentId,
       },
     });
   }

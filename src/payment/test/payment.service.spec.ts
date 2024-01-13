@@ -1,72 +1,103 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { DeepMocked, createMock } from '@golevelup/ts-jest';
-// import { RatingService } from '../payment.service';
-// import { IRating } from '../interface/payment.interface';
-// import { RatingRepository } from '../rating.repository';
-// import { RatingCreateDto } from '../dto/payment-request-create.dto';
-// import { RatingUpdateDto } from '../dto/rating-update.dto';
+import { Test, TestingModule } from '@nestjs/testing';
+import { DeepMocked, createMock } from '@golevelup/ts-jest';
+import { PaymentService } from '../payment.service';
+import { Payment, PaymentStatus } from '@prisma/client';
+import { PaymentRepository } from '../payment.repository';
+import * as xenditClient from 'xendit-node';
 
-// describe('RatingService', () => {
-//   let service: RatingService;
-//   let reposiotry: DeepMocked<RatingRepository>;
-//   let ratingMock: IRating;
+describe('PaymentService', () => {
+  let service: PaymentService;
+  let reposiotry: DeepMocked<PaymentRepository>;
+  let paymentMock: Payment;
 
-//   beforeEach(async () => {
-//     const module: TestingModule = await Test.createTestingModule({
-//       providers: [RatingService, RatingRepository],
-//     })
-//       .useMocker(createMock)
-//       .compile();
+  jest.mock('xendit-node');
 
-//     service = module.get<RatingService>(RatingService);
-//     reposiotry = module.get(RatingRepository);
-//     ratingMock = {
-//       id: 'randomId',
-//       givenByUserId: 'randomUserId',
-//       ratingOf10: 9,
-//     };
-//   });
+  const paymentRequestMock = {
+    id: 'randomPaymentRequestId',
+    externalId: 'randomId',
+    amount: 10000,
+    status: 'PENDING',
+    merchantName: 'Xendit',
+    payerEmail: null,
+    description: null,
+    expiryDate: null,
+    invoiceUrl: null,
+    availableBanks: null,
+    availableRetailOutlets: null,
+    availableEwallets: null,
+    availableChannels: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    callbackVirtualAccountID: null,
+    paymentMethod: {
+      type: 'EWALLET',
+      ewalletType: 'DANA',
+      ewalletChannel: 'DANA',
+      ewalletChannelProperties: {
+        successReturnUrl: `${process.env.BACK_END_URL}/contract/payment-success/randomContractId`,
+      },
+      reusability: 'ONE_TIME',
+    },
+  };
 
-//   it('should be defined', () => {
-//     expect(service).toBeDefined();
-//   });
+  xenditClient.PaymentRequest.prototype.createPaymentRequest = jest
+    .fn()
+    .mockResolvedValue(paymentRequestMock);
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [PaymentService, PaymentRepository],
+    })
+      .useMocker(createMock)
+      .compile();
 
-//   it('create success', async () => {
-//     const createRatingDto: RatingCreateDto = {
-//       userId: 'randomUserId',
-//       givenByUserId: 'randomUserId',
-//       ratingOf10: 9,
-//     };
-//     const createSpy = jest
-//       .spyOn(reposiotry, 'create')
-//       .mockResolvedValue(ratingMock);
+    service = module.get<PaymentService>(PaymentService);
+    reposiotry = module.get(PaymentRepository);
+    paymentMock = {
+      id: 'randomId',
+      paymentRequestId: 'randomPaymentRequestId',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      paymentStatus: PaymentStatus.PENDING,
+      payoutLinkId: 'randomPayoutLinkId',
+    };
+  });
 
-//     const res = await service.create(createRatingDto);
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
 
-//     expect(createSpy).toBeCalledTimes(1);
-//     expect(createSpy).toBeCalledWith(createRatingDto);
-//     expect(res).toEqual(ratingMock);
+  it('createPaymentRequest success', async () => {
+    const createPaymentRepoSpy = jest
+      .spyOn(reposiotry, 'create')
+      .mockResolvedValue(paymentMock);
+    const result = await service.createPaymentRequest(
+      {
+        amount: 10000,
+        ewalletChannelCode: 'DANA',
+      },
+      'randomContractId',
+    );
+    expect(result).toEqual({
+      id: 'randomId',
+      xenditPaymentRequest: paymentRequestMock,
+    });
 
-//     createSpy.mockRestore();
-//   });
-//   it('update success', async () => {
-//     const ratingUpdate: RatingUpdateDto = {
-//       id: 'randomId',
-//       userId: 'randomUserId',
-//       givenByUserId: 'randomUserId',
-//       ratingOf10: 9,
-//     };
-//     const updateSpy = jest
-//       .spyOn(reposiotry, 'update')
-//       .mockResolvedValue(ratingMock);
+    expect(createPaymentRepoSpy).toBeCalledWith({
+      paymentRequestId: 'randomPaymentRequestId',
+    });
+  });
 
-//     const res = await service.update(ratingUpdate);
+  it('updatePaymentRequestId success', async () => {
+    const getRepositoryMock = jest
+      .spyOn(reposiotry, 'getById')
+      .mockResolvedValue(paymentMock);
 
-//     expect(updateSpy).toBeCalledTimes(1);
-//     const { id, ...jobData } = ratingUpdate;
-//     expect(updateSpy).toBeCalledWith(id, jobData);
-//     expect(res).toEqual(ratingMock);
+    jest
+      .spyOn(reposiotry, 'updatePaymentRequestId')
+      .mockResolvedValue(paymentMock);
 
-//     updateSpy.mockRestore();
-//   });
-// });
+    service.updatePaymentRequestId('randomId', 'randomPaymentRequestId');
+
+    expect(getRepositoryMock).toBeCalledWith('randomId');
+  });
+});

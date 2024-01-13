@@ -168,7 +168,8 @@ describe('AuthService', () => {
       .spyOn(userService, 'create')
       .mockResolvedValue(mockUser);
     mockRegisterRequest.password = 'password123';
-    expect(await service.register(mockRegisterRequest)).toEqual(mockUser);
+    const { password, ...expected } = mockUser;
+    expect(await service.register(mockRegisterRequest)).toEqual(expected);
     expect(userCreateSpy).toBeCalledTimes(1);
 
     userCreateSpy.mockRestore();
@@ -183,7 +184,7 @@ describe('AuthService', () => {
     } catch (e) {
       console.log('#register failed invalid password', e);
       expect(e).toBeInstanceOf(HttpException);
-      expect(e.message).toBe('Http Exception');
+      expect(e.message).toBe('EMAIL_ALREADY_USED');
     }
   });
 

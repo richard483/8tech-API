@@ -22,6 +22,10 @@ export class ResponseInterceptor implements NestInterceptor {
   }
 
   private errorHandler(exception: HttpException, context: ExecutionContext) {
+    if (exception == undefined) {
+      return;
+    }
+
     const ctx = context.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
@@ -30,16 +34,16 @@ export class ResponseInterceptor implements NestInterceptor {
       exception instanceof HttpException ? exception.getStatus() : 500;
 
     if (
-      exception.message ===
+      exception?.message ===
       'Cannot set headers after they are sent to the client'
     ) {
       console.log(
         '#Error response: headers already sent, but its okay :D *trust me bro',
       );
-      response.status(HttpStatus.OK).json({
-        status: true,
-        statusCode: HttpStatus.OK,
-      });
+      // response.status(HttpStatus.OK).json({
+      //   status: true,
+      //   statusCode: HttpStatus.OK,
+      // });
       return;
     }
 
@@ -47,13 +51,13 @@ export class ResponseInterceptor implements NestInterceptor {
       '#Error response to path',
       request.url,
       'with error: ',
-      exception.name,
+      exception?.name,
       'and status: ',
       status,
       'and exception message: ',
-      exception.message,
+      exception?.message,
       'and stack trace: ',
-      exception.stack,
+      exception?.stack,
     );
 
     response.status(status).json({
@@ -73,12 +77,12 @@ export class ResponseInterceptor implements NestInterceptor {
     const response = ctx.getResponse();
 
     try {
-      console.log(
+      console.info(
         '#responseHandler: trying to set cookie for this response: ',
-        res.token,
+        res,
       );
-      if (res.token !== undefined) {
-        response.cookie('EToken', res.token);
+      if (res != undefined) {
+        response.cookie('EToken', res?.token);
         console.log(
           '#responseHandler: success to set cookie for this response: ',
           res,
@@ -100,17 +104,17 @@ export class ResponseInterceptor implements NestInterceptor {
 
   private extractErrorMessages(exception: any) {
     try {
-      return Object(exception.getResponse()).reduce(
+      return Object(exception?.getResponse()).reduce(
         (acc, obj) => ({ ...Object(acc), ...Object(obj) }),
         {},
       );
     } catch (e) {
       console.log(
         '#Failed to restructure exception for this response: ',
-        exception.getResponse(),
+        exception?.getResponse(),
         " would return it's original response instead.",
       );
-      return exception.getResponse();
+      return exception?.getResponse();
     }
   }
 

@@ -32,7 +32,7 @@ export class ContractController {
   constructor(private contractService: ContractService) {}
 
   @ApiBearerAuth()
-  @Roles(Role.USER)
+  @Roles(Role.RECRUITER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create')
   async createContract(@Res() res, @Body() contract: ContractCreateDto) {

@@ -4,9 +4,9 @@ import { UsersService } from '../users/users.service';
 import { AuthenticateRequest } from './requests/authenticate.request';
 import { IAuthenticate, IGoogleUser } from './interface/auth.interface';
 import { IUser } from '../users/interface/user.interface';
-import { Role } from './roles/role.enum';
 import { compare, genSaltSync, hashSync } from 'bcrypt';
 import { RegisterRequest } from './requests/register.request';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -50,12 +50,24 @@ export class AuthService {
     return user;
   }
 
-  async register(userCreate: RegisterRequest): Promise<IUser> {
+  async register(request: RegisterRequest): Promise<IUser> {
+    let data;
+    const { isRecruiter, ...userCreate } = request;
+    if (isRecruiter) {
+      data = {
+        roles: [Role.USER, Role.RECRUITER],
+        companyId: userCreate.companyId,
+      };
+    }
     const user = await this.usersService.create({
       ...userCreate,
+      ...data,
       password: this.hashPassword(userCreate.password),
     });
-    return user;
+
+    // remove password from user object
+    const { password, ...userData } = user;
+    return userData;
   }
 
   async googleLogin(req, res): Promise<IAuthenticate> {

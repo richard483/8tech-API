@@ -3,15 +3,26 @@ import { compile } from 'handlebars';
 import { launch } from 'puppeteer';
 import { rm } from 'fs';
 import { join } from 'path';
-import { IContract } from './interface/contract.interface';
+import { Contract } from '@prisma/client';
 
 @Injectable()
 export class ContractHelper {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
 
-  async createPdf(contractData: IContract) {
-    const { template, ...data } = contractData;
+  async createPdf(contractData: Contract) {
+    const { template, customField, ...data } = contractData;
+
+    if (customField) {
+      // splitting customField string into array
+      const fieldList = customField.split(';').filter((field) => field);
+
+      // converting array to object
+      fieldList.forEach((field) => {
+        const [key, value] = field.split('=');
+        data[key] = value;
+      });
+    }
 
     const templates = compile(template);
     const html = templates(data);

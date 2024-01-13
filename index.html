@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>8Tech Back End</title>
+</head>
+<script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js"></script>
+
+<body>
+    <h1>Welcome to 8Tech Back End Apps</h1>
+
+    <h2>Installation & Build</h2>
+    <p>To install, run, and build the application, follow these steps:</p>
+    <zero-md src="./README.md">
+        <template>
+            <style>
+                * {
+                    background-color: antiquewhite;
+                }
+            </style>
+        </template>
+    </zero-md>
+
+    <h2>Documentation</h2>
+    <p>For detailed documentation on how to use and develop with this application, please refer to the official Nest.js
+        documentation:</p>
+    <a href="https://docs.nestjs.com/">Nest.js Documentation</a>
+
+    <h2>Docker Deployment</h2>
+    <p>If you prefer to deploy the application using Docker, you can use the following steps:</p>
+    <pre>
+        <code>
+            $ docker build -t 8tech:tagname .
+            $ docker run -p 3000:3000 8tech:tagname
+            $ docker push username/8tech:tagname
+        </code>
+    </pre>
+</body>
+
+</html>

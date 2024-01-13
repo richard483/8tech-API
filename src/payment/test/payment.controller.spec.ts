@@ -1,175 +1,125 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { DeepMocked, createMock } from '@golevelup/ts-jest';
-// import { CanActivate, HttpStatus } from '@nestjs/common';
-// import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
-// import { RoleGuard } from '../../auth/roles/role.guard';
-// import { RatingController } from '../payment.controller';
-// import { RatingService } from '../payment.service';
-// import { IRating } from '../interface/payment.interface';
-// import { RatingCreateDto } from '../dto/payment-request-create.dto';
-// import { RatingUpdateDto } from '../dto/rating-update.dto';
+import { Test, TestingModule } from '@nestjs/testing';
+import { DeepMocked, createMock } from '@golevelup/ts-jest';
+import { CanActivate } from '@nestjs/common';
+import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
+import { RoleGuard } from '../../auth/roles/role.guard';
+import { PaymentController } from '../payment.controller';
+import { PaymentService } from '../payment.service';
+import { PaymentRequestCreateDto } from '../dto/payment-request-create.dto';
+import { PayoutLinkCreateDto } from '../dto/payout-link-create.dto';
+import { IPayoutLinkData } from '../interface/payment.interface';
 
-// describe('RatingController', () => {
-//   let controller: RatingController;
-//   let ratingService: DeepMocked<RatingService>;
-//   const mockFailGuard: CanActivate = {
-//     canActivate: jest.fn().mockReturnValue(true),
-//   };
-//   beforeEach(async () => {
-//     const module: TestingModule = await Test.createTestingModule({
-//       providers: [RatingService],
-//       controllers: [RatingController],
-//     })
-//       .useMocker(createMock)
-//       .overrideGuard(JwtAuthGuard)
-//       .useValue(mockFailGuard)
-//       .overrideGuard(RoleGuard)
-//       .useValue(mockFailGuard)
-//       .compile();
-//     controller = module.get<RatingController>(RatingController);
-//     ratingService = module.get(RatingService);
-//   });
+describe('PaymentController', () => {
+  let controller: PaymentController;
+  let paymentService: DeepMocked<PaymentService>;
+  const mockFailGuard: CanActivate = {
+    canActivate: jest.fn().mockReturnValue(true),
+  };
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [PaymentService],
+      controllers: [PaymentController],
+    })
+      .useMocker(createMock)
+      .overrideGuard(JwtAuthGuard)
+      .useValue(mockFailGuard)
+      .overrideGuard(RoleGuard)
+      .useValue(mockFailGuard)
+      .compile();
+    controller = module.get<PaymentController>(PaymentController);
+    paymentService = module.get(PaymentService);
+  });
 
-//   afterEach(() => {
-//     jest.resetAllMocks();
-//   });
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
 
-//   it('should be defined', () => {
-//     expect(controller).toBeDefined();
-//   });
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
 
-//   it('craeteRating success', async () => {
-//     const createRatingDTO: RatingCreateDto = {
-//       userId: 'test',
-//       givenByUserId: 'test',
-//       ratingOf10: 9,
-//     };
+  it('createPaymentRequest success', async () => {
+    const paymentRequestCreateDto: PaymentRequestCreateDto = {
+      amount: 100,
+      ewalletChannelCode: 'JENIUSPAY',
+    };
 
-//     const mockJob: IRating = {
-//       id: 'ratingId',
-//       givenByUserId: 'userId',
-//       ratingOf10: 9,
-//     };
+    const createSpy = jest
+      .spyOn(paymentService, 'createPaymentRequest')
+      .mockResolvedValue({
+        id: 'id',
+        xenditPaymentRequest: {
+          id: '',
+          created: '',
+          updated: '',
+          referenceId: '',
+          businessId: '',
+          currency: 'UNKNOWN_ENUM_VALUE',
+          paymentMethod: undefined,
+          status: 'PENDING',
+        },
+      });
 
-//     const createSpy = jest
-//       .spyOn(ratingService, 'create')
-//       .mockResolvedValue(mockJob);
+    const mockRes = {
+      status: {},
+      json: {},
+    };
 
-//     const statusSpy = jest.fn().mockReturnThis();
-//     const jsonSpy = jest.fn().mockReturnValue(mockJob);
+    const res = await controller.createPaymentRequest(
+      mockRes,
+      paymentRequestCreateDto,
+    );
 
-//     const mockRes = {
-//       status: statusSpy,
-//       json: jsonSpy,
-//     };
+    expect(createSpy).toBeCalledWith(paymentRequestCreateDto);
+    expect(res).toEqual({
+      id: 'id',
+      xenditPaymentRequest: {
+        id: '',
+        created: '',
+        updated: '',
+        referenceId: '',
+        businessId: '',
+        currency: 'UNKNOWN_ENUM_VALUE',
+        paymentMethod: undefined,
+        status: 'PENDING',
+      },
+    });
 
-//     const res = await controller.createRating(mockRes, createRatingDTO);
+    createSpy.mockRestore();
+  });
 
-//     expect(createSpy).toBeCalledWith(createRatingDTO);
-//     expect(res).toEqual(mockJob);
+  it('createPayoutLink success', async () => {
+    const payoutLinkCreateDto: PayoutLinkCreateDto = {
+      amount: 100,
+      email: 'email@email.com',
+    };
 
-//     createSpy.mockRestore();
-//   });
-//   it('craeteRating fail error', async () => {
-//     const mockResponse = {
-//       status: HttpStatus.I_AM_A_TEAPOT,
-//       message: 'GENERAL_ERROR',
-//     };
+    const payoutMockData: IPayoutLinkData = {
+      id: 'id',
+      external_id: '123123',
+      amount: 123,
+      merchant_name: 'asd',
+      status: 'ACCEPTED',
+      expiration_timestamp: new Date(),
+      created: new Date(),
+      email: 'email@email.com',
+      payout_url: 'asdasdasd.asdas.conm',
+    };
 
-//     const createSpy = jest
-//       .spyOn(ratingService, 'create')
-//       .mockRejectedValue(mockResponse);
+    const createSpy = jest
+      .spyOn(paymentService, 'createPayoutLink')
+      .mockResolvedValue(payoutMockData);
 
-//     const statusSpy = jest.fn().mockReturnThis();
-//     const jsonSpy = jest.fn().mockReturnValue(mockResponse);
+    const mockRes = {
+      status: {},
+      json: {},
+    };
 
-//     const mockRes = {
-//       status: statusSpy,
-//       json: jsonSpy,
-//     };
+    const res = await controller.createPayoutLink(mockRes, payoutLinkCreateDto);
 
-//     try {
-//       await controller.createRating(mockRes, null);
-//     } catch (e) {
-//       expect(createSpy).toBeCalledWith(null);
-//       expect(e).toEqual(mockResponse);
+    expect(createSpy).toBeCalledWith(payoutLinkCreateDto);
+    expect(res).toEqual(payoutMockData);
 
-//       createSpy.mockRestore();
-//     }
-//   });
-//   it('updateRating success', async () => {
-//     const ratingUpdateDto: RatingUpdateDto = {
-//       id: 'randomId',
-//       userId: 'test',
-//       givenByUserId: 'test',
-//       ratingOf10: 9,
-//     };
-//     const mockJob: IRating = {
-//       id: 'ratingId',
-//       givenByUserId: 'userId',
-//       ratingOf10: 9,
-//     };
-
-//     const updateSpy = jest
-//       .spyOn(ratingService, 'update')
-//       .mockResolvedValue(mockJob);
-
-//     const statusSpy = jest.fn().mockReturnThis();
-//     const jsonSpy = jest.fn().mockReturnValue(mockJob);
-
-//     const mockRes = {
-//       status: statusSpy,
-//       json: jsonSpy,
-//     };
-
-//     const res = await controller.updateRating(mockRes, ratingUpdateDto);
-
-//     expect(updateSpy).toBeCalledWith({
-//       id: 'randomId',
-//       givenByUserId: 'test',
-//       ratingOf10: 9,
-//       userId: 'test',
-//     });
-//     expect(res).toEqual(mockJob);
-
-//     updateSpy.mockRestore();
-//   });
-//   it('updateRating fail error', async () => {
-//     const ratingUpdateDto: RatingUpdateDto = {
-//       id: 'randomId',
-//       userId: 'test',
-//       givenByUserId: 'test',
-//       ratingOf10: 9,
-//     };
-//     const mockResponse = {
-//       status: HttpStatus.I_AM_A_TEAPOT,
-//       message: 'GENERAL_ERROR',
-//     };
-
-//     const updateSpy = jest
-//       .spyOn(ratingService, 'update')
-//       .mockRejectedValue(mockResponse);
-
-//     const statusSpy = jest.fn().mockReturnThis();
-//     const jsonSpy = jest.fn().mockReturnValue(mockResponse);
-
-//     const mockRes = {
-//       status: statusSpy,
-//       json: jsonSpy,
-//     };
-
-//     try {
-//       await controller.updateRating(mockRes, ratingUpdateDto);
-//     } catch (e) {
-//       expect(updateSpy).toBeCalledWith({
-//         id: 'randomId',
-//         userId: 'test',
-//         givenByUserId: 'test',
-//         ratingOf10: 9,
-//       });
-//       expect(e).toEqual(mockResponse);
-
-//       updateSpy.mockRestore();
-//     }
-//   });
-// });
+    createSpy.mockRestore();
+  });
+});

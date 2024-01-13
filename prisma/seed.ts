@@ -53,7 +53,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'default richard description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '04'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const defaultUser = await prisma.user.upsert({
@@ -67,7 +89,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'default user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '04'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const notADefaultUser = await prisma.user.upsert({
@@ -81,7 +125,15 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'notADefault user description that being created by seed.ts',
-      previousWorkplaceId: ['01'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const mariaMarionetteUser = await prisma.user.upsert({
@@ -96,7 +148,22 @@ async function users() {
       roles: ['USER'],
       description:
         'mariaMarionette user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '03', '04'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const mikaUser = await prisma.user.upsert({
@@ -110,7 +177,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'mika user description that being created by seed.ts',
-      previousWorkplaceId: ['02', '03', '04'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const sonnyUser = await prisma.user.upsert({
@@ -124,7 +213,22 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'sonny user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const ennaUser = await prisma.user.upsert({
@@ -138,7 +242,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'enna user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '03'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const satoruUser = await prisma.user.upsert({
@@ -152,7 +278,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'satoru user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '03'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const eyePatchUser = await prisma.user.upsert({
@@ -166,7 +314,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'eyePatch user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '03'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
   const ricatUser = await prisma.user.upsert({
@@ -180,7 +350,29 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'ricat user description that being created by seed.ts',
-      previousWorkplaceId: ['01', '02', '03'],
+      previousWorkplaceId: [
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Nijisanji Anycolor',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Hololive',
+            },
+          })
+          .then((company) => company.id),
+        await prisma.company
+          .findFirst({
+            where: {
+              name: 'Djarum',
+            },
+          })
+          .then((company) => company.id),
+      ],
     },
   });
 
@@ -268,7 +460,7 @@ async function job() {
     update: {},
     create: {
       title: 'This is job1 title',
-      description: 'This is job1 description',
+      description: 'This is job1 description for ninisani',
       companyId: await prisma.company
         .findFirst({
           where: {
@@ -279,8 +471,46 @@ async function job() {
     },
   });
 
+  const job2 = await prisma.jobVacancy.upsert({
+    where: {
+      id: '02',
+    },
+    update: {},
+    create: {
+      title: 'This is job2 title',
+      description: 'This is job2 description for Hololive',
+      companyId: await prisma.company
+        .findFirst({
+          where: {
+            name: 'Hololive',
+          },
+        })
+        .then((company) => company.id),
+    },
+  });
+
+  const job3 = await prisma.jobVacancy.upsert({
+    where: {
+      id: '03',
+    },
+    update: {},
+    create: {
+      title: 'This is job3 title',
+      description: 'This is job3 description for Djarum',
+      companyId: await prisma.company
+        .findFirst({
+          where: {
+            name: 'Djarum',
+          },
+        })
+        .then((company) => company.id),
+    },
+  });
+
   console.log({
     job1,
+    job2,
+    job3,
   });
 }
 
@@ -298,7 +528,8 @@ async function contract() {
     update: {},
     create: {
       paymentRate: 243400,
-      template: 'This is contract1 template',
+      template:
+        '<!DOCTYPE html>\r\n<html>\r\n<head>\r\n  <meta charset="UTF-8">\r\n    <title>{{title}}</title>\r\n  <style>\r\n    html {\r\n      background-color: rgb(156, 156, 156);\r\n    }\r\n    body {\r\n      size : A4;\r\n      padding: 2cm;\r\n      background-color: white;\r\n    }\r\n    h1 {\r\n      text-align: center;\r\n    }\r\n    h3 {\r\n      text-align: center;\r\n    }\r\n    table {\r\n      margin-top: 0.25cm;\r\n    }\r\n    table tr td {\r\n      padding: 5px;\r\n    }\r\n    .signature {\r\n      display: flex;\r\n      justify-content: space-between;\r\n      margin-top: 2.5cm;\r\n    }\r\n  </style>\r\n</head>\r\n<body>\r\n  <div>\r\n    <h1>Surat Perjanjian Kerja Lepas</h1>\r\n    <h3>Nomor: {{id}}</h3>\r\n    <p>Yang bertanda tangan di bawah ini:</p>\r\n    <table>\r\n      <tr>\r\n        <td>UserId</td>\r\n        <td>:</td>\r\n        <td>{{userId}}</td>\r\n      </tr>\r\n    </table>\r\n    <p>Selanjutnya disebut sebagai <b>PEKERJA</b></p>\r\n    <p>Dengan ini menyatakan bahwa PEKERJA telah sepakat untuk bekerja pada <b>PERUSAHAAN</b> dengan ketentuan sebagai berikut:</p>\r\n    <table>\r\n      <tr>\r\n        <td>Judul lowongan pekerjaan</td>\r\n        <td>:</td>\r\n        <td>{{title}}</td>\r\n      </tr>\r\n    </table>\r\n    <p>Selanjutnya disebut sebagai <b>PERUSAHAAN</b></p>\r\n    <br>\r\n    <p>PEKERJA akan melakukan pekerjaan <b>{{title}}</b> dengan ketentuan sebagai berikut:</p>\r\n    <table>\r\n      <tr>\r\n        <td>Waktu Kerja</td>\r\n        <td>:</td>\r\n        <td>{{contract.work_time}}</td>\r\n      </tr>\r\n      <tr>\r\n        <td>Upah</td>\r\n        <td>:</td>\r\n        <td>{{contract.salary}}</td>\r\n      </tr>\r\n      <tr>\r\n        <td>Periode Pembayaran</td>\r\n        <td>:</td>\r\n        <td>{{contract.payment_method}}</td>\r\n      </tr>\r\n      <tr>\r\n        <td>Periode Kontrak</td>\r\n        <td>:</td>\r\n        <td>{{contract.periode}}</td>\r\n      </tr>\r\n    </table>\r\n    <p>Demikian surat perjanjian ini dibuat dan ditandatangani oleh kedua belah pihak pada tanggal {{contract.createdAt}}.</p>\r\n    <div class="signature">\r\n      <p>{{contract.worker.name}}</p>\r\n      <p>{{contract.company.name}}</p>\r\n    </div>\r\n    <br>\r\n    <br>\r\n    <table>\r\n      <tr>\r\n        <td>Created date</td>\r\n        <td>:</td>\r\n        <td>{{createdAt}}</td>\r\n      </tr>\r\n      <tr>\r\n        <td>Description</td>\r\n        <td>:</td>\r\n        <td>{{description}}</td>\r\n      </tr>\r\n    </table>\r\n  </div>\r\n</body>\r\n</html>',
       description: 'This is contract1 description',
       title: 'This is contract1 title',
       userId: (
@@ -318,8 +549,43 @@ async function contract() {
     },
   });
 
+  const contract2 = await prisma.contract.upsert({
+    where: {
+      id: await prisma.user
+        .findFirst({
+          where: {
+            email: 'richard.william483@gmail.com',
+          },
+        })
+        .then((user) => user.id),
+    },
+    update: {},
+    create: {
+      paymentRate: 123123123,
+      template:
+        '<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <title>{{title}}</title>\r\n  <style>\r\n    html {\r\n      background-color: rgb(156, 156, 156);\r\n    }\r\n\r\n    body {\r\n      size: A4;\r\n      padding: 2cm;\r\n      background-color: white;\r\n    }\r\n\r\n    h1 {\r\n      text-align: center;\r\n    }\r\n\r\n    h3 {\r\n      text-align: center;\r\n    }\r\n\r\n    table {\r\n      margin-top: 0.25cm;\r\n    }\r\n\r\n    table tr td {\r\n      padding: 5px;\r\n    }\r\n\r\n    .signature {\r\n      display: flex;\r\n      justify-content: space-between;\r\n      margin-top: 2.5cm;\r\n    }\r\n  </style>\r\n</head>\r\n\r\n<body>\r\n  <div>\r\n    <h1>Surat Perjanjian Kerja Lepas</h1>\r\n    <h3>Nomor: {{id}}</h3>\r\n    <p>Yang bertanda tangan di bawah ini:</p>\r\n    <table>\r\n      <tr>\r\n        <td>UserId</td>\r\n        <td>:</td>\r\n        <td>{{userId}}</td>\r\n      </tr>\r\n    </table>\r\n    <p>Selanjutnya disebut sebagai <b>PEKERJA</b></p>\r\n    <p>Dengan ini menyatakan bahwa PEKERJA telah sepakat untuk bekerja pada <b>PERUSAHAAN</b> dengan ketentuan sebagai\r\n      berikut:</p>\r\n    <table>\r\n      <tr>\r\n        <td>Judul lowongan pekerjaan</td>\r\n        <td>:</td>\r\n        <td>{{title}}</td>\r\n      </tr>\r\n    </table>\r\n    <p>Selanjutnya disebut sebagai <b>PERUSAHAAN</b></p>\r\n    <br>\r\n    <p>PEKERJA akan melakukan pekerjaan <b>{{title}}</b> dengan ketentuan sebagai berikut:</p>\r\n    <table>\r\n      <tr>\r\n        <td>Waktu Kerja</td>\r\n        <td>:</td>\r\n        <td>{{contract.work_time}}</td>\r\n      </tr>\r\n      <tr>\r\n        <td>Upah</td>\r\n        <td>:</td>\r\n        <td>{{contract.salary}}</td>\r\n      </tr>\r\n      <tr>\r\n        <td>Periode Pembayaran</td>\r\n        <td>:</td>\r\n        <td>{{contract.payment_method}}</td>\r\n      </tr>\r\n      <tr>\r\n        <td>Periode Kontrak</td>\r\n        <td>:</td>\r\n        <td>{{contract.periode}}</td>\r\n      </tr>\r\n    </table>\r\n    <p>Demikian surat perjanjian ini dibuat dan ditandatangani oleh kedua belah pihak pada tanggal\r\n      {{contract.createdAt}}.</p>\r\n    <div class="signature">\r\n      <p>{{contract.worker.name}}</p>\r\n      <p>{{contract.company.name}}</p>\r\n    </div>\r\n    <br>\r\n    <br>\r\n    <table>\r\n      <tr>\r\n        <td>Created date</td>\r\n        <td>:</td>\r\n        <td>{{createdAt}}</td>\r\n      </tr>\r\n      <tr>\r\n        <td>Description</td>\r\n        <td>:</td>\r\n        <td>{{description}}</td>\r\n      </tr>\r\n      <tr>\r\n        <td>Custom Field 1</td>\r\n        <td>:</td>\r\n        <td>{{customField1}}</td>\r\n      </tr>\r\n      <tr>\r\n        <td>Custom Field 2</td>\r\n        <td>:</td>\r\n        <td>{{customField2}}</td>\r\n      </tr>\r\n    </table>\r\n  </div>\r\n</body>\r\n\r\n</html>',
+      description: 'This is contract2 description',
+      title: 'This is contract2 title',
+      userId: (
+        await prisma.user.findFirst({
+          where: {
+            email: 'richard.william483@gmail.com',
+          },
+        })
+      ).id,
+      jobId: (
+        await prisma.jobVacancy.findFirst({
+          where: {
+            title: 'This is job2 title',
+          },
+        })
+      ).id,
+    },
+  });
+
   console.log({
     contract1,
+    contract2,
   });
 }
 
