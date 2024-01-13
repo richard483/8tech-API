@@ -15,6 +15,23 @@ export class ContractRepository {
       data: contract,
     });
   }
+
+  async getAllbyUserId(userId : string): Promise<Contract[]> {
+    return this.prisma.contract.findMany({
+      where: {
+        userId,
+      },
+    });
+  }
+
+  async getAllbyJobId(jobId : string): Promise<Contract[]> {
+    return this.prisma.contract.findMany({
+      where: {
+        jobId,
+      },
+    });
+  }
+
   async get(id: any): Promise<Contract> {
     return this.prisma.contract.findUnique({
       where: {
@@ -22,6 +39,7 @@ export class ContractRepository {
       },
     });
   }
+
   async getWithUser(id: any): Promise<any> {
     return this.prisma.contract.findUnique({
       where: {
