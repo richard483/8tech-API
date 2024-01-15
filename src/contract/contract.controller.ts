@@ -25,6 +25,7 @@ import {
   IContractPayoutLink,
 } from './interface/contract.interface';
 import { Contract } from '@prisma/client';
+import { ContractUpdateDto } from './dto/contract-update.dto';
 
 @ApiTags('Contract')
 @Controller('contract')
@@ -38,6 +39,17 @@ export class ContractController {
   async createContract(@Res() res, @Body() contract: ContractCreateDto) {
     console.info('#ContractCreate request incoming with: ', contract);
     const response = await this.contractService.create(contract);
+    return response;
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Post('update')
+  async updateContract(@Res() res, @Body() data: ContractUpdateDto) {
+    console.info('#ContractUpdate request incoming with: ', data);
+    const { id, ...contract } = data;
+    const response = await this.contractService.update(id, contract);
     return response;
   }
 

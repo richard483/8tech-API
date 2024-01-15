@@ -1,5 +1,13 @@
-import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { RatingService } from './rating.service';
 import { RatingCreateDto } from './dto/rating-create.dto';
 import { Roles } from '../auth/roles/role.decorator';
@@ -28,6 +36,18 @@ export class RatingController {
   @Post('update')
   async updateRating(@Res() res, @Body() data: RatingUpdateDto) {
     const response = await this.ratingService.update(data);
+    return response;
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Get('averageCount/:userId')
+  @ApiParam({ name: 'userId', type: String })
+  async averageCount(@Res() res, @Param() params: any) {
+    const response = await this.ratingService.userRatingAverageCount(
+      params.userId,
+    );
     return response;
   }
 }
