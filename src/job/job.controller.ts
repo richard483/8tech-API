@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Request,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -72,6 +73,33 @@ export class JobController {
   @Post('filter')
   async filter(@Res() res, @Body() data: JobFilterRequest) {
     const response = await this.jobService.findManyByList(data);
+    return response;
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.USER)
+  @ApiParam({ name: 'jobId', type: String })
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Get('apply/:jobId')
+  async applyJob(@Request() req, @Param() params: any) {
+    return await this.jobService.applyJob(req.user.id, params.jobId);
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.USER, Role.RECRUITER)
+  @ApiParam({ name: 'jobId', type: String })
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Post('applicants/:jobId')
+  async getApplicants(
+    @Request() req,
+    @Param() params: any,
+    @Body() data: JobFilterRequest,
+  ) {
+    const response = await this.jobService.applicantsList(
+      params.jobId,
+      data.page,
+      data.size,
+    );
     return response;
   }
 }

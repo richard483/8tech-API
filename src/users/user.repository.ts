@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { pagination, returnablePaginated } from '../prisma/prisma.util';
 import { UserFilterRequestDto } from './dto/user-filter.dto';
@@ -136,6 +136,46 @@ export class UserRepository {
         );
         throw new HttpException('INVALID_QUERY_REQUEST', 400);
       });
+  }
+
+  async getAppliedJob(
+    userId: string,
+    page: number,
+    size: number,
+  ): Promise<any> {
+    let res;
+
+    try {
+      res = await this.prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        include: {
+          contract: {
+            ...pagination(page, size),
+            include: {
+              jobVacancy: true,
+            },
+            orderBy: {
+              createdAt: 'asc',
+            },
+          },
+          _count: {
+            select: {
+              contract: true,
+            },
+          },
+        },
+      });
+    } catch (e) {
+      throw new HttpException({ prisma: e.message }, HttpStatus.BAD_REQUEST);
+    }
+
+    console.log('#getAppliedJob res', res);
+
+    const jobList = res?.contract.map((contract) => contract.jobVacancy);
+    const total = res?._count.contract;
+    return returnablePaginated(jobList, total, page, size);
   }
 
   async updateUserGoogleStatus(email: string, value: boolean): Promise<User> {

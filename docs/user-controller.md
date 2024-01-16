@@ -240,3 +240,94 @@ HTTP Code: 401
   }
 }
 ```
+
+[Get Applied Job](#getAppliedJob)
+
+## Get Applied Job
+
+| Key    | Description      |
+| ------ | ---------------- |
+| Method | `Get`           |
+| Path   | `/user/applied` |
+
+### Request Body
+
+| Key              | Type   |
+| ---------------- | ------ |
+| `page`       | number |
+| `size`       | number |
+
+
+### Success Response
+
+HTTP Code: 200
+
+```json
+{
+  "status": true,
+  "statusCode": 200,
+  "data": {
+    "data": [
+      {
+        "id": "e00b4d7f-19c1-40f7-8e96-895dcd9b6f0e",
+        "title": "This is job1 title",
+        "description": "This is job1 description for ninisani",
+        "createdAt": "2024-01-16T08:10:00.882Z",
+        "updatedAt": "2024-01-16T08:10:00.882Z",
+        "companyId": "7b9e79f7-ebc1-49de-a0db-b9d53cfe1cf7"
+      },
+      {
+        "id": "e00b4d7f-19c1-40f7-8e96-895dcd9b6f0e",
+        "title": "This is job1 title",
+        "description": "This is job1 description for ninisani",
+        "createdAt": "2024-01-16T08:10:00.882Z",
+        "updatedAt": "2024-01-16T08:10:00.882Z",
+        "companyId": "7b9e79f7-ebc1-49de-a0db-b9d53cfe1cf7"
+      },
+      {
+        "id": "e00b4d7f-19c1-40f7-8e96-895dcd9b6f0e",
+        "title": "This is job1 title",
+        "description": "This is job1 description for ninisani",
+        "createdAt": "2024-01-16T08:10:00.882Z",
+        "updatedAt": "2024-01-16T08:10:00.882Z",
+        "companyId": "7b9e79f7-ebc1-49de-a0db-b9d53cfe1cf7"
+      },
+      {
+        "id": "e00b4d7f-19c1-40f7-8e96-895dcd9b6f0e",
+        "title": "This is job1 title",
+        "description": "This is job1 description for ninisani",
+        "createdAt": "2024-01-16T08:10:00.882Z",
+        "updatedAt": "2024-01-16T08:10:00.882Z",
+        "companyId": "7b9e79f7-ebc1-49de-a0db-b9d53cfe1cf7"
+      },
+      {
+        "id": "e00b4d7f-19c1-40f7-8e96-895dcd9b6f0e",
+        "title": "This is job1 title",
+        "description": "This is job1 description for ninisani",
+        "createdAt": "2024-01-16T08:10:00.882Z",
+        "updatedAt": "2024-01-16T08:10:00.882Z",
+        "companyId": "7b9e79f7-ebc1-49de-a0db-b9d53cfe1cf7"
+      }
+    ],
+    "hasPrevious": false,
+    "hasNext": true,
+    "totalPages": 5,
+    "isLast": false,
+    "isFirst": true
+  }
+}
+```
+
+### Unauthorized
+
+HTTP Code: 401
+
+```json
+{
+  "status": true,
+  "statusCode": 401,
+  "data": {
+    "access": "UNAUTHORIZED"
+  }
+}
+```

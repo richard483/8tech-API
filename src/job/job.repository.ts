@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { JobUpdateDto } from './dto/job-update.dto';
 import { JobCreateDto } from './dto/job-create.dto';
@@ -76,6 +76,44 @@ export class JobRepository {
         id: jobId,
       },
     });
+  }
+
+  async getApplicantsById(
+    jobId: string,
+    page: number,
+    size: number,
+  ): Promise<any> {
+    let res;
+
+    try {
+      res = await this.prisma.jobVacancy.findUnique({
+        where: {
+          id: jobId,
+        },
+        include: {
+          contracts: {
+            ...pagination(page, size),
+            include: {
+              user: true,
+            },
+            orderBy: {
+              createdAt: 'asc',
+            },
+          },
+          _count: {
+            select: {
+              contracts: true,
+            },
+          },
+        },
+      });
+    } catch (e) {
+      throw new HttpException({ prisma: e.message }, HttpStatus.BAD_REQUEST);
+    }
+
+    const userList = res?.contracts.map((contract) => contract.user);
+    const total = res?._count.contracts;
+    return returnablePaginated(userList, total, page, size);
   }
 
   async findManyByFieldAndSortBy(reqData: JobFilterRequest): Promise<any> {

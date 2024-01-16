@@ -55,7 +55,7 @@ export class ContractRepository {
         id,
       },
       include: {
-        User: true,
+        user: true,
       },
     });
   }
