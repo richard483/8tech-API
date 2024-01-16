@@ -8,6 +8,7 @@ import { RatingService } from '../rating.service';
 import { IRating } from '../interface/rating.interface';
 import { RatingCreateDto } from '../dto/rating-create.dto';
 import { RatingUpdateDto } from '../dto/rating-update.dto';
+import { Rating } from '@prisma/client';
 
 describe('RatingController', () => {
   let controller: RatingController;
@@ -45,10 +46,13 @@ describe('RatingController', () => {
       ratingOf10: 9,
     };
 
-    const mockJob: IRating = {
+    const mockJob: Rating = {
       id: 'ratingId',
       recruiterUserId: 'userId',
       ratingOf10: 9,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      userId: 'userId',
     };
 
     const createSpy = jest
@@ -104,10 +108,13 @@ describe('RatingController', () => {
       recruiterUserId: 'test',
       ratingOf10: 9,
     };
-    const mockJob: IRating = {
+    const mockJob: Rating = {
       id: 'ratingId',
       recruiterUserId: 'userId',
       ratingOf10: 9,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      userId: 'userId',
     };
 
     const updateSpy = jest

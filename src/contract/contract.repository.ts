@@ -16,6 +16,15 @@ export class ContractRepository {
     });
   }
 
+  async update(id: string, contract: any): Promise<Contract> {
+    return this.prisma.contract.update({
+      data: contract,
+      where: {
+        id: contract.id,
+      },
+    });
+  }
+
   async getAllbyUserId(userId: string): Promise<Contract[]> {
     return this.prisma.contract.findMany({
       where: {

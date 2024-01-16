@@ -33,8 +33,12 @@ export class ContractService {
 
   //#region Contract
   //Create Contract
-  async create(user: any): Promise<Contract> {
-    return this.contractRepository.create(user);
+  async create(data: any): Promise<Contract> {
+    return this.contractRepository.create(data);
+  }
+
+  async update(id: string, data: any): Promise<Contract> {
+    return this.contractRepository.update(id, data);
   }
 
   async generate(contractId) {

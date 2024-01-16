@@ -61,6 +61,8 @@ describe('ContractController', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       customField: null,
+      workSubmission: null,
+      ratingId: null,
     };
 
     const createSpy = jest

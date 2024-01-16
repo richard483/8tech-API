@@ -44,7 +44,7 @@ export class UsersService {
       const existingUser = await this.userRepository.findOnebyUsername(
         data.username,
       );
-      if (existingUser !== null) {
+      if (existingUser !== null && existingUser.id !== id) {
         throw new HttpException(
           {
             username: 'ALREADY_USED',

@@ -39,6 +39,11 @@ export class JobRepository {
           },
         };
       },
+      companyId(keyword: string) {
+        return {
+          companyId: keyword,
+        };
+      },
     };
   }
 

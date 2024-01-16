@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class RatingCreateDto {
   @ApiProperty()
@@ -16,4 +16,9 @@ export class RatingCreateDto {
   @IsNotEmpty()
   @IsNumber()
   readonly ratingOf10: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  readonly contractId?: string;
 }
