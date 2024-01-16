@@ -107,7 +107,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseInterceptors(FileInterceptor('file'))
-  @Roles(Role.USER)
+  @Roles(Role.USER, Role.RECRUITER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('uploadCompanyProfilePicture')
   async uploadCompanyProfilePicture(
