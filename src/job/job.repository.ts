@@ -123,6 +123,9 @@ export class JobRepository {
         ? this.field[reqData.field](reqData.keyword)
         : this.field['description'](reqData.keyword),
       orderBy: this.orderBy[reqData.sort] || this.orderBy['-createdAt'],
+      include: {
+        company: true,
+      },
     });
 
     const total = this.prisma.jobVacancy.count({
