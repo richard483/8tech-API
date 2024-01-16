@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Request,
   Res,
@@ -126,5 +127,15 @@ export class UserController {
       data?.size,
     );
     return response;
+  }
+
+  @ApiBearerAuth()
+  @ApiCookieAuth()
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Get('info/:id')
+  async getUserById(@Request() req, @Param() params) {
+    console.info('#UserGetProfileInfoById request incoming');
+    return await this.userService.findOneById(params.id);
   }
 }
