@@ -22,6 +22,11 @@ export class ContractUpdateDto {
   @ApiProperty()
   @IsString()
   @IsOptional()
+  readonly paymentId?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
   readonly title: string;
 
   @ApiProperty()
@@ -37,15 +42,25 @@ export class ContractUpdateDto {
   @ApiProperty()
   @IsString()
   @IsOptional()
-  readonly paymentRequestId?: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
   readonly template?: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
+  readonly status?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
   readonly customField?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  readonly workSubmission?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  readonly ratingId?: string;
 }

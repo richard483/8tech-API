@@ -30,17 +30,25 @@ export class ContractCreateDto {
   @ApiProperty()
   @IsString()
   @IsOptional()
-  readonly paymentRequestId?: string;
+  readonly paymentId?: string;
 
   @ApiProperty()
-  @IsNotEmpty()
   @IsString()
   @IsOptional()
   readonly template?: string;
 
   @ApiProperty()
-  @IsNotEmpty()
   @IsString()
   @IsOptional()
   readonly customField?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  readonly workSubmission?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  readonly ratingId?: string;
 }
