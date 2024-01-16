@@ -93,4 +93,12 @@ export class UsersService {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
   }
+
+  async getAppliedJob(
+    userId: string,
+    page: number,
+    size: number,
+  ): Promise<any | null> {
+    return this.userRepository.getAppliedJob(userId, page, size);
+  }
 }

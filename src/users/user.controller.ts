@@ -9,7 +9,12 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCookieAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCookieAuth,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { Roles } from '../auth/roles/role.decorator';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
@@ -107,5 +112,19 @@ export class UserController {
   async getProfileInfo(@Request() req, @Res() res) {
     console.info('#UserGetProfileInfo request incoming');
     return await this.userService.findOneById(req.user.id);
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @ApiBody({ type: Object })
+  @Post('applied')
+  async appliedJob(@Request() req, @Body() data: any) {
+    const response = await this.userService.getAppliedJob(
+      req.user.id,
+      data?.page,
+      data?.size,
+    );
+    return response;
   }
 }
