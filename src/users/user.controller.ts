@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Request,
   Res,
@@ -105,6 +106,23 @@ export class UserController {
   }
 
   @ApiBearerAuth()
+  @UseInterceptors(FileInterceptor('file'))
+  @Roles(Role.USER, Role.RECRUITER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Post('uploadCompanyProfilePicture')
+  async uploadCompanyProfilePicture(
+    @Request() req,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    console.log('#uploadCompanyProfilePicture user', req.user);
+    const response = await this.userService.uploadProfilePicture(
+      file,
+      req.user.companyId,
+    );
+    return response;
+  }
+
+  @ApiBearerAuth()
   @ApiCookieAuth()
   @Roles(Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -126,5 +144,15 @@ export class UserController {
       data?.size,
     );
     return response;
+  }
+
+  @ApiBearerAuth()
+  @ApiCookieAuth()
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Get('info/:id')
+  async getUserById(@Request() req, @Param() params) {
+    console.info('#UserGetProfileInfoById request incoming');
+    return await this.userService.findOneById(params.id);
   }
 }
