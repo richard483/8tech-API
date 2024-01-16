@@ -106,6 +106,23 @@ export class UserController {
   }
 
   @ApiBearerAuth()
+  @UseInterceptors(FileInterceptor('file'))
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Post('uploadCompanyProfilePicture')
+  async uploadCompanyProfilePicture(
+    @Request() req,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    console.log('#uploadCompanyProfilePicture user', req.user);
+    const response = await this.userService.uploadProfilePicture(
+      file,
+      req.user.companyId,
+    );
+    return response;
+  }
+
+  @ApiBearerAuth()
   @ApiCookieAuth()
   @Roles(Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
