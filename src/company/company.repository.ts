@@ -25,4 +25,12 @@ export class CompanyRepository {
       data,
     });
   }
+
+  async get(companyId: string): Promise<Company> {
+    return this.prisma.company.findUnique({
+      where: {
+        id: companyId,
+      },
+    });
+  }
 }

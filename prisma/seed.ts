@@ -590,6 +590,7 @@ async function contract() {
 }
 
 async function clean() {
+  await prisma.rating.deleteMany({});
   await prisma.contract.deleteMany({});
   await prisma.jobVacancy.deleteMany({});
   await prisma.company.deleteMany({});

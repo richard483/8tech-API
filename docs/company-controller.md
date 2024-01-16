@@ -85,6 +85,11 @@ HTTP Code: 400
 1. [Update](#update)
 
 ## Update
+| Key    | Description   |
+| ------ | ------------- |
+| Method | `POST`        |
+| Path   | `/company/update` |
+
 
 | Key        | Type   |
 | ---------- | ------ |
@@ -138,5 +143,61 @@ HTTP Code: 400
     "id": "id must be a string"
   },
   "error": "BAD_REQUEST"
+}
+```
+
+---
+
+1. [GetInfo](#getInfo)
+
+## Get Info
+
+| Key    | Description   |
+| ------ | ------------- |
+| Method | `POST`        |
+| Path   | `/info/:companyId` |
+
+### Success Response
+
+HTTP Code: 200
+
+```json
+{
+  "status": true,
+  "statusCode": 200,
+  "data": {
+    "id": "7b9e79f7-ebc1-49de-a0db-b9d53cfe1cf7",
+    "profilePicture": null,
+    "name": "Nijisanji Anycolor",
+    "description": "Nijisanji is a VTuber agency under Ichikara Inc. While the company is based in Japan, it also has branches in China, Indonesia, South Korea, and India.",
+    "createdAt": "2024-01-16T08:09:59.992Z",
+    "updatedAt": "2024-01-16T08:09:59.992Z"
+  }
+}
+```
+
+### Invalid credential
+
+HTTP Code: 401
+
+```json
+{
+  "status": true,
+  "statusCode": 401,
+  "data": {
+    "access": "UNAUTHORIZED"
+  }
+}
+```
+
+### no data
+
+HTTP Code: 200
+
+```json
+{
+  "status": true,
+  "statusCode": 200,
+  "data": null
 }
 ```

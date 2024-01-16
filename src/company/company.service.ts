@@ -16,4 +16,8 @@ export class CompanyService {
     const { id, ...data } = company;
     return this.companyRepository.update(id, data);
   }
+
+  async get(companyId: string): Promise<Company> {
+    return this.companyRepository.get(companyId);
+  }
 }
