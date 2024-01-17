@@ -75,6 +75,9 @@ export class JobRepository {
       where: {
         id: jobId,
       },
+      include: {
+        company: true,
+      },
     });
   }
 
