@@ -150,4 +150,20 @@ export class JobRepository {
         throw new HttpException('INVALID_QUERY_REQUEST', 400);
       });
   }
+
+  async isUserAppliedForTheJob(
+    jobId: string,
+    userId: string,
+  ): Promise<JobVacancy[]> {
+    return this.prisma.jobVacancy.findMany({
+      where: {
+        id: jobId,
+        contracts: {
+          some: {
+            userId,
+          },
+        },
+      },
+    });
+  }
 }

@@ -4,7 +4,7 @@
 
 [Get applicants list](#getApplicants)
 
-## Get Applicants
+## Get Applicants (authorized as user)
 
 | Key    | Description   |
 | ------ | ------------- |
@@ -198,7 +198,7 @@ HTTP Code: 400
 ---
 [Apply Job](#applyJob)
 
-## Apply Job
+## Apply Job (authorized as user)
 
 | Key    | Description      |
 | ------ | ---------------- |
@@ -259,5 +259,20 @@ HTTP Code: 401
     "jobId": "NOT_FOUND"
   },
   "error": "INTERNAL_SERVER_ERROR"
+}
+```
+
+### User already applied for the job
+
+HTTP Code: 400
+
+```json
+{
+  "status": false,
+  "statusCode": 400,
+  "message": {
+    "jobId": "USER_ALREADY_APPLIED"
+  },
+  "error": "BAD_REQUEST"
 }
 ```

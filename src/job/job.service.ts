@@ -39,6 +39,18 @@ export class JobService {
     if (!job) {
       throw new HttpException({ jobId: 'NOT_FOUND' }, HttpStatus.I_AM_A_TEAPOT);
     }
+    const totalApplications = await this.jobRepository.isUserAppliedForTheJob(
+      jobId,
+      userId,
+    );
+
+    if (totalApplications.length > 0) {
+      throw new HttpException(
+        { jobId: 'USER_ALREADY_APPLIED' },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     return this.contractService
       .create({
         userId,
