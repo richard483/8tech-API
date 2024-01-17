@@ -22,11 +22,15 @@ export class PaymentService {
     paymentRequset: PaymentRequestCreateDto,
     contractId?: string,
   ): Promise<IPaymentData> {
+    const totalAmount: number = Math.ceil(
+      (100 + Number(`${process.env.BIAYA_APLIKASI}`)) *
+        (paymentRequset.amount / 100),
+    );
     const xenditPaymentRequest: PaymentRequest =
       await this.xenditClient.PaymentRequest.createPaymentRequest({
         data: {
           currency: 'IDR',
-          amount: paymentRequset.amount,
+          amount: totalAmount,
           paymentMethod: {
             type: 'EWALLET',
             reusability: 'ONE_TIME_USE',
