@@ -59,8 +59,6 @@ export class JobController {
 
   @ApiBearerAuth()
   @ApiParam({ name: 'jobId', type: String })
-  @Roles(Role.USER)
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('/:jobId')
   async getjob(@Res() res, @Param() params: any) {
     const response = await this.jobService.getById(params.jobId);
@@ -68,8 +66,6 @@ export class JobController {
   }
 
   @ApiBearerAuth()
-  @Roles(Role.USER)
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('filter')
   async filter(@Res() res, @Body() data: JobFilterRequest) {
     const response = await this.jobService.findManyByList(data);
