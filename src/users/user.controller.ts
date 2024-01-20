@@ -118,6 +118,7 @@ export class UserController {
     const response = await this.userService.uploadProfilePicture(
       file,
       req.user.companyId,
+      true,
     );
     return response;
   }

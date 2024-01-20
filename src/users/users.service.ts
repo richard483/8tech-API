@@ -3,11 +3,13 @@ import { UserRepository } from './user.repository';
 import { UserFilterRequestDto } from './dto/user-filter.dto';
 import { UserHelper } from './user.helper';
 import { User } from '@prisma/client';
+import { CompanyRepository } from '../company/company.repository';
 
 @Injectable()
 export class UsersService {
   constructor(
     private userRepository: UserRepository,
+    private companyRepository: CompanyRepository,
     private userHelper: UserHelper,
   ) {}
 
@@ -76,6 +78,7 @@ export class UsersService {
   async uploadProfilePicture(
     image: Express.Multer.File,
     userId: string,
+    isCompany?: boolean,
   ): Promise<any | null> {
     try {
       const imageData = await this.userHelper.uploadImageToStorage(
@@ -84,10 +87,16 @@ export class UsersService {
           ? userId + `.${image.originalname.split('.').pop()}`
           : image.originalname,
       );
-      const { password, ...user } = await this.userRepository.update(userId, {
+      if (!isCompany) {
+        const { password, ...user } = await this.userRepository.update(userId, {
+          profilePicture: imageData.url,
+        });
+        return user;
+      }
+      const res = await this.companyRepository.update(userId, {
         profilePicture: imageData.url,
       });
-      return user;
+      return res;
     } catch (error) {
       console.log('#uploadProfilePicture error', error);
       throw new HttpException(error, HttpStatus.BAD_REQUEST);

@@ -5,7 +5,6 @@ import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 import { RoleGuard } from '../../auth/roles/role.guard';
 import { RatingController } from '../rating.controller';
 import { RatingService } from '../rating.service';
-import { IRating } from '../interface/rating.interface';
 import { RatingCreateDto } from '../dto/rating-create.dto';
 import { RatingUpdateDto } from '../dto/rating-update.dto';
 import { Rating } from '@prisma/client';

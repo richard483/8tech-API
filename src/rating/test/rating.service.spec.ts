@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeepMocked, createMock } from '@golevelup/ts-jest';
 import { RatingService } from '../rating.service';
-import { IRating } from '../interface/rating.interface';
 import { RatingRepository } from '../rating.repository';
 import { RatingCreateDto } from '../dto/rating-create.dto';
 import { RatingUpdateDto } from '../dto/rating-update.dto';
+import { Rating } from '@prisma/client';
 
 describe('RatingService', () => {
   let service: RatingService;
   let reposiotry: DeepMocked<RatingRepository>;
-  let ratingMock: IRating;
+  let ratingMock: Rating;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -24,6 +24,9 @@ describe('RatingService', () => {
       id: 'randomId',
       recruiterUserId: 'randomUserId',
       ratingOf10: 9,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      userId: 'randomUserId',
     };
   });
 
