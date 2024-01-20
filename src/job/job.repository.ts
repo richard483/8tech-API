@@ -114,7 +114,12 @@ export class JobRepository {
       throw new HttpException({ prisma: e.message }, HttpStatus.BAD_REQUEST);
     }
 
-    const userList = res?.contracts.map((contract) => contract.user);
+    const userList = res?.contracts.map((contract) => {
+      return {
+        ...contract.user,
+        contractId: contract.id,
+      };
+    });
     const total = res?._count.contracts;
     return returnablePaginated(userList, total, page, size);
   }
