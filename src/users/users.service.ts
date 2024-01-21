@@ -4,12 +4,14 @@ import { UserFilterRequestDto } from './dto/user-filter.dto';
 import { UserHelper } from './user.helper';
 import { User } from '@prisma/client';
 import { CompanyRepository } from '../company/company.repository';
+import { ContractRepository } from '../contract/contract.repository';
 
 @Injectable()
 export class UsersService {
   constructor(
     private userRepository: UserRepository,
     private companyRepository: CompanyRepository,
+    private contractRepository: ContractRepository,
     private userHelper: UserHelper,
   ) {}
 
@@ -109,5 +111,9 @@ export class UsersService {
     size: number,
   ): Promise<any | null> {
     return this.userRepository.getAppliedJob(userId, page, size);
+  }
+
+  async unApplyJobByContractId(contractId: string) {
+    return this.contractRepository.delete(contractId);
   }
 }

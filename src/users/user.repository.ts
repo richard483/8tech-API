@@ -155,6 +155,7 @@ export class UserRepository {
             ...pagination(page, size),
             include: {
               jobVacancy: true,
+              payment: true,
             },
             orderBy: {
               createdAt: 'asc',
@@ -171,9 +172,14 @@ export class UserRepository {
       throw new HttpException({ prisma: e.message }, HttpStatus.BAD_REQUEST);
     }
 
-    console.log('#getAppliedJob res', res);
-
-    const jobList = res?.contract.map((contract) => contract.jobVacancy);
+    const jobList = res?.contract.map((contract) => {
+      return {
+        ...contract.jobVacancy,
+        contractId: contract.id,
+        contractStatus: contract.status,
+        paymentStatus: contract.payment?.paymentStatus,
+      };
+    });
     const total = res?._count.contract;
     return returnablePaginated(jobList, total, page, size);
   }

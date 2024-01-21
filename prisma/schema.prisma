@@ -109,9 +109,9 @@ enum Role {
 
 enum ContractStatus {
   PENDING
-  ONGOING
   ACCEPTED
   REJECTED
+  ONGOING
   COMPLETED
 }
 

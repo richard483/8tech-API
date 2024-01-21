@@ -67,6 +67,18 @@ export class ContractService {
     return await this.contractRepository.get(id);
   }
 
+  async getContractByCompanyId(
+    companyId: string,
+    page: number,
+    size: number,
+  ): Promise<any> {
+    return await this.contractRepository.getContractListByCompanyId(
+      companyId,
+      page,
+      size,
+    );
+  }
+
   //Update Contract
 
   //#endregion
