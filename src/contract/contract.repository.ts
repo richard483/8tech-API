@@ -95,6 +95,9 @@ export class ContractRepository {
               id: companyId,
             },
           },
+          NOT: {
+            status: 'REJECTED' || 'PENDING',
+          },
         },
         orderBy: {
           updatedAt: 'desc',
