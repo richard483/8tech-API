@@ -226,6 +226,10 @@ export class ContractService {
   }
   //#endregion
 
+  async unApplyJobByContractId(contractId: string) {
+    return this.contractRepository.delete(contractId);
+  }
+
   //#region File
   //Remove File by fileName
   removeFile(fileName) {

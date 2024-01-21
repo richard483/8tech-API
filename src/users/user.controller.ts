@@ -191,44 +191,4 @@ export class UserController {
     console.info('#UserGetProfileInfoById request incoming');
     return await this.userService.findOneById(params.id);
   }
-
-  @ApiBearerAuth()
-  @ApiCookieAuth()
-  @ApiParam({
-    name: 'contractId',
-    type: String,
-    description: 'contractId of the job vacancy that want to be deleted',
-  })
-  @ApiResponse({
-    schema: {
-      example: {
-        status: true,
-        statusCode: 200,
-        data: {
-          id: '19eb7629-3cc4-49ec-8a50-eba25f9d2a62',
-          userId: 'd557b674-7f45-4734-9115-2ef1154959bc',
-          jobId: '9a6402b9-9a20-4ab1-bb15-9324398cef39',
-          paymentId: null,
-          title:
-            'Lowongan pekerjaan Enna Alouette for d557b674-7f45-4734-9115-2ef1154959bc',
-          description: 'Contract for the following job description: auauaaa',
-          paymentRate: null,
-          template: null,
-          createdAt: '2024-01-16T17:35:13.586Z',
-          updatedAt: '2024-01-16T17:35:13.586Z',
-          status: 'PENDING',
-          customField: null,
-          workSubmission: null,
-          ratingId: null,
-        },
-      },
-    },
-  })
-  @Roles(Role.USER)
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @Get('unapply/:contractId')
-  async unapplyJobByContractId(@Request() req, @Res() res) {
-    console.info('#unapplyJobByContractId request incoming');
-    return await this.userService.unApplyJobByContractId(req.params.contractId);
-  }
 }

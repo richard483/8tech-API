@@ -108,15 +108,15 @@ enum Role {
 }
 
 enum ContractStatus {
-  PENDING
-  ACCEPTED
-  REJECTED
-  ONGOING
-  COMPLETED
+  PENDING //default & menunggu konfirmasi recruiter
+  ACCEPTED //diterima recruiter tapi kontrak bleum deal
+  REJECTED //ditolak recruiter
+  ONGOING //kontrak sudah deal (kl kontrak yg di tawarin recuiter di acc sama freelancer)
+  COMPLETED // recruiter udah bayar (payment status = paid)
 }
 
 enum PaymentStatus {
-  PENDING
-  PAID
-  FAILED
+  PENDING //default
+  PAID //dibayar recruiter
+  ACCEPTED //diterima freelancer (guard biar paid out 2 kali)
 }
