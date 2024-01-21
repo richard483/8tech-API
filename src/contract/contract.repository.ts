@@ -96,7 +96,9 @@ export class ContractRepository {
             },
           },
           NOT: {
-            status: 'REJECTED' || 'PENDING',
+            status: {
+              in: ['PENDING', 'REJECTED'],
+            },
           },
         },
         orderBy: {
