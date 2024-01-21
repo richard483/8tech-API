@@ -14,6 +14,8 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiCookieAuth,
+  ApiParam,
+  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
@@ -134,6 +136,39 @@ export class UserController {
   }
 
   @ApiBearerAuth()
+  @ApiResponse({
+    schema: {
+      example: {
+        status: true,
+        statusCode: 200,
+        data: {
+          data: [
+            {
+              id: 'fc808550-b179-4657-a999-40795b0903d1',
+              title: 'This is job1 title',
+              description: 'This is job1 description',
+              createdAt: '2024-01-03T14:56:04.019Z',
+              updatedAt: '2024-01-03T14:56:04.019Z',
+              companyId: '5fbe70c2-16be-49d1-a529-79ff3a5b443f',
+            },
+            {
+              id: '9be63e1e-d57d-4491-bcc9-3eda8e5f2061',
+              title: 'adsasdasd',
+              description: 'asdasdasdasd',
+              createdAt: '2024-01-15T18:30:12.441Z',
+              updatedAt: '2024-01-15T18:30:12.441Z',
+              companyId: 'a3329765-cd33-46e5-a929-43fdad43bd93',
+            },
+          ],
+          hasPrevious: false,
+          hasNext: false,
+          totalPages: 1,
+          isLast: true,
+          isFirst: true,
+        },
+      },
+    },
+  })
   @Roles(Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @ApiBody({ type: Object })
@@ -155,5 +190,45 @@ export class UserController {
   async getUserById(@Request() req, @Param() params) {
     console.info('#UserGetProfileInfoById request incoming');
     return await this.userService.findOneById(params.id);
+  }
+
+  @ApiBearerAuth()
+  @ApiCookieAuth()
+  @ApiParam({
+    name: 'contractId',
+    type: String,
+    description: 'contractId of the job vacancy that want to be deleted',
+  })
+  @ApiResponse({
+    schema: {
+      example: {
+        status: true,
+        statusCode: 200,
+        data: {
+          id: '19eb7629-3cc4-49ec-8a50-eba25f9d2a62',
+          userId: 'd557b674-7f45-4734-9115-2ef1154959bc',
+          jobId: '9a6402b9-9a20-4ab1-bb15-9324398cef39',
+          paymentId: null,
+          title:
+            'Lowongan pekerjaan Enna Alouette for d557b674-7f45-4734-9115-2ef1154959bc',
+          description: 'Contract for the following job description: auauaaa',
+          paymentRate: null,
+          template: null,
+          createdAt: '2024-01-16T17:35:13.586Z',
+          updatedAt: '2024-01-16T17:35:13.586Z',
+          status: 'PENDING',
+          customField: null,
+          workSubmission: null,
+          ratingId: null,
+        },
+      },
+    },
+  })
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Get('unapply/:contractId')
+  async unapplyJobByContractId(@Request() req, @Res() res) {
+    console.info('#unapplyJobByContractId request incoming');
+    return await this.userService.unApplyJobByContractId(req.params.contractId);
   }
 }

@@ -5,6 +5,7 @@ import { UserController } from './user.controller';
 import { UserRepository } from './user.repository';
 import { UserHelper } from './user.helper';
 import { CompanyRepository } from '../company/company.repository';
+import { ContractRepository } from '../contract/contract.repository';
 
 @Module({
   providers: [
@@ -13,6 +14,7 @@ import { CompanyRepository } from '../company/company.repository';
     UserRepository,
     UserHelper,
     CompanyRepository,
+    ContractRepository,
   ],
   exports: [UsersService],
   controllers: [UserController],

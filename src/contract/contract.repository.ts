@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { pagination, returnablePaginated } from '../prisma/prisma.util';
 import { PrismaService } from '../prisma/prisma.service';
 import { Contract } from '@prisma/client';
 
@@ -20,7 +21,7 @@ export class ContractRepository {
     return this.prisma.contract.update({
       data: contract,
       where: {
-        id: contract.id,
+        id,
       },
     });
   }
@@ -69,5 +70,41 @@ export class ContractRepository {
         paymentId,
       },
     });
+  }
+
+  async delete(id: any): Promise<Contract> {
+    return this.prisma.contract.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async getContractListByCompanyId(
+    companyId: string,
+    page: number,
+    size: number,
+  ): Promise<any> {
+    let res;
+
+    try {
+      res = await this.prisma.contract.findMany({
+        where: {
+          jobVacancy: {
+            company: {
+              id: companyId,
+            },
+          },
+        },
+        include: {
+          payment: true,
+          jobVacancy: true,
+        },
+        ...pagination(page, size),
+      });
+    } catch (e) {
+      throw new HttpException({ prisma: e.message }, HttpStatus.BAD_REQUEST);
+    }
+    return returnablePaginated(res, res.length, page, size);
   }
 }

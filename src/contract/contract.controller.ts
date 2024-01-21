@@ -9,8 +9,15 @@ import {
   Header,
   Param,
   Redirect,
+  Req,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Roles } from '../auth/roles/role.decorator';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { RoleGuard } from '../auth/roles/role.guard';
@@ -43,7 +50,7 @@ export class ContractController {
   }
 
   @ApiBearerAuth()
-  @Roles(Role.USER)
+  @Roles(Role.RECRUITER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('update')
   async updateContract(@Res() res, @Body() data: ContractUpdateDto) {
@@ -55,7 +62,7 @@ export class ContractController {
 
   @Get('generate/:contractId')
   @ApiParam({ name: 'contractId', type: String })
-  @Roles(Role.USER)
+  @Roles(Role.RECRUITER)
   @Header('Content-Type', 'application/pdf')
   async generateContract(
     @Res({ passthrough: true }) res,
@@ -80,6 +87,8 @@ export class ContractController {
 
   @ApiBearerAuth()
   @Get('userId/:userId')
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @ApiParam({ name: 'userId', type: String })
   async getAllbyUserId(@Res() res, @Param('userId') userId: string) {
     console.info('#getAllbyUserId request incoming with: ', userId);
@@ -91,6 +100,8 @@ export class ContractController {
 
   @ApiBearerAuth()
   @Get('jobId/:jobId')
+  @Roles(Role.RECRUITER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @ApiParam({ name: 'jobId', type: String })
   async getAllbyJobId(@Res() res, @Param('jobId') jobId: string) {
     console.info('#getAllbyJobId request incoming with: ', jobId);
@@ -102,6 +113,8 @@ export class ContractController {
 
   @ApiBearerAuth()
   @Get('Id/:Id')
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @ApiParam({ name: 'Id', type: String })
   async getContractbyId(@Res() res, @Param('Id') Id: string) {
     console.info('#getContractbyId request incoming with: ', Id);
@@ -110,6 +123,8 @@ export class ContractController {
   }
 
   @ApiBearerAuth()
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('paymentRequest')
   async createPaymentRequest(
     @Res() res,
@@ -140,12 +155,36 @@ export class ContractController {
   }
 
   @ApiBearerAuth()
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('payoutLink/:contractId')
   @ApiParam({ name: 'contractId', type: String })
   async createPayoutLink(@Res() res, @Param() params: any) {
     console.info('#CreatePayoutLink request incoming with: ', params);
     const response: IContractPayoutLink =
       await this.contractService.createPayout(params.contractId);
+    return response;
+  }
+
+  @Roles(Role.RECRUITER)
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @ApiBody({
+    type: Object,
+    description: 'it receive page, size like this: {page: 1, size: 5}',
+  })
+  @ApiResponse({
+    description:
+      'it will return  paginated contract that include the job vacancy info & payment',
+  })
+  @Post('recruiterContractList')
+  async getRecruiterContractList(@Req() req, @Body() data: any) {
+    console.info('#getRecruiterContractList request incoming with: ', data);
+    const response = await this.contractService.getContractByCompanyId(
+      req.user.companyId,
+      data.page,
+      data.size,
+    );
     return response;
   }
 }
