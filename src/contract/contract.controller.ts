@@ -50,7 +50,7 @@ export class ContractController {
   }
 
   @ApiBearerAuth()
-  @Roles(Role.RECRUITER)
+  @Roles(Role.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('update')
   async updateContract(@Res() res, @Body() data: ContractUpdateDto) {

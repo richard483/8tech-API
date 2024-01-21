@@ -92,6 +92,11 @@ export class JobRepository {
       res = await this.prisma.jobVacancy.findUnique({
         where: {
           id: jobId,
+          contracts: {
+            every: {
+              status: 'PENDING',
+            },
+          },
         },
         include: {
           contracts: {

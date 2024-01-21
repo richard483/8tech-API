@@ -96,6 +96,9 @@ export class ContractRepository {
             },
           },
         },
+        orderBy: {
+          updatedAt: 'desc',
+        },
         include: {
           payment: true,
           jobVacancy: true,
