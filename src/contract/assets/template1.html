@@ -66,31 +66,16 @@
     <p>PEKERJA akan melakukan pekerjaan <b>{{title}}</b> dengan ketentuan sebagai berikut:</p>
     <table>
       <tr>
-        <td>Waktu Kerja</td>
-        <td>:</td>
-        <td>{{contract.work_time}}</td>
-      </tr>
-      <tr>
         <td>Upah</td>
         <td>:</td>
-        <td>{{contract.salary}}</td>
-      </tr>
-      <tr>
-        <td>Periode Pembayaran</td>
-        <td>:</td>
-        <td>{{contract.payment_method}}</td>
-      </tr>
-      <tr>
-        <td>Periode Kontrak</td>
-        <td>:</td>
-        <td>{{contract.periode}}</td>
+        <td>{{paymentRate}}</td>
       </tr>
     </table>
     <p>Demikian surat perjanjian ini dibuat dan ditandatangani oleh kedua belah pihak pada tanggal
       {{contract.createdAt}}.</p>
     <div class="signature">
-      <p>{{contract.worker.name}}</p>
-      <p>{{contract.company.name}}</p>
+      <p>{{userId}}</p>
+      <p>{{companyId}}</p>
     </div>
     <br>
     <br>
@@ -106,14 +91,9 @@
         <td>{{description}}</td>
       </tr>
       <tr>
-        <td>Custom Field 1</td>
+        <td>Details</td>
         <td>:</td>
-        <td>{{customField1}}</td>
-      </tr>
-      <tr>
-        <td>Custom Field 2</td>
-        <td>:</td>
-        <td>{{customField2}}</td>
+        <td>{{details}}</td>
       </tr>
     </table>
   </div>

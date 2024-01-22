@@ -84,8 +84,11 @@ export class PaymentService {
         },
       )
       .catch((err: any) => {
-        console.log('#createPayoutLink error caused by: ', err);
-        throw new HttpException({ payment: err }, HttpStatus.BAD_REQUEST);
+        console.log('#createPayoutLink error caused by: ', err.response.data);
+        throw new HttpException(
+          { payment: err.response.data },
+          HttpStatus.BAD_REQUEST,
+        );
       });
 
     if (paymentId) {
