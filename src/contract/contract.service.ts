@@ -166,7 +166,7 @@ export class ContractService {
       await this.paymentService.createPayoutLink(
         {
           amount: contract.paymentRate,
-          email: contract.User.email,
+          email: contract.user.email,
         },
         contractId,
         contract.paymentId,
