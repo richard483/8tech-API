@@ -47,6 +47,9 @@ export class ContractRepository {
       where: {
         id,
       },
+      include: {
+        payment: true,
+      },
     });
   }
 
