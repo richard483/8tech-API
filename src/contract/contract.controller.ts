@@ -143,8 +143,6 @@ export class ContractController {
 
   @ApiBearerAuth()
   @ApiParam({ name: 'contractId', type: String })
-  @Roles(Role.USER)
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('payment-success/:contractId')
   @Redirect()
   async updateSuccessPaymentRequest(@Res() res, @Param() params: any) {
@@ -153,7 +151,7 @@ export class ContractController {
       params,
     );
     await this.contractService.updatePaymentStatusSuccess(params.contractId);
-    res.redirect('https://www.youtube.com/watch?v=46cuX1IeVpU');
+    res.redirect('https://8tech.vercel.app/');
   }
 
   @ApiBearerAuth()
