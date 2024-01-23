@@ -209,6 +209,9 @@ export class ContractService {
           HttpStatus.BAD_REQUEST,
         );
       }
+      await this.contractRepository.update(contract.id, {
+        status: 'COMPLETED',
+      });
       await this.paymentService.updatePaymentStatus(
         payment.id,
         PaymentStatus.PAID,
