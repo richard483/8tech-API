@@ -148,7 +148,7 @@ export class ContractService {
       const payout: IPayoutLinkData = await this.paymentService.getPayoutLink(
         payment.payoutLinkId,
       );
-      if (['PENDING', 'COMPLETED'].includes(payout.status)) {
+      if (['COMPLETED'].includes(payout.status)) {
         throw new HttpException(
           { payment: 'ALREADY_PAID' },
           HttpStatus.BAD_REQUEST,
