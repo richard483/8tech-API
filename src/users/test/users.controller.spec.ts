@@ -58,12 +58,12 @@ describe('AuthController', () => {
       hasGoogleAccount: false,
       description: 'desc',
       password: 'password',
-      ratingsAvg: 0,
       companyId: '1',
       portfolio: ['1', '2'],
       previousWorkplaceCount: 0,
       previousWorkplaceId: ['1', '2'],
       profilePicture: 'picture',
+      cv: 'cv',
     };
 
     const createSpy = jest

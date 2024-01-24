@@ -27,7 +27,7 @@ model User {
   previousWorkplaceId    String[]
   previousWorkplaceCount Int?
   ratings                Rating[]
-  ratingsAvg             Float?
+  cv                     String?
   companyId              String?
   portfolio              String[]   @map("portfolio")
   profilePicture         String?
