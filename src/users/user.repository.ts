@@ -26,10 +26,6 @@ export class UserRepository {
       '-previousWorkplace': {
         previousWorkplaceCount: 'desc',
       },
-      ratings: { ratingsAvg: 'asc' },
-      '-ratings': {
-        ratingsAvg: 'desc',
-      },
     };
 
     this.field = {
@@ -90,10 +86,6 @@ export class UserRepository {
     const data = {
       ...user,
       previousWorkplaceCount: user.previousWorkplaceId?.length,
-      ratingsAvg:
-        user.ratings
-          ?.map((rating) => rating.ratingOf10)
-          .reduce((a, b) => a + b, 0) / user.ratings?.length,
     };
     return this.prisma.user.create({
       data,
