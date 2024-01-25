@@ -150,7 +150,7 @@ export class UserRepository {
               payment: true,
             },
             orderBy: {
-              updatedAt: 'asc',
+              updatedAt: 'desc',
             },
           },
           _count: {
