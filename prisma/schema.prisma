@@ -32,7 +32,7 @@ model User {
   portfolio              String[]   @map("portfolio")
   profilePicture         String?
   hasGoogleAccount       Boolean    @default(false)
-  company                Company?   @relation(fields: [companyId], references: [id])
+  company                Company?   @relation(fields: [companyId], references: [id], onDelete: Cascade)
   contract               Contract[]
 }
 
@@ -43,7 +43,7 @@ model JobVacancy {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   // company Id is optional for current development purposes
-  company     Company?   @relation(fields: [companyId], references: [id])
+  company     Company?   @relation(fields: [companyId], references: [id], onDelete: Cascade)
   companyId   String?
   contracts   Contract[]
 }
@@ -74,10 +74,10 @@ model Contract {
   customField    String?
   workSubmission String?
   ratingId       String?
-  jobVacancy     JobVacancy?    @relation(fields: [jobId], references: [id])
-  user           User?          @relation(fields: [userId], references: [id])
-  payment        Payment?       @relation(fields: [paymentId], references: [id])
-  rating         Rating?        @relation(fields: [ratingId], references: [id])
+  jobVacancy     JobVacancy?    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user           User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment        Payment?       @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  rating         Rating?        @relation(fields: [ratingId], references: [id], onDelete: Cascade)
 }
 
 model Payment {
@@ -92,7 +92,7 @@ model Payment {
 
 model Rating {
   id              String     @id @default(uuid())
-  User            User       @relation(fields: [userId], references: [id])
+  User            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          String
   recruiterUserId String
   ratingOf10      Int
