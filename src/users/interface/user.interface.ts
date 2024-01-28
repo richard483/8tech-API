@@ -10,7 +10,6 @@ export interface IUser {
   updatedAt: Date;
   roles: string[] | Role[];
   description: string;
-  previousWorkplaceId?: any;
   ratings?: any;
   companyId?: string;
   portfolio: string[];

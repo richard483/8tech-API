@@ -53,29 +53,6 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'default richard description that being created by seed.ts',
-      previousWorkplaceId: [
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Nijisanji Anycolor',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Hololive',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Djarum',
-            },
-          })
-          .then((company) => company.id),
-      ],
     },
   });
   const defaultUser = await prisma.user.upsert({
@@ -89,29 +66,6 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'default user description that being created by seed.ts',
-      previousWorkplaceId: [
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Nijisanji Anycolor',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Hololive',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Djarum',
-            },
-          })
-          .then((company) => company.id),
-      ],
     },
   });
   const notADefaultUser = await prisma.user.upsert({
@@ -125,15 +79,6 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'notADefault user description that being created by seed.ts',
-      previousWorkplaceId: [
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Nijisanji Anycolor',
-            },
-          })
-          .then((company) => company.id),
-      ],
     },
   });
   const mariaMarionetteUser = await prisma.user.upsert({
@@ -148,22 +93,6 @@ async function users() {
       roles: ['USER'],
       description:
         'mariaMarionette user description that being created by seed.ts',
-      previousWorkplaceId: [
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Nijisanji Anycolor',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Djarum',
-            },
-          })
-          .then((company) => company.id),
-      ],
     },
   });
   const mikaUser = await prisma.user.upsert({
@@ -177,29 +106,6 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'mika user description that being created by seed.ts',
-      previousWorkplaceId: [
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Nijisanji Anycolor',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Hololive',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Djarum',
-            },
-          })
-          .then((company) => company.id),
-      ],
     },
   });
   const sonnyUser = await prisma.user.upsert({
@@ -213,22 +119,6 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'sonny user description that being created by seed.ts',
-      previousWorkplaceId: [
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Nijisanji Anycolor',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Hololive',
-            },
-          })
-          .then((company) => company.id),
-      ],
     },
   });
   const ennaUser = await prisma.user.upsert({
@@ -242,29 +132,6 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'enna user description that being created by seed.ts',
-      previousWorkplaceId: [
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Nijisanji Anycolor',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Hololive',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Djarum',
-            },
-          })
-          .then((company) => company.id),
-      ],
     },
   });
   const satoruUser = await prisma.user.upsert({
@@ -278,29 +145,6 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'satoru user description that being created by seed.ts',
-      previousWorkplaceId: [
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Nijisanji Anycolor',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Hololive',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Djarum',
-            },
-          })
-          .then((company) => company.id),
-      ],
     },
   });
   const eyePatchUser = await prisma.user.upsert({
@@ -314,29 +158,6 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'eyePatch user description that being created by seed.ts',
-      previousWorkplaceId: [
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Nijisanji Anycolor',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Hololive',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Djarum',
-            },
-          })
-          .then((company) => company.id),
-      ],
     },
   });
   const ricatUser = await prisma.user.upsert({
@@ -350,56 +171,22 @@ async function users() {
       password: hashPassword('User123_'),
       roles: ['USER'],
       description: 'ricat user description that being created by seed.ts',
-      previousWorkplaceId: [
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Nijisanji Anycolor',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Hololive',
-            },
-          })
-          .then((company) => company.id),
-        await prisma.company
-          .findFirst({
-            where: {
-              name: 'Djarum',
-            },
-          })
-          .then((company) => company.id),
-      ],
     },
   });
 
   console.log('Created recruiter user: ', recruiter);
   console.log(
-    await [
-      admin,
-      defaultUser,
-      notADefaultUser,
-      mariaMarionetteUser,
-      mikaUser,
-      sonnyUser,
-      ennaUser,
-      satoruUser,
-      eyePatchUser,
-      ricatUser,
-      richardWilliam,
-    ].map(async (user) => {
-      await prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          previousWorkplaceCount: user.previousWorkplaceId.length,
-        },
-      });
-    }),
+    admin,
+    defaultUser,
+    notADefaultUser,
+    mariaMarionetteUser,
+    mikaUser,
+    sonnyUser,
+    ennaUser,
+    satoruUser,
+    eyePatchUser,
+    ricatUser,
+    richardWilliam,
   );
 }
 

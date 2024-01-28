@@ -20,12 +20,6 @@ export class UserRepository {
       '-createdAt': { createdAt: 'desc' },
       description: { description: 'asc' },
       '-description': { description: 'desc' },
-      previousWorkplace: {
-        previousWorkplaceCount: 'asc',
-      },
-      '-previousWorkplace': {
-        previousWorkplaceCount: 'desc',
-      },
     };
 
     this.field = {
@@ -33,13 +27,6 @@ export class UserRepository {
         return {
           description: {
             contains: keyword || '',
-          },
-        };
-      },
-      previousWorkplaceId(keyword: string) {
-        return {
-          previousWorkplaceId: {
-            has: keyword || '',
           },
         };
       },
@@ -85,7 +72,6 @@ export class UserRepository {
   async create(user: any): Promise<User> {
     const data = {
       ...user,
-      previousWorkplaceCount: user.previousWorkplaceId?.length,
     };
     return this.prisma.user.create({
       data,

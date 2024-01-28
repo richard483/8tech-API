@@ -14,26 +14,24 @@ datasource db {
 }
 
 model User {
-  id                     String     @id @default(uuid())
-  email                  String     @unique
-  username               String     @unique
-  firstName              String
-  lastName               String
-  password               String?
-  createdAt              DateTime   @default(now())
-  updatedAt              DateTime   @updatedAt
-  roles                  Role[]     @default([USER])
-  description            String?
-  previousWorkplaceId    String[]
-  previousWorkplaceCount Int?
-  ratings                Rating[]
-  cv                     String?
-  companyId              String?
-  portfolio              String[]   @map("portfolio")
-  profilePicture         String?
-  hasGoogleAccount       Boolean    @default(false)
-  company                Company?   @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  contract               Contract[]
+  id               String     @id @default(uuid())
+  email            String     @unique
+  username         String     @unique
+  firstName        String
+  lastName         String
+  password         String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  roles            Role[]     @default([USER])
+  description      String?
+  ratings          Rating[]
+  cv               String?
+  companyId        String?
+  portfolio        String[]   @map("portfolio")
+  profilePicture   String?
+  hasGoogleAccount Boolean    @default(false)
+  company          Company?   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  contract         Contract[]
 }
 
 model JobVacancy {
@@ -42,9 +40,8 @@ model JobVacancy {
   description String
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  // company Id is optional for current development purposes
   company     Company?   @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  companyId   String?
+  companyId   String
   contracts   Contract[]
 }
 
